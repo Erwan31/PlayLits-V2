@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         marginLeft: theme.spacing(2),
         // backgroundColor: 'transparent',
-        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
-        backdropFilter: 'blur(5rem)',
+        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
+        // backdropFilter: 'blur(rem)',
     },
     menuButton: {
         width: 50,

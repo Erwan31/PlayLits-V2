@@ -4,7 +4,7 @@ import Footer from './Components/Footer'
 import Header from './Components/Header'
 import LoginPages from './Components/index/LoginPages'
 import WelcomeCarousel from './Components/index/WelcomeCarousel'
-// import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useRouter } from 'next/router'
 import UserPlaylists from './Components/playlists/UserPlaylists'
 
@@ -28,8 +28,7 @@ export default function Playlists() {
         autoHideTimeout={500}
         autoHideDuration={200}
       > */}
-      <UserPlaylists />
-      
+        <UserPlaylists />
       {/* </Scrollbars> */}
       
       <Footer />
