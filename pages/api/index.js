@@ -1,59 +1,43 @@
+import axios from 'axios';
+
 export async function getUserInfo(token) {
 
     // Make a call using the token
-    const userData = await $.ajax({
-      url: 'https://api.spotify.com/v1/me',
-      type: "GET",
-      beforeSend: xhr => {
-        xhr.setRequestHeader("Authorization", "Bearer " + token);
-      },
-      success: data => {
-        // Checks if the data is not empty
-        if(!data) {
-          console.log('data', data);
-          this.setState({
-            no_data: true,
-          });
-          return;
+  try {
+    const userInfo = await axios.get(
+      'https://api.spotify.com/v1/me',
+      {
+        headers: {
+          Authorization: "Bearer " + token
         }
-        else{
-          const id = data.id;
-          this.setState({user_id: id});
-          return;
-        }
-      }
-    });
-
-    return userData;
+      });
+    
+    return userInfo;
+  }
+  catch (e) {
+    console.error('getUserInfo Error', e);
+    return null;
+  }
+  
 }
 
-export async function getUserPlaylists(id) {
+export async function getUserPlaylists(id, token) {
 
-    let items = null;
-
-    // Make a call using the token
-    $.ajax({
-      url: `https://api.spotify.com/v1/users/${id}/playlists`,
-      type: "GET",
-      beforeSend: xhr => {
-        xhr.setRequestHeader("Authorization", "Bearer " + this.state.token);
-      },
-      success: data => {
-        // Checks if the data is not empty
-        if(!data) {
-          this.setState({
-            no_data: true,
-          });
-          return items;
+  try {
+    const userPlaylists = await axios.get(
+      `https://api.spotify.com/v1/users/${id}/playlists`,
+      {
+        headers: {
+          Authorization: "Bearer " + token
         }
+      });
 
-        let limit = data.limit;
-        items = data.items;
-        this.setState({ limit, playlists: items });
-      }
-    });
-
-    return items;
+    return userPlaylists.data;
+  }
+  catch (e) {
+    console.error('getUserInfo Error', e);
+    return null;
+  }
 }
 
 export async function getUserPlaylistsNew(id, offset) {

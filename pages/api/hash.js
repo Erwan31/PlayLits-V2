@@ -1,5 +1,5 @@
 // Get the hash of the url
-export default function hash() {
+export default async function hash() {
     return window.location.hash
     .substring(1)
     .split("&")
@@ -10,6 +10,11 @@ export default function hash() {
         }
         return initial;
     }, {});
+
+    // window.location.hash = "";
+}
+
+export function cleanHash(){
     window.location.hash = "";
 }
 
