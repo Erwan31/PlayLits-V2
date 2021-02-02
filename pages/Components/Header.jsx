@@ -9,8 +9,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         flexGrow: 1,
         marginLeft: theme.spacing(2),
-        marginTop: theme.spacing(1),
-        backgroundColor: 'transparent',
+        // backgroundColor: 'transparent',
+        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+        backdropFilter: 'blur(5rem)',
     },
     menuButton: {
         width: 50,

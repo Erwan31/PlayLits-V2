@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Footer from './Components/Footer'
 import Header from './Components/Header'
+import LoginPages from './Components/LoginPages'
 import WelcomeCarousel from './Components/WelcomeCarousel'
 // import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -24,7 +25,8 @@ export default function Home() {
         autoHideTimeout={500}
         autoHideDuration={200}
       > */}
-        <WelcomeCarousel />
+      <WelcomeCarousel />
+      <LoginPages />
       
       {/* </Scrollbars> */}
       

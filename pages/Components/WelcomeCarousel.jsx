@@ -18,10 +18,15 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 700,
         maxHeight: 600,
     },
+    image: {
+        width: '80%',
+    },
     icons: {
         top: 'calc(50 % - 20px)',
         position: 'absolute',
-        background: 'white',
+        // background: 'white',
+        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
+        backdropFilter: 'blur(5rem)',
         borderRadius: '30px',
         width: '40px',
         height: '40px',
@@ -32,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         fontWeight: 'bold',
         fontSize: '18px',
-        zindex: 2,
+        zIndex: 10,
     },
     next: {
         right: '10px',
@@ -71,7 +76,7 @@ export default function WelcomeCarousel() {
 
     return (
         <div className={classes.root}>
-            <AnimatePresence initial={false} custom={direction}>
+            <AnimatePresence className={classes.image} initial={false} custom={direction}>
                 <motion.img
                     className={classes.image}
                     key={page}
@@ -81,9 +86,10 @@ export default function WelcomeCarousel() {
                     initial="enter"
                     animate="center"
                     exit="exit"
+                    exitBeforeEnter
                     transition={{
-                        x: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.2 }
+                        x: { type: "spring", stiffness: 1000, damping: 30 },
+                        opacity: { duration: 1 }
                     }}
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
