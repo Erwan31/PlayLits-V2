@@ -35,7 +35,7 @@ export default function Footer() {
         <div className={classes.footBar}>
             <Box display="flex" alignItems="center" justifyContent="center">
                 <hr className={classes.line}></hr>
-                Designed by Erwan Spilmont-2020
+                Designed by Erwan Spilmont-2021
                 <a href="https://www.erwanspilmont.dev">
                     <img src={"/images/link.svg"} alt="link" className={classes.footLink} />
                 </a>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, IconButton, Typography } from '@material-ui/core';
+import Link from 'next/link'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,9 +34,11 @@ export default function Header() {
 
     return (
         <AppBar static className={classes.root}>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                <img src={"/images/logoCustom.svg"} className={classes.logo} alt="logo" />
-            </IconButton>
+            <Link href="/">
+                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    <img src={"/images/logoCustom.svg"} className={classes.logo} alt="logo" />
+                </IconButton>
+            </Link>
             <Typography variant="h6" className={classes.title}>
                 PlayLits
             </Typography>

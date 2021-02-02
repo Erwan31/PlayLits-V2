@@ -5,8 +5,11 @@ import Header from './Components/Header'
 import LoginPages from './Components/index/LoginPages'
 import WelcomeCarousel from './Components/index/WelcomeCarousel'
 // import { Scrollbars } from 'react-custom-scrollbars';
+import { useRouter } from 'next/router'
+import UserPlaylists from './Components/playlists/UserPlaylists'
 
-export default function Home() {
+
+export default function Playlists() {
 
   return (
     <div className={styles.container}>
@@ -25,8 +28,7 @@ export default function Home() {
         autoHideTimeout={500}
         autoHideDuration={200}
       > */}
-      <WelcomeCarousel />
-      <LoginPages />
+      <UserPlaylists />
       
       {/* </Scrollbars> */}
       

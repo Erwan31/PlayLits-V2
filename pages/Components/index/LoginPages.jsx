@@ -1,6 +1,6 @@
 import { BottomNavigation, Button, makeStyles, ThemeProvider } from '@material-ui/core';
 import React from 'react';
-import { authEndpoint, clientId, redirectUri, scopes } from "../api/config";
+import { authEndpoint, clientId, redirectUri, scopes } from "../../api/config";
 // import Button from '@material-ui/core/Button';
 import Link from 'next/link'
 
