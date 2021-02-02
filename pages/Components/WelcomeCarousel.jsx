@@ -9,13 +9,14 @@ import classNames from 'classnames'
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        position: 'relative',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         flexGrow: 1,
-        width: '70%',
-        height: '70%',
+        maxWidth: 700,
+        maxHeight: 600,
     },
     icons: {
         top: 'calc(50 % - 20px)',

@@ -2,8 +2,18 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 35, 52, 1) 0%,
+    rgba(85, 107, 242, 1) 50%,
+    rgba(169, 80, 254, 1) 100%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  overflow: hidden;
 }
 
 a {
@@ -13,4 +23,10 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/* From progressive */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
