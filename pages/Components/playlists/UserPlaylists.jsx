@@ -34,52 +34,56 @@ export default function UserPlaylists() {
 
     useEffect(async () => {
 
-        console.log('playlists', playlists, id, token);
+        // console.log('playlists', playlists, id, token);
 
-        if (!token) {
-            const urlHash = await hash();
-            setToken(urlHash.access_token);
-            // Save in local storage for future page refresh/reload...
-            store.set("pl_token", urlHash.access_token);
+        // if (!token) {
+        const urlHash = await hash();
+        setToken(urlHash.access_token);
+        // Save in local storage for future page refresh/reload...
+        store.set("pl_token", urlHash.access_token);
 
-            // cleanHash();
-        }
+        // cleanHash();
+        // console.log('getHash', playlists, id, urlHash.access_token);
+        // }
 
-        console.log('playlists', playlists, id, token);
+        // if (!id) {
+        const userInfo = await getUserInfo(token);
+        setId(userInfo.data.display_name)
+        // Save in local storage for future page refresh/reload...
+        store.set("pl_user_id", userInfo.data.display_name);
 
-        if (!id) {
-            const userInfo = await getUserInfo(token);
-            setId(userInfo.data.display_name)
-            // Save in local storage for future page refresh/reload...
-            store.set("pl_user_id", userInfo.data.display_name);
-        }
-
-        console.log('playlists', playlists, id, token);
+        // console.log('getUserInfo', playlists, userInfo.data.display_name, token);
+        // }
 
         if (id && token) {
             const userPlaylists = await getUserPlaylists(id, token);
 
-            console.log('playlists', playlists, id, token);
-
             setPlaylists(userPlaylists.items);
             setNextURL(userPlaylists.next);
+
+            // console.log('getPlaylist', userPlaylists.items, id, token);
         }
 
-        console.log('playlists', playlists, id, token);
+        // console.log('playlists', playlists, id, token);
 
-        // cleanHash();
+        cleanHash();
     }, []);
 
     const handleLoadMore = async () => {
         //await getMorePlayList(next)
     }
 
+    const handleSelect = (playlist) => {
+        console.log(playlist)
+    }
+
     return (
         <Grid container className={classes.root} spacing={2}>
             <Grid item xs={20}>
                 <Grid container justify="center" spacing={8}>
-                    {playlists.map((value, index) => (
-                        <Playlist key={index} className={classes.paper} />
+                    {playlists.map((list, index) => (
+                        // console.log(list)
+                        <Playlist key={index} className={classes.paper} playlist={list} onSelect={handleSelect} />
                     ))}
                 </Grid>
             </Grid>

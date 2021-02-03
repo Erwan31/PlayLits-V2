@@ -1,9 +1,13 @@
 import React from 'react'
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, makeStyles } from '@material-ui/core';
+import Link from 'next/link'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         minWidth: 170,
+        width: '25vw',
+        // height: '10vw',
+        height: "100%",
         maxWidth: 300,
         margin: theme.spacing(3),
         backgroundColor: '#2C3049',
@@ -12,18 +16,27 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         alignContent: 'flex-start',
         justifyContent: 'center',
-        textOverflow: 'ellipsis',
-        /* Required for text-overflow to do anything */
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textAlign: 'left',
+        // textOverflow: 'ellipsis',
+        // /* Required for text-overflow to do anything */
+        // whiteSpace: 'nowrap',
+        // overflow: 'hidden',
+        // textAlign: 'left',
+        borderRadius: theme.spacing(2),
     },
     media: {
-        width: '80 %',
+        // width: '80 %',
         minHeight: 140,
+        // maxWidth: '15vw',
+        // height: '90 %',
+        height: 'inherit',
+        // margin: '10 %',
+        // borderRadius: theme.spacing(1),
+    },
+    typo: {
+        width: '80 %',
+        // maxWidth: '10vw',
         height: '90 %',
         margin: '10 %',
-        borderRadius: theme.spacing(1),
     },
 
     wrapPlaylist: {
@@ -40,24 +53,32 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function Playlist() {
+export default function Playlist({ playlist, onSelect }) {
 
     const classes = useStyles();
 
+    const handleSelect = (playlist) => {
+        onSelect(playlist)
+    }
+
     return (
-        <Card className={classes.root} elevation={10}>
-            <CardActionArea>
-                <CardMedia
-                    className={classes.media}
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    title="Contemplative Reptile"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="body2" component="h2">
-                        Lizard
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-        </Card>
+        <Link href={`/playlist/${playlist.name}`} onClick={handleSelect}>
+            <Card className={classes.root} elevation={10}>
+                <CardActionArea>
+                    <CardMedia
+                        classes={{
+                            root: classes.media
+                        }}
+                        image={playlist.images[0].url}
+                        title={playlist.name}
+                    />
+                    <CardContent>
+                        <Typography className={classes.typo} gutterBottom noWrap={true} variant="body2" component="h2">
+                            {playlist.name}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        </Link>
     )
 }
