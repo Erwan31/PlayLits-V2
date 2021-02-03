@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
         // backgroundColor: 'transparent',
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
         // backdropFilter: 'blur(rem)',
+        // '& ::before': {
+        //     backdropFilter: 'blur(10rem)'
+        // }
+        // filter: 'blur(10rem)'
     },
     menuButton: {
         width: 50,

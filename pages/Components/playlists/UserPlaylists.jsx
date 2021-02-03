@@ -34,6 +34,8 @@ export default function UserPlaylists() {
 
     useEffect(async () => {
 
+        console.log('playlists', playlists, id, token);
+
         if (!token) {
             const urlHash = await hash();
             setToken(urlHash.access_token);
@@ -43,12 +45,16 @@ export default function UserPlaylists() {
             // cleanHash();
         }
 
+        console.log('playlists', playlists, id, token);
+
         if (!id) {
             const userInfo = await getUserInfo(token);
             setId(userInfo.data.display_name)
             // Save in local storage for future page refresh/reload...
             store.set("pl_user_id", userInfo.data.display_name);
         }
+
+        console.log('playlists', playlists, id, token);
 
         if (id && token) {
             const userPlaylists = await getUserPlaylists(id, token);
@@ -59,7 +65,9 @@ export default function UserPlaylists() {
             setNextURL(userPlaylists.next);
         }
 
-        cleanHash();
+        console.log('playlists', playlists, id, token);
+
+        // cleanHash();
     }, []);
 
     const handleLoadMore = async () => {

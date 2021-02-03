@@ -3,12 +3,41 @@ import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, 
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 345,
+        minWidth: 170,
+        maxWidth: 300,
         margin: theme.spacing(3),
+        backgroundColor: '#2C3049',
+        color: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        alignContent: 'flex-start',
+        justifyContent: 'center',
+        textOverflow: 'ellipsis',
+        /* Required for text-overflow to do anything */
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textAlign: 'left',
     },
     media: {
-        height: 140,
+        width: '80 %',
+        minHeight: 140,
+        height: '90 %',
+        margin: '10 %',
+        borderRadius: theme.spacing(1),
     },
+
+    wrapPlaylist: {
+        height: 'fit-content',
+    },
+    playlistThumbnail: {
+        '& p': {
+            maxWidth: '95 %',
+            maxHeight: '50 %',
+            fontSize: '1.5rem',
+            margin: '2rem 0rem',
+        }
+    },
+
 }));
 
 export default function Playlist() {
@@ -16,7 +45,7 @@ export default function Playlist() {
     const classes = useStyles();
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} elevation={10}>
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
@@ -24,12 +53,8 @@ export default function Playlist() {
                     title="Contemplative Reptile"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="body2" component="h2">
                         Lizard
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                        across all continents except Antarctica
                     </Typography>
                 </CardContent>
             </CardActionArea>
