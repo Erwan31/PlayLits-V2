@@ -8,9 +8,9 @@ const useStyles = makeStyles((theme) => ({
         width: '25vw',
         // height: '10vw',
         height: "100%",
-        maxWidth: 300,
+        maxWidth: 200,
         margin: theme.spacing(3),
-        backgroundColor: '#2C3049',
+        backgroundColor: '#2c3049',
         color: 'white',
         display: 'flex',
         alignItems: 'center',
@@ -24,13 +24,8 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: theme.spacing(2),
     },
     media: {
-        // width: '80 %',
-        minHeight: 140,
-        // maxWidth: '15vw',
-        // height: '90 %',
-        height: 'inherit',
-        // margin: '10 %',
-        // borderRadius: theme.spacing(1),
+        width: '100%',
+        paddingBottom: '100%',
     },
     typo: {
         width: '80 %',
@@ -53,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function Playlist({ playlist, onSelect }) {
+export default function PlaylistCard({ playlist, onSelect }) {
 
     const classes = useStyles();
 
@@ -62,7 +57,7 @@ export default function Playlist({ playlist, onSelect }) {
     }
 
     return (
-        <Link href={`/playlist/${playlist.name}`} onClick={handleSelect}>
+        <Link href={`/playlits/${encodeURIComponent(playlist.name)}`} onClick={handleSelect}>
             <Card className={classes.root} elevation={10}>
                 <CardActionArea>
                     <CardMedia

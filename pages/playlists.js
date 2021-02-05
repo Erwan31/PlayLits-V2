@@ -1,25 +1,12 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Footer from './Components/Footer'
-import Header from './Components/Header'
-import LoginPages from './Components/index/LoginPages'
-import WelcomeCarousel from './Components/index/WelcomeCarousel'
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useRouter } from 'next/router'
+// import { Scrollbars } from 'react-custom-scrollbars';
+// import { useRouter } from 'next/router'
 import UserPlaylists from './Components/playlists/UserPlaylists'
-
+import HeaderFooter from './Components/HeaderFooter/HeaderFooter'
 
 export default function Playlists() {
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>PlayLits</title>
-        <link rel="icon" href="/images/logo.svg" />
-      </Head>
-
-      <Header />
-
+    <HeaderFooter>
       {/* <Scrollbars
         autoHeight
         autoHeightMin={450}
@@ -30,8 +17,6 @@ export default function Playlists() {
       > */}
         <UserPlaylists />
       {/* </Scrollbars> */}
-      
-      <Footer />
-    </div>
+    </HeaderFooter>
   )
 }

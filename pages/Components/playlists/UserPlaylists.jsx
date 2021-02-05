@@ -1,9 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import hash, { cleanHash } from '../../api/hash'
-import store from "store"
+// import localStorage from "localStorage"
 import { getUserPlaylists, getUserInfo } from '../../api';
 import { Grid, FormLabel, FormControlLabel, Paper, makeStyles } from '@material-ui/core';
-import Playlist from './Playlist';
+import PlaylistCard from './PlaylistCard';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,42 +27,43 @@ const useStyles = makeStyles((theme) => ({
 export default function UserPlaylists() {
 
     const classes = useStyles();
-    const [token, setToken] = useState(store.get("pl_token"));
-    const [id, setId] = useState(store.get("pl_user_id"));
+    const [token, setToken] = useState(null);
+    const [id, setId] = useState(null);
     const [playlists, setPlaylists] = useState([]);
     const [nextURL, setNextURL] = useState('');
 
     useEffect(async () => {
 
-        // console.log('playlists', playlists, id, token);
+        // let tokenURL = window.localStorage.getItem("pl_token");
+        // let userInfo = window.localStorage.getItem("pl_user_id");
 
-        // if (!token) {
-        const urlHash = await hash();
-        setToken(urlHash.access_token);
+        // if (tokenURL === null) {
+        const tokenURL = await hash();
+        setToken(tokenURL);
         // Save in local storage for future page refresh/reload...
-        store.set("pl_token", urlHash.access_token);
+        // window.localStorage.setItem("pl_token", tokenURL);
 
         // cleanHash();
-        // console.log('getHash', playlists, id, urlHash.access_token);
+        console.log('getHash', playlists, id, tokenURL.access_token);
         // }
 
-        // if (!id) {
-        const userInfo = await getUserInfo(token);
-        setId(userInfo.data.display_name)
+        // if (userInfo === null) {
+        const userInfo = await getUserInfo(tokenURL.access_token);
+        setId(userInfo.data.display_name);
         // Save in local storage for future page refresh/reload...
-        store.set("pl_user_id", userInfo.data.display_name);
+        // await localStorage.setItem("pl_user_id", userInfo.data.display_name);
 
-        // console.log('getUserInfo', playlists, userInfo.data.display_name, token);
+        console.log('getUserInfo', playlists, userInfo.data.display_name, tokenURL.access_token);
         // }
 
-        if (id && token) {
-            const userPlaylists = await getUserPlaylists(id, token);
+        // if (userInfo && tokenURL && playlists === []) {
+        const userPlaylists = await getUserPlaylists(userInfo.data.display_name, tokenURL.access_token);
 
-            setPlaylists(userPlaylists.items);
-            setNextURL(userPlaylists.next);
+        setPlaylists(userPlaylists.items);
+        setNextURL(userPlaylists.next);
 
-            // console.log('getPlaylist', userPlaylists.items, id, token);
-        }
+        // console.log('getPlaylist', userPlaylists.items, id, token);
+        // }
 
         // console.log('playlists', playlists, id, token);
 
@@ -83,7 +84,7 @@ export default function UserPlaylists() {
                 <Grid container justify="center" spacing={8}>
                     {playlists.map((list, index) => (
                         // console.log(list)
-                        <Playlist key={index} className={classes.paper} playlist={list} onSelect={handleSelect} />
+                        <PlaylistCard key={index} className={classes.paper} playlist={list} onSelect={handleSelect} />
                     ))}
                 </Grid>
             </Grid>

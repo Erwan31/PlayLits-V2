@@ -1,6 +1,6 @@
 import { BottomNavigation, Button, makeStyles, ThemeProvider } from '@material-ui/core';
 import React from 'react';
-import { authEndpoint, clientId, redirectUri, scopes } from "../../api/config";
+import { authEndpoint, clientId, redirectURI, scopes } from "../../api/config";
 // import Button from '@material-ui/core/Button';
 import Link from 'next/link'
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const URLConnect = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`
+const URLConnect = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectURI}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`
 
 export default function Login() {
 
