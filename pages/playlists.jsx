@@ -15,7 +15,7 @@ export default function Playlists() {
         autoHideTimeout={500}
         autoHideDuration={200}
       > */}
-        <UserPlaylists />
+      <UserPlaylists />
       {/* </Scrollbars> */}
     </HeaderFooter>
   )

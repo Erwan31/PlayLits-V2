@@ -1,10 +1,13 @@
 import { Paper, Slider, Tooltip } from '@material-ui/core'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 // import PlaylitsPage from './playlits/PlaylitsPage'
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
 import SliderPanel from './SliderPanel';
+import { mainState, selectedPlaylist } from '../States/states'
+import { useRecoilState } from 'recoil';
+import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,6 +27,16 @@ const useStyles = makeStyles(theme => ({
 export default function Playlits() {
 
     const classes = useStyles();
+    const [state, setState] = useRecoilState(mainState);
+    const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
+
+    useEffect(async () => {
+        const tracks = await getUserPlaylistTracks(state.selectedPlaylist, state.token.access_token);
+        const audioFeatures = await getTracksAudioFeatures(tracks, state.token.access_token);
+        console.log(tracks, audioFeatures, 'tracks');
+
+        setPlaylistTracks(tracks);
+    }, []);
 
     return (
         <HeaderFooter>
@@ -32,7 +45,7 @@ export default function Playlits() {
                     PlayLits Panel
                 </Typography>
 
-                <SliderPanel />
+                {/* <SliderPanel /> */}
             </Paper>
         </HeaderFooter>
     )

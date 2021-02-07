@@ -2,6 +2,8 @@ import { Box, makeStyles } from '@material-ui/core'
 import React, { useState } from 'react'
 import SliderDouble from './SliderDouble'
 import SliderSimple from './SliderSimple'
+import { mainState } from '../States/states'
+import { useRecoilState } from 'recoil';
 
 const sliders = [
     { name: 'Tracks', color: '#A850FE' },
@@ -11,13 +13,9 @@ const sliders = [
     { name: 'Crises', color: '#1F2436' },
 ];
 
-export default function SliderPanel({ props }) {
+export default function SliderPanel() {
 
-    const { user, token, playlist } = props;
-
-    const [tracksNum, setTracksNum] = useState(20);
-    const [tracksMax, setTracksMax] = useState(20);
-    const [tracksMin, setTracksMin] = useState(0);
+    // const { }
 
     const handleTracksChange = values => {
         this.setState({
@@ -146,3 +144,5 @@ export default function SliderPanel({ props }) {
         </Box>
     )
 }
+
+

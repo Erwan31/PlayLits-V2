@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { audioFeaturesIdsString } from '../playlits/utils';
 
 export async function getUserInfo(token) {
 
@@ -76,4 +77,45 @@ export async function getUserPlaylistsNew(id, offset) {
     }
 
     return items;
+}
+
+export async function getUserPlaylistTracks(playlist, token) {
+
+  try {
+    const tracks = await axios.get(
+      playlist.tracks.href,
+      {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+    return tracks.data;
+  }
+  catch (e) {
+    console.error('getPlaylist Error', e);
+    return null;
+  }
+}
+
+export async function getTracksAudioFeatures(playlist, token) {
+
+  const ids = audioFeaturesIdsString(playlist);
+  console.log(ids, 'ids');
+
+  try {
+    const af = await axios.get(
+      `https://api.spotify.com/v1/audio-features/?ids=${ids}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+    return af.data;
+  }
+  catch (e) {
+    console.error('getPlaylist Error', e);
+    return null;
+  }
 }

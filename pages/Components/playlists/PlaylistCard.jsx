@@ -1,6 +1,8 @@
 import React from 'react'
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, makeStyles } from '@material-ui/core';
+import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, makeStyles, Box } from '@material-ui/core';
 import Link from 'next/link'
+import { mainState } from '../../States/states'
+import { useRecoilState } from 'recoil';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,17 +50,18 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function PlaylistCard({ playlist, onSelect }) {
+export default function PlaylistCard({ playlist }) {
 
     const classes = useStyles();
+    const [state, setState] = useRecoilState(mainState);
 
-    const handleSelect = (playlist) => {
-        onSelect(playlist)
+    const handleSelect = () => {
+        setState(current => ({ ...current, selectedPlaylist: playlist }));
     }
 
     return (
-        <Link href={`/playlits/${encodeURIComponent(playlist.name)}`} onClick={handleSelect}>
-            <Card className={classes.root} elevation={10}>
+        <Link href={`/playlits/${encodeURIComponent(playlist.name)}`}>
+            <Card className={classes.root} elevation={10} onClick={handleSelect}>
                 <CardActionArea>
                     <CardMedia
                         classes={{

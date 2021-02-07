@@ -4,7 +4,7 @@ import hash, { cleanHash } from '../../api/hash'
 import { getUserPlaylists, getUserInfo } from '../../api';
 import { Grid, FormLabel, FormControlLabel, Paper, makeStyles } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
-import { mainState } from '../../States/user'
+import { mainState } from '../../States/states'
 import { useRecoilState } from 'recoil';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
 export default function UserPlaylists() {
 
     const classes = useStyles();
-
     const [state, setState] = useRecoilState(mainState);
+
 
     // const [token, setToken] = useState(null);
     // const [id, setId] = useState(null);
@@ -78,20 +78,17 @@ export default function UserPlaylists() {
         //await getMorePlayList(next)
     }
 
-    const handleSelect = (playlist) => {
-        console.log(playlist)
-    }
-
     return (
         <Grid container className={classes.root} spacing={2}>
-            <Grid item xs={20}>
+            <Grid item xs={12}>
                 <Grid container justify="center" spacing={8}>
-                    {state.playlists.items.map((list, index) => (
-                        // console.log(list)
-                        <PlaylistCard key={index} className={classes.paper} playlist={list} onSelect={handleSelect} />
-                    ))}
+                    {state.playlists !== {} &&
+                        state.playlists.items.map((list, index) => (
+                            // console.log(list)
+                            <PlaylistCard key={index} className={classes.paper} playlist={list} />
+                        ))}
                 </Grid>
             </Grid>
-        </Grid>
+        </Grid >
     );
 }
