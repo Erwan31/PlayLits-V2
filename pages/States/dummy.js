@@ -1,4 +1,4 @@
-const dummy = {
+const dummyPlaylists = {
   "href": "https://api.spotify.com/v1/users/11132933938/playlists?offset=0&limit=20",
   "items": [
     {
@@ -877,4 +877,14 @@ const dummy = {
   "offset": 0,
   "previous": null,
   "total": 35
+}
+
+const dummy_token = {
+    access_token: "BQB57t2fmpdWEmr1RoVuV4FnEFSLJS5hP9ooUOhhXAtcC2Ke-FjuY0IdidQae-i3UMHo9EDoavEghVMXWHc3jY6_4MqADUjo9cx84smroObi0x6jG0Z5s_XLCO7EVdjiPpH0i-prmhm7hipPLFrRNSFtV5lFlo1KUnbZScp0KCtUpDQn3xf5gXEoaQ7FnNYc9u9Yo0sW3gjMk2rQe74bhB2JjrYRqEZ8ic2lCA",
+    token_type: "Bearer",
+    expires_in: "3600"
+}
+
+const dummy_user = {
+    
 }
