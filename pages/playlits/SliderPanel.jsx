@@ -11,7 +11,9 @@ const sliders = [
     { name: 'Crises', color: '#1F2436' },
 ];
 
-export default function SliderPanel() {
+export default function SliderPanel({ props }) {
+
+    const { user, token, playlist } = props;
 
     const [tracksNum, setTracksNum] = useState(20);
     const [tracksMax, setTracksMax] = useState(20);

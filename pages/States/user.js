@@ -1,12 +1,23 @@
-const userState = atom({
-  key: 'userState',
+import React from 'react';
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+
+export const mainState = atom({
+  key: 'mainState',
     default: {
-      
+      user: {},
+      token: {},
+      playlists: {}
   },
 });
 
 
-const slidersState = atom({
+export const slidersState = atom({
   key: 'slidersState',
   default: {
     
