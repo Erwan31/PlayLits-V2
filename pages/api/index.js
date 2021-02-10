@@ -41,7 +41,7 @@ export async function getUserPlaylists(id, token) {
   }
 }
 
-export async function getUserPlaylistsNew(id, offset) {
+export async function getUserPlaylistsNew(id, offset = 0, limit = 25) {
 
     let items = null;
     let data = null;
@@ -56,7 +56,10 @@ export async function getUserPlaylistsNew(id, offset) {
       const response = await axios.get(`https://api.spotify.com/v1/users/${id}/playlists`,
                                         {
                                           headers: headerContent, 
-                                          params: {offset: offset }
+                                          params: {
+                                            offset: offset,
+                                            limit: limit
+                                          }
                                         });
       data = await response.data;
     }
@@ -79,14 +82,18 @@ export async function getUserPlaylistsNew(id, offset) {
     return items;
 }
 
-export async function getUserPlaylistTracks(playlist, token) {
+export async function getUserPlaylistTracks(playlist, token, offset = 0, limit = 100) {
 
   try {
     const tracks = await axios.get(
       playlist.tracks.href,
       {
         headers: {
-          Authorization: "Bearer " + token
+          Authorization: "Bearer " + token,
+          // params: {
+          //   offset: offset,
+          //   limit: limit
+          // }
         }
       });
 
@@ -98,21 +105,20 @@ export async function getUserPlaylistTracks(playlist, token) {
   }
 }
 
-export async function getTracksAudioFeatures(playlist, token) {
+export async function getTracksAudioFeatures(playlist, token, offset = 0, limit = 100) {
 
   const ids = audioFeaturesIdsString(playlist);
-  console.log(ids, 'ids');
 
   try {
     const af = await axios.get(
       `https://api.spotify.com/v1/audio-features/?ids=${ids}`,
       {
         headers: {
-          Authorization: "Bearer " + token
+          Authorization: "Bearer " + token,
         }
       });
 
-    return af.data;
+    return af.data.audio_features;
   }
   catch (e) {
     console.error('getPlaylist Error', e);

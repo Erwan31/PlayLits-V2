@@ -56,7 +56,7 @@ export default function PlaylistCard({ playlist }) {
     const [state, setState] = useRecoilState(mainState);
 
     const handleSelect = () => {
-        setState(current => ({ ...current, selectedPlaylist: playlist }));
+        setState(current => ({ ...current, selectedPlaylist: { info: playlist } }));
     }
 
     return (

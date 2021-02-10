@@ -31,11 +31,11 @@ export default function Playlits() {
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
 
     useEffect(async () => {
-        const tracks = await getUserPlaylistTracks(state.selectedPlaylist, state.token.access_token);
-        const audioFeatures = await getTracksAudioFeatures(tracks, state.token.access_token);
-        console.log(tracks, audioFeatures, 'tracks');
+        const info = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
+        const audioFeatures = await getTracksAudioFeatures(info, state.token.access_token);
+        console.log(info, audioFeatures, 'tracks');
 
-        setPlaylistTracks(tracks);
+        setPlaylistTracks(current => ({ ...current, info, audioFeatures }));
     }, []);
 
     return (
@@ -45,7 +45,7 @@ export default function Playlits() {
                     PlayLits Panel
                 </Typography>
 
-                {/* <SliderPanel /> */}
+                <SliderPanel />
             </Paper>
         </HeaderFooter>
     )

@@ -1,31 +1,106 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SliderRenderTrack, SliderRenderThumb } from './SlidersOptions';
+import { Range, Direction, getTrackBackground } from 'react-range';
+import { Box, Typography } from '@material-ui/core';
 
-export default function SliderSimple({ props }) {
+export default function SliderSimple({ info, direction = 'up' }) {
+
+    const [state, setState] = useState({ values: [0] });
+
+    const STEP = 1, MIN = 0, MAX = 100;
 
     return (
-        <div className='sliderPerso'>
-            {/* <div className='sliderName'>{this.props.name}</div>
-        <span className='labelsRange'>{this.props.labelRange.max || ""}</span> */}
-            <Range
+        <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box' }}>
+            <Typography>{info.name}</Typography>
+            <Typography variant="caption" gutterBottom>{direction === 'up' ? info.labelUp : info.labelDown}</Typography>
+            < Range
                 className='sliderRange'
                 direction={Direction.Up}
-                values={values}
+                values={state.values}
                 step={STEP}
-                min={props.min}
-                max={props.max}
-                // onChange={values => modifyValue(values)}
-                onFinalChange={props.onFinalChange}
-                renderTrack={({ props, children }) =>
-                    <SliderRenderTrack {...props}>
-                        {children}
-                    </SliderRenderTrack>
-                }
-                renderThumb={({ props, isDragged }) =>
-                    <SliderRenderThumb isDragged={isDragged} {...props} />
-                }
+                min={MIN}
+                max={MAX}
+                onChange={(values) => setState({ values })}
+                renderTrack={({ props, children }) => (
+                    <div
+                        onMouseDown={props.onMouseDown}
+                        onTouchStart={props.onTouchStart}
+                        style={{
+                            ...props.style,
+                            flexGrow: 1,
+                            width: '24px',
+                            display: 'flex',
+                            alignSelf: 'center',
+                            height: '100px',
+                            margin: '1rem auto 1rem auto'
+                        }}
+                    >
+                        <div
+                            className='thumbRange'
+                            ref={props.ref}
+                            style={{
+                                width: '4px',
+                                height: '100%',
+                                borderRadius: '4px',
+                                background: getTrackBackground({
+                                    values: state.values,
+                                    colors: [info.color, '#ccc'],
+                                    min: MIN,
+                                    max: MAX,
+                                    direction: Direction.Up
+                                }),
+                                alignSelf: 'center',
+                                margin: 'auto'
+                            }}
+                        >
+                            {children}
+                        </div>
+                    </div>
+                )}
+                renderThumb={({ props, isDragged }) => (
+                    <div
+                        {...props}
+                        style={{
+                            ...props.style,
+                            height: '20px',
+                            width: '24px',
+                            borderRadius: '4px',
+                            backgroundColor: '#FFF',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            boxShadow: '0px 2px 6px #2C3049',
+                            outline: 'none'
+                        }}
+                    >
+                        { isDragged &&
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    top: '0px',
+                                    left: '24px',
+                                    color: '#fff',
+                                    fontWeight: 'bold',
+                                    fontSize: '11px',
+                                    fontFamily: 'Arial,Helvetica Neue,Helvetica,sans-serif',
+                                    padding: '4px',
+                                    borderRadius: '4px',
+                                    backgroundColor: '5ABCDE'
+                                }}
+                            >
+                                {state.values[0].toFixed(0)}
+                            </div>
+                        }
+                        <div
+                            style={{
+                                width: '14px',
+                                height: '4px',
+                                backgroundColor: isDragged ? info.color : '#CCC'
+                            }}
+                        />
+                    </div>
+                )}
             />
-            <span className='labelsRange'>{props.labelRange.min || ""}</span>
-        </div>
+        </Box>
     );
 }

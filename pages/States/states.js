@@ -52,19 +52,39 @@ export const mainState = atom({
 export const selectedPlaylist = atom({
   key: 'selectedPlaylist',
   default: {
-    href: null,
-    items: [],
-    limit: null,
-    next: null,
-    offset: null,
-    previous: null,
-    total: null,
+    info: {
+      href: null,
+      items: [],
+      limit: null,
+      next: null,
+      offset: null,
+      previous: null,
+      total: null,
+    },
+    audioFeatures: []
   }
 });
 
 export const slidersState = atom({
   key: 'slidersState',
   default: {
-    
-  }
+    tracks: {
+      min: null,
+      max: null,
+    },
+    filtered: {
+      number: null,
+    },
+    coeff: {
+      tracks: null,
+      danceability: null,
+      energy: null,
+      mood: null,
+      instrumentalness: null,
+      liveness: null,
+      crises: null,
+    },
+    reverse: null,
+  },
+  genres: {},
 });

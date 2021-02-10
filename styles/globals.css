@@ -20,16 +20,16 @@ body {
   min-width: 600px; /* Beware for Responsive !! */
   /* overflow: scroll; */
 
-  /* -ms-overflow-style: none; Internet Explorer 10+ */
-  /* scrollbar-width: none; mozilla */
+  -ms-overflow-style: none; /*Internet Explorer 10+*/
+  scrollbar-width: none; /* mozilla */
 
   color: white;
 }
 
 /* No Scrollbars but custom */
-/* html::-webkit-scrollbar {
+html::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
-/* } */
+}
 
 a {
   color: inherit;
