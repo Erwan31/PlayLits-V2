@@ -4,7 +4,7 @@ import SliderDouble from './SliderDouble'
 import SliderSimple from './SliderSimple'
 import { mainState, selectedPlaylist } from '../States/states'
 import { useRecoilState } from 'recoil';
-import { Scrollbars } from 'react-custom-scrollbars';
+import ScrollBarsCustom from '../Components/ScrollBarsCustom'
 
 const sliderDouble = { name: 'Tracks', color: '#A850FE', max: null, min: 10 };
 
@@ -57,25 +57,31 @@ export default function SliderPanel() {
         // this.setState({ genre });
     }
 
+
+
     return (
-        <Scrollbars
-            autoWidth
-            // autoWidthMin={200}
-            // autoWidthMax={600}
-            // autoHide
-            // autoHideTimeout={500}
-            // autoHideDuration={200}
-            style={{ width: '100%', height: 220 }}
-            universal
+        <ScrollBarsCustom
+            height={200}
+            width={'100%'}
+            hasHorizontal={false}
+            hasVertical={false}
+        // autoWidth
+        // autoWidthMin={200}s
+        // autoWidthMax={600}
+        // autoHide
+        // autoHideTimeout={500}
+        // autoHideDuration={200}
+        // style={{ width: '100%', height: 220 }}
+        // thumbMinSize={50}
+        // universal={true}
         >
             <Box
                 display="flex"
                 direction="column"
-            // css={{ overflow: 'scroll', overflowY: 'hidden' }}
             >
                 {slidersSimple.map((item, index) => <SliderSimple key={index} info={item} />)}
             </Box >
-        </Scrollbars>
+        </ScrollBarsCustom>
     )
 }
 
