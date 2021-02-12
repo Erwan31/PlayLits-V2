@@ -9,8 +9,8 @@ export default function ScrollBarsCustom({ children, ...props }) {
         const thumbStyle = {
             // backgroundColor: 'pink'
             // Options for scroll overflowXY hidden or scroll or auto
-            overflowX: hasHorizontal ? 'scroll' : 'hidden',
-            overflowY: hasVertical ? 'scroll' : 'hidden',
+            // overflowX: hasHorizontal ? 'scroll' : 'hidden',
+            // overflowY: hasVertical ? 'scroll' : 'hidden',
         };
         return (
             <div

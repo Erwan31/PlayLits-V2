@@ -8,6 +8,7 @@ import SliderPanel from './SliderPanel';
 import { mainState, selectedPlaylist } from '../States/states'
 import { useRecoilState } from 'recoil';
 import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
+import TrackList from './TrackList';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -44,9 +45,9 @@ export default function Playlits() {
                 <Typography gutterBottom align='center' component='h2' variant='h4' classes={{ root: classes.title }}>
                     PlayLits Panel
                 </Typography>
-
                 <SliderPanel />
             </Paper>
+            { playlistTracks.info.items.length > 0 && <TrackList list={playlistTracks.info} />}
         </HeaderFooter>
     )
 }

@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { SliderRenderTrack, SliderRenderThumb } from './SlidersOptions';
 import { Range, Direction, getTrackBackground } from 'react-range';
-import { Box, Typography } from '@material-ui/core';
+import { Box, makeStyles, Typography } from '@material-ui/core';
+import theme from '../../styles/theme/theme';
+
+const useStyles = makeStyles((theme) => ({
+    text: {
+        color: 'white',
+    }
+}))
 
 export default function SliderSimple({ info, direction = 'up' }) {
 
+    const classes = useStyles();
     const [state, setState] = useState({ values: [0] });
 
     const STEP = 1, MIN = 0, MAX = 100;
 
     return (
-        <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box' }}>
-            <Typography>{info.name}</Typography>
-            <Typography variant="caption" gutterBottom>{direction === 'up' ? info.labelUp : info.labelDown}</Typography>
+        <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
+            <Typography variant="body1" component="h3">{info.name}</Typography>
+            <Typography variant="caption" component="p" gutterBottom>{direction === 'up' ? info.labelUp : info.labelDown}</Typography>
             < Range
                 className='sliderRange'
                 direction={Direction.Up}

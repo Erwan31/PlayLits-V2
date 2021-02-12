@@ -9,6 +9,7 @@ const theme = createMuiTheme({
   palette: {
     primary: colors.primary,
     secondary: colors.secondary,
+    textPrimary: 'white',
   },
   overrides: {
     MuiCard: {

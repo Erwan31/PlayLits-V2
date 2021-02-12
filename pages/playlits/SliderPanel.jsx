@@ -61,12 +61,12 @@ export default function SliderPanel() {
 
     return (
         <ScrollBarsCustom
-            height={200}
+            height={210}
             width={'100%'}
-            hasHorizontal={false}
-            hasVertical={false}
+        // hasHorizontal={true}
+        // hasVertical={false}
         // autoWidth
-        // autoWidthMin={200}s
+        // autoWidthMin={200}
         // autoWidthMax={600}
         // autoHide
         // autoHideTimeout={500}
