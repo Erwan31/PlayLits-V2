@@ -2,6 +2,7 @@ import { Box, Card, CardActions, CardContent, CardMedia, Divider, IconButton, ma
 import React, { useState } from 'react'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
+import { getArtistsNames, getTrackAlbumImage, getTrackID, getTrackName } from '../utils/getters';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,19 +44,19 @@ export default function TrackList({ list }) {
     return (
         <Card className={classes.root}>
             {list.items.map(item =>
-                <CardContent className={classes.content}>
+                <CardContent key={getTrackID(item)} className={classes.content}>
                     <CardMedia
                         className={classes.cover}
-                        image={item.track.album.images[1].url || item.track.album.images[0].url}
+                        image={getTrackAlbumImage(item).url}
                         title={'trackname'}
                     />
                     <div className={classes.dividerZone}>
                         <div className={classes.details}>
                             <Typography component="h5" variant="h5">
-                                Live From Space
+                                {getTrackName(item)}
                             </Typography>
                             <Typography variant="subtitle1" color="textSecondary">
-                                Mac Miller
+                                {getArtistsNames(item)}
                             </Typography>
                         </div>
                         <CardActions className={classes.controls}>
