@@ -30,14 +30,14 @@ const useStyles = makeStyles(theme => ({
 const sliderDouble = { name: 'Tracks', color: '#A850FE', max: null, min: 10 };
 
 const slidersSimple = [
-    { name: 'Danceable', feature: 'danceability', color: '#6EDF36', labelUp: 'Booty Shake', labelDown: 'Static' },
-    { name: 'Energy', feature: 'energy', color: '#3A77E0', labelUp: 'Intense', labelDown: 'Chill' },
-    { name: 'Mood', feature: 'valence', color: '#EB690F', labelUp: 'Happy', labelDown: 'Sad' },
-    { name: 'Crises', feature: null, color: '#1F2436', labelUp: 'Loads', labelDown: 'Few' },
-    { name: 'Liveness', feature: 'liveness', color: '#1F2436', labelUp: 'Concert', labelDown: 'Studio' },
+    { name: 'Danceable', feature: 'danceability', color: '#6bdc2e', labelUp: 'Booty Shake', labelDown: 'Static' },
+    { name: 'Energy', feature: 'energy', color: '#2e72dc', labelUp: 'Intense', labelDown: 'Chill' },
+    { name: 'Mood', feature: 'valence', color: '#e95c02', labelUp: 'Happy', labelDown: 'Sad' },
+    { name: 'Crises', feature: null, color: '#93f781', labelUp: 'Loads', labelDown: 'Few' },
+    { name: 'Liveness', feature: 'liveness', color: '#a1ff98', labelUp: 'Concert', labelDown: 'Studio' },
     { name: 'Instruments', feature: 'instrumentalness', color: '#1F2436', labelUp: 'Only', labelDown: 'Acapella' },
-    { name: 'Speech', feature: 'speechiness', color: '#1F2436', labelUp: 'Only', labelDown: 'Nope' },
-    { name: 'Acoustic', feature: 'acousticness', color: '#1F2436', labelUp: 'Acoustic', labelDown: 'Artificial' },
+    { name: 'Speech', feature: 'speechiness', color: '1F2436', labelUp: 'Only', labelDown: 'Nope' },
+    { name: 'Acoustic', feature: 'acousticness', color: '1F2436', labelUp: 'Acoustic', labelDown: 'Artificial' },
 ];
 
 export default function Playlits() {

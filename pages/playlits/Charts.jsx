@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         width: 200,
         height: 100,
         borderRadius: theme.spacing(4),
-        backgroundImage: 'linear-gradient(to right, #6bdc2e, #78e54e, #85ee69, #93f781, #a1ff98)',
+        // backgroundImage: 'linear-gradient(to right, #6bdc2e, #78e54e, #85ee69, #93f781, #a1ff98)',
     }
 }))
 
@@ -57,14 +57,14 @@ export default function Charts({ audioFeatures, sliders }) {
 
                     const arr = getArrayOfAudioFeature(audioFeatures, slider.feature);
                     const label = slider.name;
-                    const color = slider.color;
-
-                    console.log(arr, label, color, 'ALC');
 
                     return (
-                        <div className={classes.chart}>
+                        <div
+                            className={classes.chart}
+                            style={{ backgroundImage: getChartLinearColor(slider.color) }}
+                        >
                             <Line
-                                data={data(arr, label, color)}
+                                data={data(arr, label)}
                                 options={options(label)}
                             />
                         </div>
@@ -75,3 +75,24 @@ export default function Charts({ audioFeatures, sliders }) {
         </ScrollBarsCustom>
     );
 }
+
+function getChartLinearColor(color) {
+    console.log(color.substring(1).toString(16), parseInt(color.substring(1), 16));
+    const arr = [color];
+    let value = parseInt(color.substring(1), 16);
+
+    for (let index = 0; index < 4; index++) {
+        value = Math.ceil(value * 1.1);
+        arr.push('#' + value.toString(16));
+        console.log(index, arr);
+    }
+
+    return `linear-gradient(to right, ${arr[0]}, ${arr[1]}, ${arr[2]}, ${arr[3]}, ${arr[4]})`;
+}
+
+function VBColorToHEX(i) {
+    var bbggrr = ("000000" + i.toString(16)).slice(-6);
+    var rrggbb = bbggrr.substr(4, 2) + bbggrr.substr(2, 2) + bbggrr.substr(0, 2);
+    return "#" + rrggbb;
+}
+

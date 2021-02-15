@@ -68,6 +68,7 @@ export default function SliderPanel({ slidersSimple, slidersDouble }) {
                 direction="column"
                 m='0 1rem 0 1rem'
             >
+                {/* {slidersDouble..map((item, index) => <SliderDouble key={index} info={item} />)} */}
                 {slidersSimple.map((item, index) => <SliderSimple key={index} info={item} />)}
             </Box >
         </ScrollBarsCustom>

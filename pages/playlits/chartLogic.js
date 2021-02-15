@@ -1,4 +1,4 @@
-export const data = (arr, label, color) => {
+export const data = (arr, label) => {
 
     const labels = arr.map( () => "");
 
