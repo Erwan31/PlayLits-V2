@@ -4,8 +4,11 @@ import { defaults, Line } from 'react-chartjs-2';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import { getArrayOfAudioFeature } from '../utils/getters'
 import { data, options } from './chartLogic';
+import { getChartLinearColor } from '../utils/getters'
 // Deafult font for the charts
 defaults.global.defaultFontFamily = 'Nunito';
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,32 +77,4 @@ export default function Charts({ audioFeatures, sliders }) {
             </div>
         </ScrollBarsCustom>
     );
-}
-
-function getChartLinearColor(color) {
-
-    const init = hexToRgb(color);
-    const rgbArr = [init];
-    let value = parseInt(color.substring(1), 16);
-    const string = [];
-
-    for (let index = 1; index < 5; index++) {
-
-        rgbArr.push({ r: rgbArr[index - 1].r * 1.1, g: rgbArr[index - 1].g * 1.1, b: rgbArr[index - 1].b * 1.4 });
-        // console.log(index, arr);
-    }
-
-    return `linear-gradient(to right, rgb(${rgbArr[0].r}, ${rgbArr[0].g}, ${rgbArr[0].b}), rgb(${rgbArr[1].r}, ${rgbArr[1].g}, ${rgbArr[1].b}), rgb(${rgbArr[2].r}, ${rgbArr[2].g}, ${rgbArr[2].b}), rgb(${rgbArr[3].r}, ${rgbArr[3].g}, ${rgbArr[3].b}), rgb(${rgbArr[4].r}, ${rgbArr[4].g}, ${rgbArr[4].b}))`;
-
-    // return `linear - gradient(to right, ${ rgbArr[0]}, ${ rgbArr[1]}, ${ rgbArr[2]}, ${ rgbArr[3]}, ${ rgbArr[4]})`;
-}
-
-// https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-function hexToRgb(hex) {
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
 }
