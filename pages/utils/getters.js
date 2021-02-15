@@ -25,7 +25,7 @@ export function getPlaylistID(playlist) {
 }
 
 export function getArrayOfAudioFeature(arr, feature) {
-    console.log(arr.map(track => track[feature.toLowerCase()]), feature.toLowerCase(), 'toLowerCase');
-    return arr.map(track => track[feature.toLowerCase()]);
+    // console.log(arr.map(track => track[feature.toLowerCase()]), feature.toLowerCase(), 'toLowerCase');
+    return arr.map(track => track[feature]);
 }
 

@@ -35,40 +35,43 @@ export default function Charts({ audioFeatures, sliders }) {
     const classes = useStyles();
 
     return (
-        // <ScrollBarsCustom
-        //     height={210}
-        //     // width={'100%'}
-        // // hasHorizontal={true}
-        // // hasVertical={false}
-        // // autoWidth
-        // // autoWidthMin={200}
-        // // autoWidthMax={600}
-        // // autoHide
-        // // autoHideTimeout={500}
-        // // autoHideDuration={200}
-        // // style={{ width: '100%', height: 220 }}
-        // // thumbMinSize={50}
-        // // universal={true}
-        // >
-        <div className={classes.root}>
-            {sliders.map(slider => {
-                const arr = getArrayOfAudioFeature(audioFeatures, slider.name);
-                const label = slider.name;
-                const color = slider.color;
+        <ScrollBarsCustom
+            height={150}
+        // width={'100%'}
+        // hasHorizontal={true}
+        // hasVertical={false}
+        // autoWidth
+        // autoWidthMin={200}
+        // autoWidthMax={600}
+        // autoHide
+        // autoHideTimeout={500}
+        // autoHideDuration={200}
+        // style={{ width: '100%', height: 220 }}
+        // thumbMinSize={50}
+        // universal={true}
+        >
+            <div className={classes.root}>
+                {sliders.map(slider => {
 
-                console.log(arr, label, color, 'ALC');
+                    if (slider.feature === null) return;
 
-                return (
-                    <div className={classes.chart}>
-                        <Line
-                            data={data(arr, label, color)}
-                            options={options(label)}
-                        />
-                    </div>
-                )
-            }
-            )}
-        </div>
-        // </ScrollBarsCustom>
+                    const arr = getArrayOfAudioFeature(audioFeatures, slider.feature);
+                    const label = slider.name;
+                    const color = slider.color;
+
+                    console.log(arr, label, color, 'ALC');
+
+                    return (
+                        <div className={classes.chart}>
+                            <Line
+                                data={data(arr, label, color)}
+                                options={options(label)}
+                            />
+                        </div>
+                    )
+                }
+                )}
+            </div>
+        </ScrollBarsCustom>
     );
 }

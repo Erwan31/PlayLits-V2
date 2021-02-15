@@ -1,6 +1,5 @@
 export const data = (arr, label, color) => {
 
-    console.log('data', arr);
     const labels = arr.map( () => "");
 
     return {
@@ -17,16 +16,16 @@ export const data = (arr, label, color) => {
                     borderDash: [],
                     borderDashOffset: 0.0,
                     borderJoinStyle: 'round',
-                    borderWidth: 3,
+                    borderWidth: 0.5,
                     //pointBorderColor: color,
                     //pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 3,
+                    pointBorderWidth: 0.5,
+                    pointHoverRadius: 2,
                     //pointHoverBackgroundColor: color,
                     //pointHoverBorderColor: color,
                     pointHoverBorderWidth: 3,
                     pointRadius: 1,
-                    pointHitRadius: 3,
+                    pointHitRadius: 2,
                     data: arr,
                     /*      backgroundColor: [
                               pattern.draw('square', '#ff6384'),
@@ -62,7 +61,7 @@ export const options = function(yLabel){
                         labelString: yLabel,
                         fontFamily: 'Nunito',
                         fontStyle: 'bold',
-                        fontSize: 16,
+                        fontSize: 12,
                         fontColor: '#eeeeee'
                     },
                     gridLines: {
