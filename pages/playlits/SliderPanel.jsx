@@ -6,19 +6,7 @@ import { mainState, selectedPlaylist } from '../States/states'
 import { useRecoilState } from 'recoil';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom'
 
-const sliderDouble = { name: 'Tracks', color: '#A850FE', max: null, min: 10 };
-
-const slidersSimple = [
-    { name: 'Danceability', color: '#6EDF36', labelUp: 'Booty Shake', labelDown: 'Static' },
-    { name: 'Energy', color: '#3A77E0', labelUp: 'Intense', labelDown: 'Chill' },
-    { name: 'Mood', color: '#EB690F', labelUp: 'Happy', labelDown: 'Sad' },
-    { name: 'Crises', color: '#1F2436', labelUp: 'Loads', labelDown: 'Few' },
-    { name: 'Liveness', color: '#1F2436', labelUp: 'Concert', labelDown: 'Studio' },
-    { name: 'Instruments', color: '#1F2436', labelUp: 'Only', labelDown: 'Acapella' },
-    { name: 'Speech', color: '#1F2436', labelUp: 'Only', labelDown: 'Nope' },
-];
-
-export default function SliderPanel() {
+export default function SliderPanel({ slidersSimple, slidersDouble }) {
 
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const tracksMax = playlistTracks.audioFeatures.length;
