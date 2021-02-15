@@ -6,14 +6,14 @@ import { Grid, FormLabel, FormControlLabel, Paper, makeStyles } from '@material-
 import PlaylistCard from './PlaylistCard';
 import { mainState } from '../../States/states'
 import { useRecoilState } from 'recoil';
+import { getPlaylistID } from '../../utils/getters';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         // flexGrow: 1,
-        width: '100vw',
-        height: '100vh',
-        // margin: '10rem',
-        padding: '5rem',
+        // width: '100vw',
+        // height: '100vh',
+        // padding: '5rem',
         overflow: 'scroll',
     },
     paper: {
@@ -85,7 +85,7 @@ export default function UserPlaylists() {
                     {state.playlists !== {} &&
                         state.playlists.items.map((list, index) => (
                             // console.log(list)
-                            <PlaylistCard key={index} className={classes.paper} playlist={list} />
+                            <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
                         ))}
                 </Grid>
             </Grid>

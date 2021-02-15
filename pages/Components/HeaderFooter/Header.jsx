@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(2),
         // backgroundColor: 'transparent',
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
-        // backdropFilter: 'blur(rem)',
+        backdropFilter: 'blur(0.5rem)',
         // '& ::before': {
         //     backdropFilter: 'blur(10rem)'
         // }

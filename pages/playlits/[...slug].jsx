@@ -1,7 +1,6 @@
-import { Paper, Slider, Tooltip } from '@material-ui/core'
+import { Box, Paper, Slider, Tooltip, Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 // import PlaylitsPage from './playlits/PlaylitsPage'
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
 import SliderPanel from './SliderPanel';
@@ -9,18 +8,20 @@ import { mainState, selectedPlaylist } from '../States/states'
 import { useRecoilState } from 'recoil';
 import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
+import { getPlaylistInfoLength } from '../utils/getters';
+import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        backgroundColor: '#2c3049',
-        maxWidth: 600,
-        minWidth: 350,
+    playlitsPanel: {
+        backgroundColor: '#2C3049',
         minHeight: 400,
+        padding: theme.spacing(2),
     },
     title: {
         margin: theme.spacing(1),
         color: 'transparent',
         backgroundClip: 'text',
+        '-webkit-background-clip': 'text',
         background: 'linear-gradient(135deg, #EEEEEE 0%, rgba(85,107,242,1) 50%, rgba(169,80,254,1) 100%)',
     }
 }));
@@ -41,13 +42,38 @@ export default function Playlits() {
 
     return (
         <HeaderFooter>
-            <Paper elevation={15} className={classes.root}>
-                <Typography gutterBottom align='center' component='h2' variant='h4' classes={{ root: classes.title }}>
-                    PlayLits Panel
-                </Typography>
-                <SliderPanel />
-            </Paper>
-            { playlistTracks.info.items.length > 0 && <TrackList list={playlistTracks.info} />}
+            <ScrollBarsCustom
+                height={'100vh'}
+                width={'100%'}
+                // hasHorizontal={true}
+                // hasVertical={false}
+                // autoWidth
+                // autoWidthMin={200}
+                // autoWidthMax={600}
+                autoHide
+                autoHideTimeout={500}
+                autoHideDuration={200}
+                // style={{ width: '100%', height: 220 }}
+                // thumbMinSize={50}
+                universal={true}
+            >
+                <Box
+                    m='auto'
+                    p='70px 0 0 0'
+                    css={{
+                        maxWidth: 600,
+                        minWidth: 350,
+                    }}
+                >
+                    <Paper elevation={15} className={classes.playlitsPanel}>
+                        <Typography gutterBottom align='center' component='h2' variant='h4' classes={{ root: classes.title }}>
+                            PlayLits Panel
+                        </Typography>
+                        <SliderPanel />
+                    </Paper>
+                    {getPlaylistInfoLength(playlistTracks) > 0 && <TrackList list={playlistTracks.info} />}
+                </Box>
+            </ScrollBarsCustom>
         </HeaderFooter>
     )
 }

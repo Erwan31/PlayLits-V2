@@ -14,9 +14,14 @@ const theme = createMuiTheme({
   overrides: {
     MuiCard: {
         root: {
-               backgroundColor: 'pink'
+               backgroundColor: 'white'
             }
-        }
+    },
+    MuiTypography: {
+      root: {
+        color: 'white',
+      }
+    }
   },
 });
 

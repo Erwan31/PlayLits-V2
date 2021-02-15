@@ -78,6 +78,7 @@ export default function SliderPanel() {
             <Box
                 display="flex"
                 direction="column"
+                m='0 1rem 0 1rem'
             >
                 {slidersSimple.map((item, index) => <SliderSimple key={index} info={item} />)}
             </Box >

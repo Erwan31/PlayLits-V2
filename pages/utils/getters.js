@@ -16,4 +16,11 @@ export function getTrackID(item){
     return item.track.id;
 }
 
+export function getPlaylistInfoLength(list) {
+    return list.info.items.length;
+}
+
+export function getPlaylistID(playlist) {
+    return playlist.id;
+}
 
