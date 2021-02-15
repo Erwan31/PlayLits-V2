@@ -11,6 +11,8 @@ import TrackList from './TrackList';
 import { getPlaylistInfoLength } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Charts from './Charts';
+import { useState } from 'react'
+import { averages } from './utils';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -40,19 +42,30 @@ const slidersSimple = [
     { name: 'Acoustic', feature: 'acousticness', color: '1F2436', labelUp: 'Acoustic', labelDown: 'Artificial' },
 ];
 
+const featuresOfInterest = ['danceability', 'energy', 'valence', 'liveness', 'instrumentalness', 'speechiness', 'acousticness'];
+
+
 export default function Playlits() {
 
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
+    const [sortedTracks, setSortedTracks] = useState({});
 
     useEffect(async () => {
         const info = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
         const audioFeatures = await getTracksAudioFeatures(info, state.token.access_token);
-        console.log(info, audioFeatures, 'tracks');
+        // console.log(info, audioFeatures, 'tracks');
 
         setPlaylistTracks(current => ({ ...current, info, audioFeatures }));
     }, []);
+
+    useEffect(() => {
+        if (playlistTracks.audioFeatures.length > 0) {
+            console.log(playlistTracks.audioFeatures);
+            // averages(playlistTracks.audioFeatures, featuresOfInterest);
+        }
+    }, [playlistTracks])
 
     return (
         <HeaderFooter>
