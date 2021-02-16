@@ -89,7 +89,7 @@ export default function SliderDouble({ info, max }) {
                         </div>
                     </div>
                 )}
-                renderThumb={({ props, isDragged }) => (
+                renderThumb={({ props, isDragged, index }) => (
                     <div
                         {...props}
                         style={{
@@ -120,7 +120,7 @@ export default function SliderDouble({ info, max }) {
                                     backgroundColor: '5ABCDE'
                                 }}
                             >
-                                {state.values[0]}
+                                {state.values[index]}
                             </div>
                         }
                         <div
