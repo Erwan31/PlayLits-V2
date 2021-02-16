@@ -58,6 +58,7 @@ export default function Playlits() {
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
 
         setPlaylistTracks(current => ({ ...current, info: data.info, items: data.items, audioFeatures }));
+        setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
     }, []);
 
     useEffect(() => {
