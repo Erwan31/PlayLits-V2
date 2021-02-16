@@ -12,6 +12,45 @@ export function audioFeaturesIdsString(tracks) {
     return idsAF.join(",");
 }
 
+export function changeTracksNumber(list, limits) {
+
+    const length = list.items.length;
+    let min = limits[0];
+    let max = limits[1];
+    let items = list.items;
+    let audioFeatures = list.audioFeatures; 
+
+        // New filtering based on the double thumb range of track change
+    if ((max - min) !== length) {
+        // To always have a minimum of 10 tracks inside the playlist
+        // Manage collisions of the thumbs
+        if (max - min < 10) {
+            if (max + 5 < length) {
+                max = max + 5;
+                min = min - 5;
+            }
+            else {
+                max = length;
+                min = length - 10;
+            }
+
+            if (min - 5 < 0) {
+                max = 10;
+                min = 0;
+            }
+        }
+
+        items = items.slice(min, max);
+        audioFeatures = audioFeatures.slice(min, max);
+
+        return {
+            items,
+            audioFeatures
+        }
+    }
+    return list;
+}
+
 export function sortListItemsAndAF(slidersValues, genres, list){
 
     const sorted = sortedIdsList(slidersValues, 'genres', list);

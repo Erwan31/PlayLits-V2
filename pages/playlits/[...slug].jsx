@@ -12,7 +12,7 @@ import { getLength, getTrackID } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Charts from './Charts';
 import { useState } from 'react'
-import { sortListItemsAndAF } from './utils';
+import { sortListItemsAndAF, changeTracksNumber } from './utils';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -62,7 +62,14 @@ export default function Playlits() {
 
     useEffect(() => {
         if (sortedTracks.items.length > 0) {
-            const sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
+            console.log(slidersValues);
+            // Sorting by Coeff based on features sliders values
+            let sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
+            console.log(sorted, 'before');
+
+            // Sorting based on tracks slider
+            sorted = changeTracksNumber(sorted, slidersValues.tracks);
+            console.log(sorted, 'after');
             setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures }))
         }
     }, [slidersValues]);
