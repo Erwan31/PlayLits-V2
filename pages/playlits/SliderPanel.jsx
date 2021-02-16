@@ -12,6 +12,7 @@ export default function SliderPanel({ slidersSimple, slidersDouble }) {
     const tracksMax = playlistTracks.audioFeatures.length;
     const [reverse, setReverse] = useState(false);
 
+
     return (
         <ScrollBarsCustom
             height={210}
@@ -33,7 +34,7 @@ export default function SliderPanel({ slidersSimple, slidersDouble }) {
                 direction="column"
                 m='0 1rem 0 1rem'
             >
-                {/* {slidersDouble..map((item, index) => <SliderDouble key={index} info={item} />)} */}
+                {tracksMax > 10 && slidersDouble.map((item, index) => <SliderDouble key={index} info={item} max={tracksMax} />)}
                 {slidersSimple.map((item, index) => <SliderSimple key={index} info={item} />)}
             </Box >
         </ScrollBarsCustom>

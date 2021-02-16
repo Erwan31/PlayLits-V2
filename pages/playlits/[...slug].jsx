@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
     },
     title: {
-        margin: theme.spacing(1),
+        marginBottom: theme.spacing(0.5),
         color: 'transparent',
         backgroundClip: 'text',
         '-webkit-background-clip': 'text',
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const sliderDouble = { name: 'Tracks', color: '#A850FE', max: null, min: 10 };
+const slidersDouble = [{ name: 'Tracks', feature: 'tracks', color: '#000000', labelUp: '', labelDown: '' }];
 
 const slidersSimple = [
     { name: 'Danceable', feature: 'danceability', color: '#30B700', labelUp: 'Booty Shake', labelDown: 'Static' },
@@ -63,7 +63,6 @@ export default function Playlits() {
     useEffect(() => {
         if (sortedTracks.items.length > 0) {
             const sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
-
             setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures }))
         }
     }, [slidersValues]);
@@ -94,10 +93,10 @@ export default function Playlits() {
                     }}
                 >
                     <Paper elevation={15} className={classes.playlitsPanel}>
-                        <Typography gutterBottom align='center' component='h2' variant='h4' classes={{ root: classes.title }}>
+                        <Typography gutterBottom align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
                             PlayLits Panel
                         </Typography>
-                        <SliderPanel slidersSimple={slidersSimple} slidersDouble={sliderDouble} />
+                        <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} />
                         {sortedTracks.audioFeatures.length > 0 &&
                             <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} />
                         }

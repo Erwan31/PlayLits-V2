@@ -36,7 +36,9 @@ export default function SliderSimple({ info, direction = 'up' }) {
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
             <Typography variant="body1" component="h3">{info.name}</Typography>
-            <Typography variant="caption" component="p" gutterBottom>{direction === 'up' ? info.labelUp : info.labelDown}</Typography>
+            <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
+                {direction === 'up' ? info.labelUp : info.labelDown}
+            </Typography>
             <Range
                 className='sliderRange'
                 direction={Direction.Up}
