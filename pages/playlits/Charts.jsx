@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chart: {
         margin: '1rem 0.5rem',
-        padding: '1rem 2rem 1rem 1rem',
+        padding: '1rem 1rem 1rem 1rem',
         width: 200,
         height: 100,
         borderRadius: theme.spacing(4),
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Charts({ audioFeatures, sliders }) {
 
-    console.log(audioFeatures, sliders);
     const classes = useStyles();
 
     return (
@@ -63,6 +62,7 @@ export default function Charts({ audioFeatures, sliders }) {
 
                     return (
                         <div
+                            key={slider.feature}
                             className={classes.chart}
                             style={{ backgroundImage: getChartLinearColor(slider.color) }}
                         >

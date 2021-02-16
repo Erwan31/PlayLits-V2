@@ -49,7 +49,7 @@ export default function ScrollBarsCustom({ children, ...props }) {
 
     return (
         <Scrollbars
-            autoWidth
+            // autoWidth
             // autoWidthMin={200}
             // autoWidthMax={600}
             // autoHide

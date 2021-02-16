@@ -4,8 +4,15 @@ const colors = {
   primary: { main: '#2c3049' },
 };
 
-const theme = createMuiTheme({
-    spacing: 10,
+export const theme = createMuiTheme({
+  typography: {
+    "fontFamily": `"Nunito", "Helvetica", "Arial", sans-serif`,
+    "fontSize": 14,
+    "fontWeightLight": 300,
+    "fontWeightRegular": 400,
+    "fontWeightMedium": 500
+   },
+  spacing: 10,
   palette: {
     primary: colors.primary,
     secondary: colors.secondary,

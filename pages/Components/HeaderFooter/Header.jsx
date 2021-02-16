@@ -37,7 +37,7 @@ export default function Header() {
     const classes = useStyles();
 
     return (
-        <AppBar static className={classes.root}>
+        <AppBar static="true" className={classes.root}>
             <Link href="/">
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <img src={"/images/logoCustom.svg"} className={classes.logo} alt="logo" />

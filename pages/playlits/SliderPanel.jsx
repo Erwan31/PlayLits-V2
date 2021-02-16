@@ -12,14 +12,14 @@ export default function SliderPanel({ slidersSimple, slidersDouble }) {
     const tracksMax = playlistTracks.audioFeatures.length;
     const [reverse, setReverse] = useState(false);
 
-    const handleTracksChange = values => {
-        this.setState({
-            tracksNum: values[1] - values[0],
-            tracksMin: values[0],
-            tracksMax: values[1]
-        });
+    // const handleTracksChange = values => {
+    //     this.setState({
+    //         tracksNum: values[1] - values[0],
+    //         tracksMin: values[0],
+    //         tracksMax: values[1]
+    //     });
 
-    }
+    // }
 
     const handleChangeVertical = (value, parameter) => {
         const values = this.state;

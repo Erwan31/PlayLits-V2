@@ -6,11 +6,15 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
-
+// Material UI
+import {theme }from '../styles/theme/theme'
+import { MuiThemeProvider } from '@material-ui/core';
 function MyApp({ Component, pageProps }) {
   return (
     <RecoilRoot>
-      <Component {...pageProps} />
+      <MuiThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </MuiThemeProvider>
     </RecoilRoot>
   )
 }

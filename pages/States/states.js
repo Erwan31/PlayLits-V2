@@ -68,16 +68,16 @@ export const selectedPlaylist = atom({
 export const slidersState = atom({
   key: 'slidersState',
   default: {
-    tracks: {
-      min: null,
-      max: null,
-    },
-    filtered: {
-      number: null,
-    },
-    coeff: {
-      tracks: null,
-      danceability: null,
+    // tracks: {
+    //   min: null,
+    //   max: null,
+    // },
+    // filtered: {
+    //   number: null,
+    // },
+    // coeff: {
+      tracks: [null, null],
+      valence: null,
       energy: null,
       mood: null,
       instrumentalness: null,
@@ -85,9 +85,9 @@ export const slidersState = atom({
       crises: null,
       acousticness: null,
       liveness: null,
-      speechness: null,
-    },
-    reverse: null,
+      speechiness: null,
+  //   },
+  //   reverse: null,
   },
-  genres: {},
+  // genres: {},
 });

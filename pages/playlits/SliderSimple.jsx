@@ -3,32 +3,54 @@ import { SliderRenderTrack, SliderRenderThumb } from './SlidersOptions';
 import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import theme from '../../styles/theme/theme';
+import { useRecoilState } from 'recoil';
+import { slidersState } from '../States/states';
 
 const useStyles = makeStyles((theme) => ({
     text: {
         color: 'white',
     }
-}))
+}));
 
 export default function SliderSimple({ info, direction = 'up' }) {
 
     const classes = useStyles();
-    const [state, setState] = useState({ values: [0] });
+    const [state, setState] = useState({ values: [0], final: [] });
+    const [slidersValues, setSliderValue] = useRecoilState(slidersState);
 
     const STEP = 1, MIN = 0, MAX = 100;
+
+    const handleChange = (values) => {
+        setState(current => ({ ...current, values: [values] }));
+    }
+
+    const handleFinalChange = (values) => {
+        console.log(values, 'values');
+        setState(current => ({ ...current, final: [values] }));
+    }
+
+    useEffect(() => {
+        // let coeff = slidersValues;
+        // coeff[info.feature] = state.final[0];
+        console.log('coeff', info.feature, slidersValues);
+        setSliderValue(current => ({ ...current, [info.feature]: state.final[0] }));
+    }, [state.final])
+
+    // console.log(info);
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
             <Typography variant="body1" component="h3">{info.name}</Typography>
             <Typography variant="caption" component="p" gutterBottom>{direction === 'up' ? info.labelUp : info.labelDown}</Typography>
-            < Range
+            <Range
                 className='sliderRange'
                 direction={Direction.Up}
                 values={state.values}
                 step={STEP}
                 min={MIN}
                 max={MAX}
-                onChange={(values) => setState({ values })}
+                onChange={handleChange}
+                onFinalChange={handleFinalChange}
                 renderTrack={({ props, children }) => (
                     <div
                         onMouseDown={props.onMouseDown}
@@ -96,7 +118,7 @@ export default function SliderSimple({ info, direction = 'up' }) {
                                     backgroundColor: '5ABCDE'
                                 }}
                             >
-                                {state.values[0].toFixed(0)}
+                                {state.values[0]}
                             </div>
                         }
                         <div
