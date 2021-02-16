@@ -18,8 +18,9 @@ export function getTrackID(item) {
     return item.id;
 }
 
-export function getPlaylistInfoLength(list) {
-    return list.info.items.length;
+export function getLength(list) {
+    if (list.length > 0) return list.length;
+    return list.info.total;
 }
 
 export function getPlaylistID(playlist) {

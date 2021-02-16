@@ -54,13 +54,13 @@ export const selectedPlaylist = atom({
   default: {
     info: {
       href: null,
-      items: [],
       limit: null,
       next: null,
       offset: null,
       previous: null,
       total: null,
     },
+    items: [],
     audioFeatures: []
   }
 });

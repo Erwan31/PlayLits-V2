@@ -97,7 +97,15 @@ export async function getUserPlaylistTracks(playlist, token, offset = 0, limit =
         }
       });
 
-    return tracks.data;
+    return {
+      info: {
+        href: tracks.data.href,
+        next: tracks.data.next,
+        previous: tracks.data.previous,
+        total: tracks.data.total,
+      },
+      items: tracks.data.items,
+    };
   }
   catch (e) {
     console.error('getPlaylist Error', e);
@@ -106,7 +114,7 @@ export async function getUserPlaylistTracks(playlist, token, offset = 0, limit =
 }
 
 export async function getTracksAudioFeatures(playlist, token, offset = 0, limit = 100) {
-
+  
   const ids = audioFeaturesIdsString(playlist);
 
   try {

@@ -8,7 +8,7 @@ import { mainState, selectedPlaylist, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
 import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
-import { getPlaylistInfoLength, getTrackID } from '../utils/getters';
+import { getLength, getTrackID } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Charts from './Charts';
 import { useState } from 'react'
@@ -50,31 +50,25 @@ export default function Playlits() {
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
-    const [sortedTracks, setSortedTracks] = useState({});
+    const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
 
     useEffect(async () => {
-        const info = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
-        const audioFeatures = await getTracksAudioFeatures(info, state.token.access_token);
-        console.log(info, audioFeatures, 'tracks');
+        const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
+        const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
 
-
-        setPlaylistTracks(current => ({ ...current, info, audioFeatures }));
+        setPlaylistTracks(current => ({ ...current, info: data.info, items: data.items, audioFeatures }));
     }, []);
-
-    useEffect(() => {
-        if (playlistTracks.audioFeatures.length > 0) {
-            // console.log(playlistTracks.audioFeatures);
-            // averages(playlistTracks.audioFeatures, featuresOfInterest);
-        }
-    }, [playlistTracks])
 
     useEffect(() => {
         if (slidersValues.liveness !== null && playlistTracks.audioFeatures.length > 0) {
             console.log('PL', playlistTracks)
             const sorted = sortedIdsList(slidersValues, 'genres', playlistTracks);
             const sortedAF = sorted.map(item => playlistTracks.audioFeatures.filter(track => getTrackID(track) === item.id)[0]);
-            console.log('ST', sortedAF);
+            const sortedItems = sorted.map(item => playlistTracks.items.filter(track => getTrackID(track) === item.id)[0]);
+            console.log('ST', sortedAF, sortedItems);
+
+            setSortedTracks(current => ({ ...current, items: sortedItems, audioFeatures: sortedAF }))
         }
     }, [slidersValues]);
 
@@ -108,11 +102,11 @@ export default function Playlits() {
                             PlayLits Panel
                         </Typography>
                         <SliderPanel slidersSimple={slidersSimple} slidersDouble={sliderDouble} />
-                        {getPlaylistInfoLength(playlistTracks) > 0 &&
-                            <Charts sliders={slidersSimple} audioFeatures={playlistTracks.audioFeatures} />
+                        {sortedTracks.audioFeatures.length > 0 &&
+                            <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} />
                         }
                     </Paper>
-                    {getPlaylistInfoLength(playlistTracks) > 0 && <TrackList list={playlistTracks.info} />}
+                    {sortedTracks.items.length > 0 && <TrackList list={sortedTracks.items} />}
                 </Box>
             </ScrollBarsCustom>
         </HeaderFooter>

@@ -69,7 +69,7 @@ export default function TrackList({ list }) {
                 width: '100%',
             }}
         >
-            {list.items.map(item =>
+            {list.map(item =>
                 <Card key={getTrackID(item)} className={classes.card} elevation={3} >
                     <CardContent key={getTrackID(item)} className={classes.content}>
                         <CardMedia
