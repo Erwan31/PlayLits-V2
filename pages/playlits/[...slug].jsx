@@ -4,7 +4,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 // import PlaylitsPage from './playlits/PlaylitsPage'
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
 import SliderPanel from './SliderPanel';
-import { mainState, selectedPlaylist } from '../States/states'
+import { mainState, selectedPlaylist, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
 import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
@@ -12,7 +12,7 @@ import { getPlaylistInfoLength } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Charts from './Charts';
 import { useState } from 'react'
-import { averages } from './utils';
+import { sortedList } from './utils';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -51,6 +51,7 @@ export default function Playlits() {
     const [state, setState] = useRecoilState(mainState);
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const [sortedTracks, setSortedTracks] = useState({});
+    const [slidersValues, setSliderValue] = useRecoilState(slidersState);
 
     useEffect(async () => {
         const info = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
@@ -66,6 +67,8 @@ export default function Playlits() {
             // averages(playlistTracks.audioFeatures, featuresOfInterest);
         }
     }, [playlistTracks])
+
+    sortedList(slidersValues, 'asc', 'genres', playlistTracks)
 
     return (
         <HeaderFooter>

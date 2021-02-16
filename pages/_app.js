@@ -9,6 +9,7 @@ import {
 // Material UI
 import {theme }from '../styles/theme/theme'
 import { MuiThemeProvider } from '@material-ui/core';
+
 function MyApp({ Component, pageProps }) {
   return (
     <RecoilRoot>

@@ -55,7 +55,7 @@ export default function Charts({ audioFeatures, sliders }) {
             <div className={classes.root}>
                 {sliders.map(slider => {
 
-                    if (slider.feature === null) return;
+                    if (slider.feature === 'crises') return;
 
                     const arr = getArrayOfAudioFeature(audioFeatures, slider.feature);
                     const label = slider.name;

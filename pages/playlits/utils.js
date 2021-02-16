@@ -1,3 +1,5 @@
+import { getArrayOfAudioFeature } from "../utils/getters";
+
 export function audioFeaturesIdsString(tracks) {
 
     let idsAF = [];
@@ -8,6 +10,26 @@ export function audioFeaturesIdsString(tracks) {
     }
 
     return idsAF.join(",");
+}
+
+export function sortedList(slidersValues, direction = 'asc', genres, list) {
+    
+    //Compute average on the list of each feature and store them
+    const averages = { acousticness: null, danceability: null, energy: null, instrumentalness: null, liveness: null, valence: null, speechiness: null };
+
+    for (const property in averages) {
+        averages[property] = getArrayOfAudioFeature(list.audioFeatures, property).reduce((a, b) => a+b) / list.audioFeatures.length;
+    }
+
+    console.log(slidersValues, direction = 'asc', genres, list);
+    console.log(averages);
+    // for (let index = 0; index < list.length; index++) {
+    //     averages.acousticness = list        
+    // }
+    //Compute coeff for each track -> SumOf(sliderValue[feature]*trackFeature.value)/averageList[feature]
+    //Return list of track ids+coeff
+    //Sort based on reverse order
+    //return sorted idsList
 }
 
 export function computeTrackFeatureCoefficient( trackAF, sliderValues){

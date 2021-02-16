@@ -25,18 +25,10 @@ export default function SliderSimple({ info, direction = 'up' }) {
     }
 
     const handleFinalChange = (values) => {
-        console.log(values, 'values');
+        console.log(values, slidersValues);
         setState(current => ({ ...current, final: [values] }));
-    }
-
-    useEffect(() => {
-        // let coeff = slidersValues;
-        // coeff[info.feature] = state.final[0];
-        console.log('coeff', info.feature, slidersValues);
         setSliderValue(current => ({ ...current, [info.feature]: state.final[0] }));
-    }, [state.final])
-
-    // console.log(info);
+    }
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
