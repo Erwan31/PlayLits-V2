@@ -12,7 +12,7 @@ import { getLength, getTrackID } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Charts from './Charts';
 import { useState } from 'react'
-import { sortedIdsList } from './utils';
+import { sortListItemsAndAF } from './utils';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -61,14 +61,10 @@ export default function Playlits() {
     }, []);
 
     useEffect(() => {
-        if (slidersValues.liveness !== null && playlistTracks.audioFeatures.length > 0) {
-            console.log('PL', playlistTracks)
-            const sorted = sortedIdsList(slidersValues, 'genres', playlistTracks);
-            const sortedAF = sorted.map(item => playlistTracks.audioFeatures.filter(track => getTrackID(track) === item.id)[0]);
-            const sortedItems = sorted.map(item => playlistTracks.items.filter(track => getTrackID(track) === item.id)[0]);
-            console.log('ST', sortedAF, sortedItems);
+        if (sortedTracks.items.length > 0) {
+            const sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
 
-            setSortedTracks(current => ({ ...current, items: sortedItems, audioFeatures: sortedAF }))
+            setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures }))
         }
     }, [slidersValues]);
 

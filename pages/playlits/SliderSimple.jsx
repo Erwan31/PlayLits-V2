@@ -28,7 +28,7 @@ export default function SliderSimple({ info, direction = 'up' }) {
     }
 
     const handleFinalChange = (values) => {
-        console.log(values, 'values');
+        // console.log(values, 'values');
         setState(current => ({ ...current, values: values, final: values }));
         setSliderValue(current => ({ ...current, [info.feature]: values[0] }));
     }

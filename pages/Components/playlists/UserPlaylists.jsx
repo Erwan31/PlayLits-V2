@@ -39,39 +39,40 @@ export default function UserPlaylists() {
 
     useEffect(async () => {
 
-        // let tokenURL = window.localStorage.getItem("pl_token");
-        // let userInfo = window.localStorage.getItem("pl_user_id");
+        if (!state.infoLoaded) {// let tokenURL = window.localStorage.getItem("pl_token");
+            // let userInfo = window.localStorage.getItem("pl_user_id");
 
-        // if (tokenURL === null) {
-        const tokenURL = await hash();
-        // setToken(tokenURL);
-        // Save in local storage for future page refresh/reload...
-        // window.localStorage.setItem("pl_token", tokenURL);
+            // if (tokenURL === null) {
+            const tokenURL = await hash();
+            // setToken(tokenURL);
+            // Save in local storage for future page refresh/reload...
+            // window.localStorage.setItem("pl_token", tokenURL);
 
-        // cleanHash();
-        // console.log('getHash', state.playlists, tokenURL.access_token);
-        // }
+            // cleanHash();
+            // console.log('getHash', state.playlists, tokenURL.access_token);
+            // }
 
-        // if (userInfo === null) {
-        const userInfo = await getUserInfo(tokenURL.access_token);
-        // setId(userInfo.data.display_name);
-        // Save in local storage for future page refresh/reload...
-        // await localStorage.setItem("pl_user_id", userInfo.data.display_name);
+            // if (userInfo === null) {
+            const userInfo = await getUserInfo(tokenURL.access_token);
+            // setId(userInfo.data.display_name);
+            // Save in local storage for future page refresh/reload...
+            // await localStorage.setItem("pl_user_id", userInfo.data.display_name);
 
-        // console.log('getUserInfo', state.playlists, userInfo.data.display_name, tokenURL.access_token);
-        // }
+            // console.log('getUserInfo', state.playlists, userInfo.data.display_name, tokenURL.access_token);
+            // }
 
-        // if (userInfo && tokenURL && playlists === []) {
-        const userPlaylists = await getUserPlaylists(userInfo.data.display_name, tokenURL.access_token);
+            // if (userInfo && tokenURL && playlists === []) {
+            const userPlaylists = await getUserPlaylists(userInfo.data.display_name, tokenURL.access_token);
 
-        setState(current => ({ ...current, user: userInfo, token: tokenURL, playlists: userPlaylists }));
+            setState(current => ({ ...current, infoLoaded: true, user: userInfo, token: tokenURL, playlists: userPlaylists }));
 
-        // console.log('getPlaylist', userPlaylists.items, state.token);
-        // }
+            // console.log('getPlaylist', userPlaylists.items, state.token);
+            // }
 
-        // console.log('playlists', playlists, id, token);
+            // console.log('playlists', playlists, id, token);
 
-        cleanHash();
+            cleanHash();
+        }
     }, []);
 
     const handleLoadMore = async () => {

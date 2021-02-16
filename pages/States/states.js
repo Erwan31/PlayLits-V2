@@ -9,7 +9,8 @@ import {
 
 export const mainState = atom({
   key: 'mainState',
-    default: {
+  default: {
+      infoLoaded: false,
       user: {
         config: {},
         data: {},
@@ -44,7 +45,6 @@ export const mainState = atom({
           href: null,
           total: null
         },
-
       },
   },
 });

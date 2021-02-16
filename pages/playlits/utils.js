@@ -12,12 +12,24 @@ export function audioFeaturesIdsString(tracks) {
     return idsAF.join(",");
 }
 
-export function sortedIdsList(slidersValues, genres, list) {
+export function sortListItemsAndAF(slidersValues, genres, list){
+
+    const sorted = sortedIdsList(slidersValues, 'genres', list);
+    const sortedAF = sorted.map(item => list.audioFeatures.filter(track => getTrackID(track) === item.id)[0]);
+    const sortedItems = sorted.map(item => list.items.filter(track => getTrackID(track) === item.id)[0]);
+
+    return {
+        items: sortedItems, 
+        audioFeatures:  sortedAF
+    }
+}
+
+function sortedIdsList(slidersValues, genres, list) {
     
     const computedList = [];
     let  sortedList = [];
 
-    console.log('sortedList: ', slidersValues, genres, list);
+    // console.log('sortedList: ', slidersValues, genres, list);
 
     //Compute average on the list of each feature and store them
     const averages = { acousticness: null, danceability: null, energy: null, instrumentalness: null, liveness: null, valence: null, speechiness: null };
@@ -35,15 +47,16 @@ export function sortedIdsList(slidersValues, genres, list) {
         })
     });
 
-    //Sort based on reverse order
+    //return sorted idsList
     sortedList = sortByAscCoef(computedList);
-    // if( direction === 'desc') do that out of the memoisation of the result
 
     //return sorted idsList
     return sortedList;
+
+    
 }
 
-export function computeTrackFeatureCoefficient(trackAF, sliderValues, averages){
+function computeTrackFeatureCoefficient(trackAF, sliderValues, averages){
 
     let coeff = 0;
 
@@ -53,8 +66,7 @@ export function computeTrackFeatureCoefficient(trackAF, sliderValues, averages){
 
     return coeff;
 }
-
-export function averages(arr, features) {
+function averages(arr, features) {
     const av = [];
     av[0] = arr.map()
 }
