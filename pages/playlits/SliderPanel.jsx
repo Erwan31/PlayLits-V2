@@ -12,41 +12,6 @@ export default function SliderPanel({ slidersSimple, slidersDouble }) {
     const tracksMax = playlistTracks.audioFeatures.length;
     const [reverse, setReverse] = useState(false);
 
-    // const handleTracksChange = values => {
-    //     this.setState({
-    //         tracksNum: values[1] - values[0],
-    //         tracksMin: values[0],
-    //         tracksMax: values[1]
-    //     });
-
-    // }
-
-    const handleChangeVertical = (value, parameter) => {
-        const values = this.state;
-        values[parameter] = value;
-
-        // this.setState({
-        //     danceability: values.danceability,
-        //     energy: values.energy,
-        //     mood: values.mood,
-        //     crises: values.crises
-        // });
-    };
-
-    const handleAndDelayChangeComplete = () => {
-        // const state = this.state;
-        // this.props.onChangeSliders(state);
-    }
-
-    const genreToggle = (num) => {
-        // const genre = [...this.state.genre];
-
-        // genre[num] = !genre[num];
-        // this.setState({ genre });
-    }
-
-
-
     return (
         <ScrollBarsCustom
             height={210}

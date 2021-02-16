@@ -79,7 +79,7 @@ export const slidersState = atom({
       tracks: [null, null],
       valence: null,
       energy: null,
-      mood: null,
+      valence: null,
       instrumentalness: null,
       liveness: null,
       crises: null,

@@ -14,20 +14,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SliderSimple({ info, direction = 'up' }) {
 
+    const STEP = 1, MIN = 0, MAX = 100;
     const classes = useStyles();
-    const [state, setState] = useState({ values: [0], final: [] });
+    const [state, setState] = useState({ values: [MIN], final: [MIN] });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
 
-    const STEP = 1, MIN = 0, MAX = 100;
+    useEffect(() => {
+        setSliderValue(current => ({ ...current, [info.feature]: MIN }));
+    }, [])
 
     const handleChange = (values) => {
-        setState(current => ({ ...current, values: [values] }));
+        setState(current => ({ ...current, values: values }));
     }
 
     const handleFinalChange = (values) => {
-        console.log(values, slidersValues);
-        setState(current => ({ ...current, final: [values] }));
-        setSliderValue(current => ({ ...current, [info.feature]: state.final[0] }));
+        console.log(values, 'values');
+        setState(current => ({ ...current, values: values, final: values }));
+        setSliderValue(current => ({ ...current, [info.feature]: values[0] }));
     }
 
     return (

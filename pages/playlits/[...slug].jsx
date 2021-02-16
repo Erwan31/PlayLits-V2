@@ -8,11 +8,11 @@ import { mainState, selectedPlaylist, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
 import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
-import { getPlaylistInfoLength } from '../utils/getters';
+import { getPlaylistInfoLength, getTrackID } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Charts from './Charts';
 import { useState } from 'react'
-import { sortedList } from './utils';
+import { sortedIdsList } from './utils';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -56,7 +56,8 @@ export default function Playlits() {
     useEffect(async () => {
         const info = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
         const audioFeatures = await getTracksAudioFeatures(info, state.token.access_token);
-        // console.log(info, audioFeatures, 'tracks');
+        console.log(info, audioFeatures, 'tracks');
+
 
         setPlaylistTracks(current => ({ ...current, info, audioFeatures }));
     }, []);
@@ -68,7 +69,14 @@ export default function Playlits() {
         }
     }, [playlistTracks])
 
-    sortedList(slidersValues, 'asc', 'genres', playlistTracks)
+    useEffect(() => {
+        if (slidersValues.liveness !== null && playlistTracks.audioFeatures.length > 0) {
+            console.log('PL', playlistTracks)
+            const sorted = sortedIdsList(slidersValues, 'genres', playlistTracks);
+            const sortedAF = sorted.map(item => playlistTracks.audioFeatures.filter(track => getTrackID(track) === item.id)[0]);
+            console.log('ST', sortedAF);
+        }
+    }, [slidersValues]);
 
     return (
         <HeaderFooter>

@@ -12,8 +12,10 @@ export function getArtistsNames(item) {
     return item.track.album.artists[0].name;
 }
 
-export function getTrackID(item){
-    return item.track.id;
+export function getTrackID(item) {
+    // if (item.info.track) return item.info.track.id;
+    if (item.track) return item.track.id;
+    return item.id;
 }
 
 export function getPlaylistInfoLength(list) {

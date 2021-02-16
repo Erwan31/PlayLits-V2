@@ -1,4 +1,4 @@
-import { getArrayOfAudioFeature } from "../utils/getters";
+import { getArrayOfAudioFeature, getTrackID } from "../utils/getters";
 
 export function audioFeaturesIdsString(tracks) {
 
@@ -12,37 +12,46 @@ export function audioFeaturesIdsString(tracks) {
     return idsAF.join(",");
 }
 
-export function sortedList(slidersValues, direction = 'asc', genres, list) {
+export function sortedIdsList(slidersValues, genres, list) {
     
+    const computedList = [];
+    let  sortedList = [];
+
+    console.log('sortedList: ', slidersValues, genres, list);
+
     //Compute average on the list of each feature and store them
     const averages = { acousticness: null, danceability: null, energy: null, instrumentalness: null, liveness: null, valence: null, speechiness: null };
 
     for (const property in averages) {
-        averages[property] = getArrayOfAudioFeature(list.audioFeatures, property).reduce((a, b) => a+b) / list.audioFeatures.length;
+        averages[property] = getArrayOfAudioFeature(list.audioFeatures, property).reduce((a, b) => a + b) / list.audioFeatures.length;
     }
 
-    console.log(slidersValues, direction = 'asc', genres, list);
-    console.log(averages);
-    // for (let index = 0; index < list.length; index++) {
-    //     averages.acousticness = list        
-    // }
     //Compute coeff for each track -> SumOf(sliderValue[feature]*trackFeature.value)/averageList[feature]
     //Return list of track ids+coeff
+    list.audioFeatures.forEach(trackAF => {
+        computedList.push({
+            id: getTrackID(trackAF),
+            coeff: computeTrackFeatureCoefficient(trackAF, slidersValues, averages)
+        })
+    });
+
     //Sort based on reverse order
+    sortedList = sortByAscCoef(computedList);
+    // if( direction === 'desc') do that out of the memoisation of the result
+
     //return sorted idsList
+    return sortedList;
 }
 
-export function computeTrackFeatureCoefficient( trackAF, sliderValues){
-    const dCoef = sliderValues.danceability;
-    const eCoef = sliderValues.energy;
-    const mCoef = sliderValues.mood;
-    
-    let coef = 0;
-    sliderValues.map(item => (dCoef * trackAF.danceability) / average.avD +
-               (eCoef*trackAF.energy)/average.avE + 
-               (mCoef*trackAF.valence)/average.avM);
+export function computeTrackFeatureCoefficient(trackAF, sliderValues, averages){
 
-    return coef;
+    let coeff = 0;
+
+    for (const property in averages) {
+        coeff += ((trackAF[property] * sliderValues[property]) / averages[property]);
+    }
+
+    return coeff;
 }
 
 export function averages(arr, features) {
@@ -65,8 +74,8 @@ const sortByAscCriteria = (arr, parameter) => {
 }
 
 const sortByAscCoef = (arr) => {
-    const sorted = arr.sort( ( a, b) =>{
-        return a[2]- b[2]
+    const sorted = arr.sort( (a, b) =>{
+        return a.coeff- b.coeff
     });
     return sorted;
 }
