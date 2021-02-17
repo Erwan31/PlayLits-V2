@@ -4,14 +4,14 @@ import CustomButton from './CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SpotifyIcon from './Icons/SpotifyIcon';
 
-export default function CreatePlaylistButton({ onClick }) {
+export default function CreatePlaylistButton({ onClick, name, disabled }) {
 
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState(
         <Typography align='left' component='h3' variant='subtitle1'>
             Create your PlayLits
         </Typography>
-    )
+    );
 
     const handleClick = () => {
         setLoading(true);
@@ -22,6 +22,7 @@ export default function CreatePlaylistButton({ onClick }) {
 
     useEffect(async () => {
         if (loading) {
+            await createPlayLits(token, name, tracksIDs);
             setContent(
                 <Box display="flex" flexDirection="row" alignItems="center">
                     <Typography
@@ -42,7 +43,7 @@ export default function CreatePlaylistButton({ onClick }) {
     // style={{ marginRight: '0.5rem' }}
 
     return (
-        <CustomButton onClick={handleClick} color='purple'>
+        <CustomButton onClick={handleClick} color='purple' disabled={disabled}>
             <Box css={{ minHeight: 28 }}>
                 {content}
             </Box>

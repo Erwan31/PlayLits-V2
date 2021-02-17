@@ -51,7 +51,7 @@ export default function Playlits() {
     const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     const [direction, setDirection] = useState('asc');
-    const [input, setInput] = useState("PlayLits from ...")
+    const [input, setInput] = useState("")
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -161,7 +161,7 @@ export default function Playlits() {
                                     }
                                 }}
                             />
-                            <CreatePlaylistButton />
+                            <CreatePlaylistButton name={input} disabled={input !== ""} />
                         </Box>
                     </Paper>
                     {sortedTracks.items.length > 0 && <TrackList list={sortedTracks.items} />}

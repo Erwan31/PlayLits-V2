@@ -133,3 +133,62 @@ export async function getTracksAudioFeatures(playlist, token, offset = 0, limit 
     return null;
   }
 }
+
+export async function createPlayLits(token, name, tracksIDs){
+
+        const responseID = await axios.get(
+                                "https://api.spotify.com/v1/me",
+                                {
+                                     Authorization: "Bearer " + token,
+                                });
+        const dataID = await responseID.data;
+
+        console.log(dataID);
+
+        const CREATEPLAYLITSURL = `https://api.spotify.com/v1/users/${dataID.id}/playlists`;
+        let newPlaylistID = 0;
+
+        let URIs= Array.from( tracksIDs, element =>
+                "spotify%3Atrack%3A" + element
+                );
+        URIs = URIs.join(",");
+
+        //console.log("URIs", URIs);
+
+        const data = {
+            name: "Playlits: " + name,
+            public: false
+        };
+
+        try{
+            const response = await axios.post(
+                                    CREATEPLAYLITSURL, 
+                                    data,
+                                    {
+                                       Authorization: "Bearer " + token,
+                                        'content-type': 'application/json',
+                                    });
+            console.log(response);
+
+            newPlaylistID = response.data.id;
+            console.log(newPlaylistID);
+        }
+        catch(error){
+            console.error("create playlist", error);
+        };
+
+        try{
+            const ADDTRACKSURL = `https://api.spotify.com/v1/playlists/${newPlaylistID}/tracks?uris=${URIs}`;
+            const response = await axios.post(
+                ADDTRACKSURL,
+                {},
+                {
+                    Authorization: "Bearer " + token,
+                    'content-type': 'application/json',
+                });
+            console.log(response);
+        }
+        catch(error){
+            console.error("add tracks to playlist", error);
+        };
+    }
