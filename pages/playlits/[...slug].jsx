@@ -1,6 +1,6 @@
-import { Box, Paper, Typography } from '@material-ui/core'
+import { Box, Paper, TextField, Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 // import PlaylitsPage from './playlits/PlaylitsPage'
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
 import { mainState, selectedPlaylist, slidersState } from '../States/states'
@@ -16,18 +16,17 @@ import GenresIcon from './Icons/GenresIcon';
 import ChartsIcon from './Icons/ChartsIcon';
 import SliderPanel from './SliderPanel';
 import Charts from './Charts';
-import CustomButton from './CustomButton';
-import { featuresOfInterest, slidersDouble, slidersSimple } from './slidersData';
-import IncreaseIcon from './Icons/IncreaseIcon';
-import DecreaseIcon from './Icons/DecreaseIcon';
+import { slidersDouble, slidersSimple } from './slidersData';
 import DirectionButton from './DirectionButton';
 import { reverseOrder } from './utils'
+import CreatePlaylistButton from './CreatePlaylistButton';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
         backgroundColor: '#2C3049',
-        minHeight: 400,
+        // minHeight: 200,
         padding: theme.spacing(2),
+        marginBottom: theme.spacing(2),
     },
     title: {
         marginBottom: theme.spacing(0.5),
@@ -35,6 +34,12 @@ const useStyles = makeStyles(theme => ({
         backgroundClip: 'text',
         '-webkit-background-clip': 'text',
         background: 'linear-gradient(135deg, #EEEEEE 0%, rgba(85,107,242,1) 50%, rgba(169,80,254,1) 100%)',
+    },
+    marginBottom: {
+        marginBottom: theme.spacing(2),
+    },
+    input: {
+        color: 'white'
     }
 }));
 
@@ -46,10 +51,16 @@ export default function Playlits() {
     const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     const [direction, setDirection] = useState('asc');
+    const [input, setInput] = useState("PlayLits from ...")
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
     }
+
+    const handleInputChange = (event) => {
+        setInput(event.target.value);
+    };
+
     // API call -> to externalize into a reducer
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
@@ -108,7 +119,9 @@ export default function Playlits() {
                         <Typography align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
                             PlayLits Panel
                         </Typography>
-                        <DirectionButton direction={direction} onClick={handleDirection} />
+                        <div className={classes.marginBottom}>
+                            <DirectionButton direction={direction} onClick={handleDirection} />
+                        </div>
                         <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                             <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} />
                         </PanelCollapse>
@@ -121,11 +134,69 @@ export default function Playlits() {
                             {/* <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} /> */}
                         </PanelCollapse>
                     </Paper>
+                    <Paper elevation={15} className={classes.playlitsPanel}>
+                        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
+                            <CssTextField
+                                label="New PlayLits Name"
+                                placeholder="PlayLits from ..."
+                                onChange={handleInputChange}
+                                color="secondary"
+                                classes={{ root: classes.input }}
+                                InputLabelProps={{
+                                    style: {
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        width: '100%',
+                                        color: '#DDDDDD'
+                                    }
+                                }}
+                                InputProps={{
+                                    style: {
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        width: '100%',
+                                        color: '#DDDDDD'
+                                    }
+                                }}
+                            />
+                            <CreatePlaylistButton />
+                        </Box>
+                    </Paper>
                     {sortedTracks.items.length > 0 && <TrackList list={sortedTracks.items} />}
                 </Box>
             </ScrollBarsCustom>
         </HeaderFooter>
     )
 }
+
+const CssTextField = withStyles({
+    root: {
+        '& label.Mui-focused': {
+            color: 'purple',
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: '#DDDDDD',
+        },
+        '& .MuiInput-underline:hover:before': {
+            borderBottomColor: '#ffffff', // Solid underline on hover
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: 'purple',
+        },
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: 'purple',
+            },
+            '&:hover fieldset': {
+                borderColor: 'blue',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: 'purple',
+            },
+        },
+    },
+})(TextField);
 
 

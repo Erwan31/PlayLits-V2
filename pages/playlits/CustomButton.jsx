@@ -7,7 +7,7 @@ export default function CustomButton({ children, onClick, color }) {
         <Button
             variant="contained"
             onClick={onClick}
-            style={{ backgroundColor: color, marginBottom: '1rem' }}
+            style={{ backgroundColor: color }}
         >
             {children}
         </Button>

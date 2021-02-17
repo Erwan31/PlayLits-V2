@@ -13,14 +13,14 @@ export default function PanelCollapse({ children, name, icon }) {
     }
 
     return (
-        <Box m="0 0 1rem 0" css={{ cursor: "pointer" }}>
+        <Box m="0 0 1rem 0">
             <Box
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
                 onClick={handleChange}
                 justifyContent="space-between"
-                css={{ maxWidth: 110 }}
+                css={{ maxWidth: 110, cursor: "pointer" }}
             >
                 {icon}
                 <Typography align='left' component='h3' variant='subtitle1'>
