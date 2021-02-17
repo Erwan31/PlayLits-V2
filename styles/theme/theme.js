@@ -29,6 +29,11 @@ export const theme = createMuiTheme({
       root: {
         color: 'white',
       }
+    },
+    MuiButton: {
+      root: {
+        textTransform: 'none'
+      },
     }
   },
 });

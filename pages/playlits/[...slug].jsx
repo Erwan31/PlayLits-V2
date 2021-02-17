@@ -16,6 +16,12 @@ import GenresIcon from './Icons/GenresIcon';
 import ChartsIcon from './Icons/ChartsIcon';
 import SliderPanel from './SliderPanel';
 import Charts from './Charts';
+import CustomButton from './CustomButton';
+import { featuresOfInterest, slidersDouble, slidersSimple } from './slidersData';
+import IncreaseIcon from './Icons/IncreaseIcon';
+import DecreaseIcon from './Icons/DecreaseIcon';
+import DirectionButton from './DirectionButton';
+import { reverseOrder } from './utils'
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -32,22 +38,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const slidersDouble = [{ name: 'Tracks', feature: 'tracks', color: '#000000', labelUp: '', labelDown: '' }];
-
-const slidersSimple = [
-    { name: 'Danceable', feature: 'danceability', color: '#30B700', labelUp: 'Booty Shake', labelDown: 'Static' },
-    { name: 'Energy', feature: 'energy', color: '#2e72dc', labelUp: 'Intense', labelDown: 'Chill' },
-    { name: 'Mood', feature: 'valence', color: '#e95c02', labelUp: 'Happy', labelDown: 'Sad' },
-    { name: 'Crises', feature: 'crises', color: '#FFD700', labelUp: 'Loads', labelDown: 'Few' },
-    { name: 'Liveness', feature: 'liveness', color: '#F93822', labelUp: 'Concert', labelDown: 'Studio' },
-    { name: 'Instruments', feature: 'instrumentalness', color: '#D62598', labelUp: 'Only', labelDown: 'Acapella' },
-    { name: 'Speech', feature: 'speechiness', color: '#4E008E', labelUp: 'Only', labelDown: 'Nope' },
-    { name: 'Acoustic', feature: 'acousticness', color: '#00249C', labelUp: 'Acoustic', labelDown: 'Artificial' },
-];
-
-const featuresOfInterest = ['danceability', 'energy', 'valence', 'liveness', 'instrumentalness', 'speechiness', 'acousticness'];
-
-
 export default function Playlits() {
 
     const classes = useStyles();
@@ -55,12 +45,11 @@ export default function Playlits() {
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
+    const [direction, setDirection] = useState('asc');
 
-    const handleChange = (param) => () => {
-        console.log('click', param, checked)
-        setChecked((prev) => ({ ...prev, [param]: !prev[param] }));
-    };
-
+    const handleDirection = () => {
+        direction === 'asc' ? setDirection('desc') : setDirection('asc');
+    }
     // API call -> to externalize into a reducer
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
@@ -79,9 +68,16 @@ export default function Playlits() {
 
             // Sorting based on tracks slider
             sorted = changeTracksNumber(sorted, slidersValues.tracks);
+
+            // Sorting based on direction
+            if (direction !== 'asc') {
+                sorted.items = reverseOrder(sorted.items);
+                sorted.audioFeatures = reverseOrder(sorted.audioFeatures);
+            }
+
             setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures }))
         }
-    }, [slidersValues]);
+    }, [slidersValues, direction]);
 
     return (
         <HeaderFooter>
@@ -112,6 +108,7 @@ export default function Playlits() {
                         <Typography align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
                             PlayLits Panel
                         </Typography>
+                        <DirectionButton direction={direction} onClick={handleDirection} />
                         <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                             <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} />
                         </PanelCollapse>

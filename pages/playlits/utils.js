@@ -144,7 +144,7 @@ const sortByDescCriteria = (arr, parameter) => {
 //     this.setState({reverse, filteredTracksFeatures: sorted});
 // }
 
-const reverseOrder = (arr) => {
+export const reverseOrder = (arr) => {
     // Used with reverse state condition
     const sorted = arr.reverse();
     return sorted;
