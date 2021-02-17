@@ -59,12 +59,13 @@ export default function Playlits() {
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
 
         setPlaylistTracks(current => ({ ...current, info: data.info, items: data.items, audioFeatures }));
+        setSortedTracks(current => ({ ...current, items: data.items, audioFeatures }));
         setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
     }, []);
 
     // Compute coeff and sort tracks
     useEffect(() => {
-        if (playlistTracks.items.length > 0) {
+        if (sortedTracks.items.length > 0) {
             console.log(slidersValues);
             // Sorting by Coeff based on features sliders values
             let sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
