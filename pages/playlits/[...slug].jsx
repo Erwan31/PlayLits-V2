@@ -53,6 +53,7 @@ export default function Playlits() {
     const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
 
+    // API call -> to externalize into a reducer
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
@@ -61,8 +62,9 @@ export default function Playlits() {
         setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
     }, []);
 
+    // Compute coeff and sort tracks
     useEffect(() => {
-        if (sortedTracks.items.length > 0) {
+        if (playlistTracks.items.length > 0) {
             console.log(slidersValues);
             // Sorting by Coeff based on features sliders values
             let sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
