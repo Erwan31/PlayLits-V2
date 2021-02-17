@@ -1,18 +1,21 @@
-import { Box, Paper, Slider, Tooltip, Typography } from '@material-ui/core'
+import { Box, Paper, Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 // import PlaylitsPage from './playlits/PlaylitsPage'
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
-import SliderPanel from './SliderPanel';
 import { mainState, selectedPlaylist, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
 import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
-import { getLength, getTrackID } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
-import Charts from './Charts';
 import { useState } from 'react'
 import { sortListItemsAndAF, changeTracksNumber } from './utils';
+import PanelCollapse from './PanelCollapse';
+import SlidersIcon from './Icons/SlidersIcon';
+import GenresIcon from './Icons/GenresIcon';
+import ChartsIcon from './Icons/ChartsIcon';
+import SliderPanel from './SliderPanel';
+import Charts from './Charts';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -52,6 +55,11 @@ export default function Playlits() {
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
+
+    const handleChange = (param) => () => {
+        console.log('click', param, checked)
+        setChecked((prev) => ({ ...prev, [param]: !prev[param] }));
+    };
 
     // API call -> to externalize into a reducer
     useEffect(async () => {
@@ -101,13 +109,20 @@ export default function Playlits() {
                     }}
                 >
                     <Paper elevation={15} className={classes.playlitsPanel}>
-                        <Typography gutterBottom align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
+                        <Typography align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
                             PlayLits Panel
                         </Typography>
-                        <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} />
+                        <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
+                            <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} />
+                        </PanelCollapse>
                         {sortedTracks.audioFeatures.length > 0 &&
-                            <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} />
+                            <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
+                                <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} />
+                            </PanelCollapse>
                         }
+                        <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
+                            {/* <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} /> */}
+                        </PanelCollapse>
                     </Paper>
                     {sortedTracks.items.length > 0 && <TrackList list={sortedTracks.items} />}
                 </Box>
