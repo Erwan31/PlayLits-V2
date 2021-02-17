@@ -15,7 +15,7 @@ export default function SliderPanel({ slidersSimple, slidersDouble }) {
 
     return (
         <ScrollBarsCustom
-            height={210}
+            height={170}
             width={'100%'}
         // hasHorizontal={true}
         // hasVertical={false}

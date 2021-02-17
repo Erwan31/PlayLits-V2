@@ -63,7 +63,7 @@ export default function SliderDouble({ info, max }) {
                             width: '24px',
                             display: 'flex',
                             alignSelf: 'center',
-                            height: '100px',
+                            height: '95%',
                             margin: '1rem auto 1rem auto'
                         }}
                     >
