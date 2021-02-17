@@ -161,7 +161,7 @@ export default function Playlits() {
                                     }
                                 }}
                             />
-                            <CreatePlaylistButton name={input} disabled={input !== ""} />
+                            <CreatePlaylistButton name={input} disabled={input === ""} />
                         </Box>
                     </Paper>
                     {sortedTracks.items.length > 0 && <TrackList list={sortedTracks.items} />}

@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react'
 import CustomButton from './CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SpotifyIcon from './Icons/SpotifyIcon';
+import { createPlayLits } from '../api';
+import { mainState } from '../States/states';
+import { useRecoilState } from 'recoil';
 
 export default function CreatePlaylistButton({ onClick, name, disabled }) {
 
+    const [state, setState] = useRecoilState(mainState);
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState(
         <Typography align='left' component='h3' variant='subtitle1'>
@@ -22,7 +26,7 @@ export default function CreatePlaylistButton({ onClick, name, disabled }) {
 
     useEffect(async () => {
         if (loading) {
-            await createPlayLits(token, name, tracksIDs);
+            await createPlayLits(state.token.access_token, name, '');
             setContent(
                 <Box display="flex" flexDirection="row" alignItems="center">
                     <Typography
