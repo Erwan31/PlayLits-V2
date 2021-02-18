@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function Charts({ audioFeatures, sliders }) {
+export default function Charts({ list, sliders }) {
 
     const classes = useStyles();
 
@@ -57,7 +57,7 @@ export default function Charts({ audioFeatures, sliders }) {
 
                     if (slider.feature === 'crises') return;
 
-                    const arr = getArrayOfAudioFeature(audioFeatures, slider.feature);
+                    const af = getArrayOfAudioFeature(list, slider.feature);
                     const label = slider.name;
 
                     return (
@@ -67,7 +67,7 @@ export default function Charts({ audioFeatures, sliders }) {
                             style={{ backgroundImage: getChartLinearColor(slider.color) }}
                         >
                             <Line
-                                data={data(arr, label)}
+                                data={data(af, label)}
                                 options={options(label)}
                             />
                         </div>

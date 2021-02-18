@@ -7,13 +7,10 @@ export function getTrackName(item) {
 }
 
 export function getArtistsNames(item) {
-    // let string = '',
-    // item.map.((el, i) => string + el.track.album.artists[i])
     return item.track.album.artists[0].name;
 }
 
 export function getTrackID(item) {
-    // if (item.info.track) return item.info.track.id;
     if (item.track) return item.track.id;
     return item.id;
 }
@@ -28,13 +25,10 @@ export function getPlaylistID(playlist) {
 }
 
 export function getArrayOfAudioFeature(arr, feature) {
-    // console.log(arr.map(track => track[feature.toLowerCase()]), feature.toLowerCase(), 'toLowerCase');
-    return arr.map(track => track[feature]);
+    return arr.map(track => track.audioFeature[feature]);
 }
 
 export function getArrayOfArtistsIDs(arr) {
-    // console.log(arr.map(track => track[feature.toLowerCase()]), feature.toLowerCase(), 'toLowerCase');
-    console.log(arr, 'items')
     return arr.map(obj => obj.track.artists[0].id);
 }
 

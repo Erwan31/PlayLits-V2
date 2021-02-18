@@ -62,7 +62,8 @@ export const selectedPlaylist = atom({
     },
     items: [],
     audioFeatures: [],
-    genres: []
+    genres: [],
+    allGenres: []
   }
 });
 

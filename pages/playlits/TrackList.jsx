@@ -69,25 +69,25 @@ export default function TrackList({ list }) {
                 width: '100%',
             }}
         >
-            {list.map(item =>
-                <Card key={getTrackID(item)} className={classes.card} elevation={3} >
-                    <CardContent key={getTrackID(item)} className={classes.content}>
+            {list.map(track =>
+                <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
+                    <CardContent key={getTrackID(track.item)} className={classes.content}>
                         <CardMedia
                             className={classes.cover}
-                            image={getTrackAlbumImage(item).url}
+                            image={getTrackAlbumImage(track.item).url}
                             title={'trackname'}
                         />
                         <div className={classes.detailsAndControl}>
                             <div className={classes.details}>
                                 <Typography component="h3" variant="h6" className={classes.typo}>
-                                    {getTrackName(item)}
+                                    {getTrackName(track.item)}
                                 </Typography>
                                 <Typography variant="subtitle1" color="textSecondary">
-                                    {getArtistsNames(item)}
+                                    {getArtistsNames(track.item)}
                                 </Typography>
                             </div>
                             <CardActions className={classes.controls}>
-                                <IconButton aria-label="play/pause" onClick={handlePlay(item)}>
+                                <IconButton aria-label="play/pause" onClick={handlePlay(track.item)}>
                                     <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
                                     {/* {play.isPlaying && play.id === track.id ? <PlayArrowIcon className={classes.playIcon} /> : <PauseIcon className={classes.playIcon} />} */}
                                 </IconButton>

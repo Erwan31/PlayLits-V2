@@ -9,7 +9,7 @@ import { getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from 
 import TrackList from './TrackList';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import { useState } from 'react'
-import { sortListItemsAndAF, changeTracksNumber } from './utils';
+import { sortList, changeTracksNumber } from './utils';
 import PanelCollapse from './PanelCollapse';
 import SlidersIcon from '../utils/IconsJSX/SlidersIcon';
 import GenresIcon from '../utils/IconsJSX/GenresIcon';
@@ -44,12 +44,28 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+function dataStructureTracks(playlist, audioFeatures, genres) {
+    const struct = [];
+
+    playlist.items.forEach((el, index) =>
+        struct[index] = {
+            item: playlist.items[index],
+            audioFeature: audioFeatures[index],
+            genres: genres[index],
+        }
+    )
+
+    console.log(struct, 'shdjshdjfsdhjshdjshjdh')
+
+    return struct;
+}
+
 export default function Playlits() {
 
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
-    const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
+    const [sortedTracks, setSortedTracks] = useState([]);
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     const [direction, setDirection] = useState('asc');
     const [input, setInput] = useState("");
@@ -69,7 +85,7 @@ export default function Playlits() {
         //get tracks albums genres
         const artistsData = await getArtistsGenres(data, state.token.access_token)
         const allGenres = getArrayOfGenres(artistsData.artists);
-
+        const genres = artistsData.artists.map(artist => artist.genres);
 
         setPlaylistTracks(current => ({
             ...current,
@@ -79,29 +95,29 @@ export default function Playlits() {
             genres,
             allGenres
         }));
-        setSortedTracks(current => ({ ...current, items: data.items, audioFeatures }));
+        setSortedTracks(dataStructureTracks(data, audioFeatures, genres));
         setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
     }, []);
 
 
     // Compute coeff and sort tracks
     useEffect(() => {
-        if (sortedTracks.items.length > 0) {
+        if (sortedTracks.length > 0) {
             // Sorting by Coeff based on features sliders values
-            let sorted = sortListItemsAndAF(slidersValues, playlistTracks);
+            let sorted = sortList(slidersValues, sortedTracks);
 
             // Sorting based on direction
             if (direction !== 'asc') {
-                sorted.items = reverseOrder(sorted.items);
-                sorted.audioFeatures = reverseOrder(sorted.audioFeatures);
+                sorted = reverseOrder(sorted);
             }
 
             // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
             sorted = changeTracksNumber(sorted, slidersValues.tracks);
 
-            // sorted = sorted.filter(el => el !== playlistTracks.includes())
+            // // Sorting by genres 
+            // sorted = sorted.filter(el => el !== playlistTracks.includes(...el.allGenres));
 
-            setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures, genres: sorted.genres }))
+            setSortedTracks(sorted)
         }
     }, [slidersValues, direction]);
 
@@ -132,7 +148,7 @@ export default function Playlits() {
                 >
                     {
                         // Place skeleton here
-                        // sortedTracks.audioFeatures.length > 0 &&
+                        sortedTracks.length > 0 &&
                         <Paper elevation={15} className={classes.playlitsPanel}>
                             <Typography align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
                                 PlayLits Panel
@@ -144,10 +160,10 @@ export default function Playlits() {
                                 <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />
                             </PanelCollapse>
                             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
-                                <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} />
+                                <Charts sliders={slidersSimple} list={sortedTracks} />
                             </PanelCollapse>
                             <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                                {playlistTracks.genres.map(genre => <span>{genre}, </span>)}
+                                {playlistTracks.allGenres.length > 0 && playlistTracks.allGenres.map(genre => <span>{genre}, </span>)}
                             </PanelCollapse>
                         </Paper>
                     }
@@ -181,7 +197,7 @@ export default function Playlits() {
                             <CreatePlaylistButton name={input} disabled={input === ""} />
                         </Box>
                     </Paper>
-                    {sortedTracks.items.length > 0 && <TrackList list={sortedTracks.items} />}
+                    {sortedTracks.length > 0 && <TrackList list={sortedTracks} />}
                 </Box>
             </ScrollBarsCustom>
         </HeaderFooter>
