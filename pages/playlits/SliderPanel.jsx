@@ -6,7 +6,7 @@ import { mainState, selectedPlaylist } from '../States/states'
 import { useRecoilState } from 'recoil';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom'
 
-export default function SliderPanel({ slidersSimple, slidersDouble, direction }) {
+export default function SliderPanel({ list, slidersSimple, slidersDouble, direction }) {
 
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const tracksMax = playlistTracks.audioFeatures.length;

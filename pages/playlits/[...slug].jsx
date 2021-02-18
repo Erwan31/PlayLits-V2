@@ -69,6 +69,7 @@ export default function Playlits() {
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     const [direction, setDirection] = useState('asc');
     const [input, setInput] = useState("");
+    const [initStruct, setInitStruct] = useState([]);
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -87,6 +88,10 @@ export default function Playlits() {
         const allGenres = getArrayOfGenres(artistsData.artists);
         const genres = artistsData.artists.map(artist => artist.genres);
 
+        // Initial Structure
+        const init = dataStructureTracks(data, audioFeatures, genres);
+
+        setInitStruct(init);
         setPlaylistTracks(current => ({
             ...current,
             info: data.info,
@@ -95,7 +100,7 @@ export default function Playlits() {
             genres,
             allGenres
         }));
-        setSortedTracks(dataStructureTracks(data, audioFeatures, genres));
+        setSortedTracks(init);
         setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
     }, []);
 
@@ -104,7 +109,7 @@ export default function Playlits() {
     useEffect(() => {
         if (sortedTracks.length > 0) {
             // Sorting by Coeff based on features sliders values
-            let sorted = sortList(slidersValues, sortedTracks);
+            let sorted = sortList(slidersValues, initStruct);
 
             // Sorting based on direction
             if (direction !== 'asc') {
@@ -157,7 +162,7 @@ export default function Playlits() {
                                 <DirectionButton direction={direction} onClick={handleDirection} />
                             </div>
                             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
-                                <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />
+                                <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />
                             </PanelCollapse>
                             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
                                 <Charts sliders={slidersSimple} list={sortedTracks} />

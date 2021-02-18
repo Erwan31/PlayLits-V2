@@ -45,11 +45,7 @@ export function changeTracksNumber(list, limits) {
 }
 
 export function sortList(slidersValues, list) {
-    
-    console.log(list, 'sorList');
-
     const sortedIDs = sortedIdsList(slidersValues, list);
-    console.log(sortedIDs, 'ids');
     const sorted = sortedIDs.map(item => list.filter(track => getTrackID(track.item) === item.id)[0]);
 
     return sorted
@@ -72,11 +68,6 @@ function sortedIdsList(slidersValues, list) {
     list.forEach(track => {
         computedList.push({
             id: getTrackID(track.item),
-            coeff: computeTrackFeatureCoefficient(track, slidersValues, averages)
-        })
-
-        console.log({
-            id: getTrackID(track),
             coeff: computeTrackFeatureCoefficient(track, slidersValues, averages)
         })
     });
