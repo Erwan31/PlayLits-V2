@@ -128,8 +128,7 @@ export default function Playlits() {
             });
 
             console.log('after', sorted);
-
-            setSortedTracks(sorted)
+            setSortedTracks(sorted);
         }
     }, [slidersValues, direction, genresSelected]);
 
@@ -138,16 +137,9 @@ export default function Playlits() {
             <ScrollBarsCustom
                 height={'100vh'}
                 width={'100%'}
-                // hasHorizontal={true}
-                // hasVertical={false}
-                // autoWidth
-                // autoWidthMin={200}
-                // autoWidthMax={600}
                 autoHide
                 autoHideTimeout={500}
                 autoHideDuration={200}
-                // style={{ width: '100%', height: 220 }}
-                // thumbMinSize={50}
                 universal={true}
             >
                 <Box

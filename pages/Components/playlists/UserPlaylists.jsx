@@ -2,11 +2,12 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import hash, { cleanHash } from '../../api/hash'
 // import localStorage from "localStorage"
 import { getUserPlaylists, getUserInfo } from '../../api';
-import { Grid, FormLabel, FormControlLabel, Paper, makeStyles } from '@material-ui/core';
+import { Grid, FormLabel, FormControlLabel, Paper, makeStyles, Box } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
 import { mainState } from '../../States/states'
 import { useRecoilState } from 'recoil';
 import { getPlaylistID } from '../../utils/getters';
+import ScrollBarsCustom from '../ScrollBarsCustom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         // width: '100vw',
         // height: '100vh',
         // padding: '5rem',
-        overflow: 'scroll',
+        // overflow: 'scroll',
     },
     paper: {
         height: 140,
@@ -24,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
     },
 }));
-
 
 export default function UserPlaylists() {
 
@@ -80,16 +80,34 @@ export default function UserPlaylists() {
     }
 
     return (
-        <Grid container className={classes.root} spacing={2}>
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={8}>
-                    {state.playlists !== {} &&
-                        state.playlists.items.map((list, index) => (
-                            // console.log(list)
-                            <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
-                        ))}
-                </Grid>
-            </Grid>
-        </Grid >
+        <ScrollBarsCustom
+            height={'100vh'}
+            width={'100%'}
+            autoHide
+            autoHideTimeout={500}
+            autoHideDuration={200}
+            universal={true}
+        >
+            <Box
+                m='auto'
+                p='90px 0 0 0'
+                css={{
+                    maxWidth: 900,
+                    minWidth: 350,
+                }}
+            >
+                <Grid container className={classes.root} spacing={2}>
+                    <Grid item xs={12}>
+                        <Grid container justify="center" spacing={8}>
+                            {state.playlists !== {} &&
+                                state.playlists.items.map((list, index) => (
+                                    // console.log(list)
+                                    <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
+                                ))}
+                        </Grid>
+                    </Grid>
+                </Grid >
+            </Box>
+        </ScrollBarsCustom>
     );
 }
