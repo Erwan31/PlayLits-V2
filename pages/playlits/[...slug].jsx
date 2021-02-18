@@ -146,7 +146,7 @@ export default function Playlits() {
                     m='auto'
                     p='80px 0 0 0'
                     css={{
-                        maxWidth: 600,
+                        maxWidth: 750,
                         minWidth: 350,
                     }}
                 >

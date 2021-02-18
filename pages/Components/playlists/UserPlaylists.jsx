@@ -92,7 +92,7 @@ export default function UserPlaylists() {
                 m='auto'
                 p='90px 0 0 0'
                 css={{
-                    maxWidth: 900,
+                    maxWidth: 1100,
                     minWidth: 350,
                 }}
             >
