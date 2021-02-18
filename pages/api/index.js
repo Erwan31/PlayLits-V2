@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { audioFeaturesIdsString } from '../playlits/utils';
+import { getArrayOfArtistsIDs } from '../utils/getters';
 
 export async function getUserInfo(token) {
 
@@ -132,6 +133,28 @@ export async function getTracksAudioFeatures(playlist, token, offset = 0, limit 
     console.error('getPlaylist Error', e);
     return null;
   }
+}
+
+export async function getArtistsGenres(data, token, offset = 0, limit = 100) {
+  
+  const ids = getArrayOfArtistsIDs(data.items).join(",");
+  
+  try {
+    const response = await axios.get(
+      `https://api.spotify.com/v1/artists/?ids=${ids}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        }
+      });
+
+    return response.data;
+  }
+  catch (e) {
+    console.error('getPlaylist Error', e);
+    return null;
+  }
+
 }
 
 export async function createPlayLits(token, name, tracksIDs) {

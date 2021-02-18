@@ -51,9 +51,9 @@ export function changeTracksNumber(list, limits) {
     return list;
 }
 
-export function sortListItemsAndAF(slidersValues, genres, list){
+export function sortListItemsAndAF(slidersValues, list){
 
-    const sorted = sortedIdsList(slidersValues, 'genres', list);
+    const sorted = sortedIdsList(slidersValues, list);
     const sortedAF = sorted.map(item => list.audioFeatures.filter(track => getTrackID(track) === item.id)[0]);
     const sortedItems = sorted.map(item => list.items.filter(track => getTrackID(track) === item.id)[0]);
 
@@ -63,7 +63,7 @@ export function sortListItemsAndAF(slidersValues, genres, list){
     }
 }
 
-function sortedIdsList(slidersValues, genres, list) {
+function sortedIdsList(slidersValues, list) {
     
     const computedList = [];
     let  sortedList = [];

@@ -5,7 +5,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
 import { mainState, selectedPlaylist, SLIDERSINIT, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
-import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
+import { getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import { useState } from 'react'
@@ -20,6 +20,7 @@ import { slidersDouble, slidersSimple } from './slidersData';
 import DirectionButton from './DirectionButton';
 import { reverseOrder } from './utils'
 import CreatePlaylistButton from './CreatePlaylistButton';
+import { getArrayOfArtistsIDs, getArrayOfGenres, getArtistsNames } from '../utils/getters';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -65,18 +66,29 @@ export default function Playlits() {
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
+        //get tracks albums genres
+        const artistsData = await getArtistsGenres(data, state.token.access_token)
+        const allGenres = getArrayOfGenres(artistsData.artists);
 
-        setPlaylistTracks(current => ({ ...current, info: data.info, items: data.items, audioFeatures }));
+
+        setPlaylistTracks(current => ({
+            ...current,
+            info: data.info,
+            items: data.items,
+            audioFeatures,
+            genres,
+            allGenres
+        }));
         setSortedTracks(current => ({ ...current, items: data.items, audioFeatures }));
-        setSliderValue(current => ({ ...current, SLIDERSINIT, tracks: [0, audioFeatures.length] }));
-
+        setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
     }, []);
+
 
     // Compute coeff and sort tracks
     useEffect(() => {
         if (sortedTracks.items.length > 0) {
             // Sorting by Coeff based on features sliders values
-            let sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
+            let sorted = sortListItemsAndAF(slidersValues, playlistTracks);
 
             // Sorting based on direction
             if (direction !== 'asc') {
@@ -87,7 +99,9 @@ export default function Playlits() {
             // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
             sorted = changeTracksNumber(sorted, slidersValues.tracks);
 
-            setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures }))
+            // sorted = sorted.filter(el => el !== playlistTracks.includes())
+
+            setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures, genres: sorted.genres }))
         }
     }, [slidersValues, direction]);
 
@@ -133,7 +147,7 @@ export default function Playlits() {
                                 <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} />
                             </PanelCollapse>
                             <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                                {/* <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} /> */}
+                                {playlistTracks.genres.map(genre => <span>{genre}, </span>)}
                             </PanelCollapse>
                         </Paper>
                     }

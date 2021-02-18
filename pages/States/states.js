@@ -61,7 +61,8 @@ export const selectedPlaylist = atom({
       total: null,
     },
     items: [],
-    audioFeatures: []
+    audioFeatures: [],
+    genres: []
   }
 });
 
@@ -76,7 +77,7 @@ export const slidersState = atom({
     //   number: null,
     // },
     // coeff: {
-      tracks: [0, 100],
+      tracks: [0, 10],
       danceability: 0,
       energy: 0,
       valence: 0,
@@ -93,7 +94,6 @@ export const slidersState = atom({
 });
 
 export const SLIDERSINIT = {
-  tracks: [0, 100],
   danceability: 0,
   energy: 0,
   valence: 0,

@@ -32,6 +32,18 @@ export function getArrayOfAudioFeature(arr, feature) {
     return arr.map(track => track[feature]);
 }
 
+export function getArrayOfArtistsIDs(arr) {
+    // console.log(arr.map(track => track[feature.toLowerCase()]), feature.toLowerCase(), 'toLowerCase');
+    console.log(arr, 'items')
+    return arr.map(obj => obj.track.artists[0].id);
+}
+
+export function getArrayOfGenres(arr) {
+    const join = [];
+    arr.map(artist => artist.genres.forEach(el => !join.includes(el) && join.push(el)));
+    return join;
+}
+
 export function getChartLinearColor(color) {
 
     const init = hexToRgb(color);
