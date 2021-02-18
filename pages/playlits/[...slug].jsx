@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 // import PlaylitsPage from './playlits/PlaylitsPage'
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
-import { mainState, selectedPlaylist, slidersState } from '../States/states'
+import { mainState, selectedPlaylist, SLIDERSINIT, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
 import { getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
@@ -11,9 +11,9 @@ import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import { useState } from 'react'
 import { sortListItemsAndAF, changeTracksNumber } from './utils';
 import PanelCollapse from './PanelCollapse';
-import SlidersIcon from './Icons/SlidersIcon';
-import GenresIcon from './Icons/GenresIcon';
-import ChartsIcon from './Icons/ChartsIcon';
+import SlidersIcon from '../utils/IconsJSX/SlidersIcon';
+import GenresIcon from '../utils/IconsJSX/GenresIcon';
+import ChartsIcon from '../utils/IconsJSX/ChartsIcon';
 import SliderPanel from './SliderPanel';
 import Charts from './Charts';
 import { slidersDouble, slidersSimple } from './slidersData';
@@ -51,7 +51,7 @@ export default function Playlits() {
     const [sortedTracks, setSortedTracks] = useState({ items: playlistTracks.items, audioFeatures: playlistTracks.audioFeatures });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     const [direction, setDirection] = useState('asc');
-    const [input, setInput] = useState("")
+    const [input, setInput] = useState("");
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -68,7 +68,8 @@ export default function Playlits() {
 
         setPlaylistTracks(current => ({ ...current, info: data.info, items: data.items, audioFeatures }));
         setSortedTracks(current => ({ ...current, items: data.items, audioFeatures }));
-        setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
+        setSliderValue(current => ({ ...current, SLIDERSINIT, tracks: [0, audioFeatures.length] }));
+
     }, []);
 
     // Compute coeff and sort tracks
@@ -77,14 +78,14 @@ export default function Playlits() {
             // Sorting by Coeff based on features sliders values
             let sorted = sortListItemsAndAF(slidersValues, 'genres', playlistTracks);
 
-            // Sorting based on tracks slider
-            sorted = changeTracksNumber(sorted, slidersValues.tracks);
-
             // Sorting based on direction
             if (direction !== 'asc') {
                 sorted.items = reverseOrder(sorted.items);
                 sorted.audioFeatures = reverseOrder(sorted.audioFeatures);
             }
+
+            // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
+            sorted = changeTracksNumber(sorted, slidersValues.tracks);
 
             setSortedTracks(current => ({ ...current, items: sorted.items, audioFeatures: sorted.audioFeatures }))
         }
@@ -115,25 +116,27 @@ export default function Playlits() {
                         minWidth: 350,
                     }}
                 >
-                    <Paper elevation={15} className={classes.playlitsPanel}>
-                        <Typography align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
-                            PlayLits Panel
+                    {
+                        // Place skeleton here
+                        // sortedTracks.audioFeatures.length > 0 &&
+                        <Paper elevation={15} className={classes.playlitsPanel}>
+                            <Typography align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
+                                PlayLits Panel
                         </Typography>
-                        <div className={classes.marginBottom}>
-                            <DirectionButton direction={direction} onClick={handleDirection} />
-                        </div>
-                        <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
-                            <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} />
-                        </PanelCollapse>
-                        {sortedTracks.audioFeatures.length > 0 &&
+                            <div className={classes.marginBottom}>
+                                <DirectionButton direction={direction} onClick={handleDirection} />
+                            </div>
+                            <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
+                                <SliderPanel slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />
+                            </PanelCollapse>
                             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
                                 <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} />
                             </PanelCollapse>
-                        }
-                        <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                            {/* <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} /> */}
-                        </PanelCollapse>
-                    </Paper>
+                            <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
+                                {/* <Charts sliders={slidersSimple} audioFeatures={sortedTracks.audioFeatures} /> */}
+                            </PanelCollapse>
+                        </Paper>
+                    }
                     <Paper elevation={15} className={classes.playlitsPanel}>
                         <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
                             <CssTextField

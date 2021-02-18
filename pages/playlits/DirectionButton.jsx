@@ -1,8 +1,8 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
 import CustomButton from './CustomButton'
-import DecreaseIcon from './Icons/DecreaseIcon'
-import IncreaseIcon from './Icons/IncreaseIcon'
+import DecreaseIcon from '../utils/IconsJSX/DecreaseIcon'
+import IncreaseIcon from '../utils/IconsJSX/IncreaseIcon'
 
 export default function DirectionButton({ direction, onClick }) {
 

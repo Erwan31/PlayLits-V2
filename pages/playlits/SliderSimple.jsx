@@ -12,16 +12,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SliderSimple({ info, direction = 'up' }) {
+export default function SliderSimple({ info, direction = 'asc' }) {
 
     const STEP = 1, MIN = 0, MAX = 100;
     const classes = useStyles();
-    const [state, setState] = useState({ values: [MIN], final: [MIN] });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-
-    useEffect(() => {
-        setSliderValue(current => ({ ...current, [info.feature]: MIN }));
-    }, [])
+    const [state, setState] = useState({ values: [slidersValues[info.feature]], final: [slidersValues[info.feature]] });
 
     const handleChange = (values) => {
         setState(current => ({ ...current, values: values }));
@@ -37,7 +33,7 @@ export default function SliderSimple({ info, direction = 'up' }) {
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
             <Typography variant="body1" component="h3">{info.name}</Typography>
             <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
-                {direction === 'up' ? info.labelUp : info.labelDown}
+                {direction === 'asc' ? info.labelUp : info.labelDown}
             </Typography>
             <Range
                 className='sliderRange'

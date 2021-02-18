@@ -40,7 +40,7 @@ export default function Header() {
         <AppBar static="true" className={classes.root}>
             <Link href="/">
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <img src={"/images/logoCustom.svg"} className={classes.logo} alt="logo" />
+                    <img src={"/static/images/logoCustom.svg"} className={classes.logo} alt="logo" />
                 </IconButton>
             </Link>
             <Typography variant="h6" className={classes.title}>

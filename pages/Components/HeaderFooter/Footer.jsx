@@ -37,10 +37,10 @@ export default function Footer() {
                 <hr className={classes.line}></hr>
                 Designed by Erwan Spilmont-2021
                 <a href="https://www.erwanspilmont.dev">
-                    <img src={"/images/link.svg"} alt="link" className={classes.footLink} />
+                    <img src={"/static/images/link.svg"} alt="link" className={classes.footLink} />
                 </a>
                 <a href="https://github.com/Erwan31/progressive-playlist">
-                    <img src={"/images/github.svg"} alt="github" className={classes.footLink} />
+                    <img src={"/static/images/github.svg"} alt="github" className={classes.footLink} />
                 </a>
             </Box>
         </div>

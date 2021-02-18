@@ -2,10 +2,11 @@ import { Box, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import CustomButton from './CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import SpotifyIcon from './Icons/SpotifyIcon';
+import SpotifyIcon from '../utils/IconsJSX/SpotifyIcon';
 import { createPlayLits } from '../api';
 import { mainState } from '../States/states';
 import { useRecoilState } from 'recoil';
+import Link from 'next/link';
 
 export default function CreatePlaylistButton({ onClick, name, disabled }) {
 
@@ -24,21 +25,26 @@ export default function CreatePlaylistButton({ onClick, name, disabled }) {
         )
     }
 
+    // const handlePlayLitsLinkClick = () => { window.open(response.url, '_blank'); }
+
     useEffect(async () => {
         if (loading) {
-            await createPlayLits(state.token.access_token, name, '');
+            const response = await createPlayLits(state.token.access_token, name, '');
+            console.log(response);
             setContent(
-                <Box display="flex" flexDirection="row" alignItems="center">
-                    <Typography
-                        align='left'
-                        component='h3'
-                        variant='subtitle1'
-                        style={{ marginRight: '0.5rem' }}
-                    >
-                        Take a listen
+                <Link href={`/playlists/`}>
+                    <Box display="flex" flexDirection="row" alignItems="center" onClick={() => window.open(response.url, '_blank')}>
+                        <Typography
+                            align='left'
+                            component='h3'
+                            variant='subtitle1'
+                            style={{ marginRight: '0.5rem' }}
+                        >
+                            Take a listen
                     </Typography>
-                    <SpotifyIcon style={{ height: 16 }} />
-                </Box>
+                        <SpotifyIcon style={{ height: 16 }} />
+                    </Box>
+                </Link>
             )
             setLoading(false);
         }
