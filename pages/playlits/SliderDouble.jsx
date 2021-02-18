@@ -29,7 +29,6 @@ export default function SliderDouble({ info, max }) {
     }
 
     const handleFinalChange = (values) => {
-        console.log(values, 'values');
         setState(current => ({ ...current, values: values, final: values }));
         setSliderValue(current => ({ ...current, tracks: [values[0], values[1]] }));
     }

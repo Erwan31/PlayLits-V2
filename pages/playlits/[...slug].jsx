@@ -21,6 +21,7 @@ import DirectionButton from './DirectionButton';
 import { reverseOrder } from './utils'
 import CreatePlaylistButton from './CreatePlaylistButton';
 import { getArrayOfArtistsIDs, getArrayOfGenres, getArtistsNames } from '../utils/getters';
+import GenresPanel from './GenresPanel';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -55,8 +56,6 @@ function dataStructureTracks(playlist, audioFeatures, genres) {
         }
     )
 
-    console.log(struct, 'shdjshdjfsdhjshdjshjdh')
-
     return struct;
 }
 
@@ -70,6 +69,7 @@ export default function Playlits() {
     const [direction, setDirection] = useState('asc');
     const [input, setInput] = useState("");
     const [initStruct, setInitStruct] = useState([]);
+    const [genresSelected, setGenresSelected] = useState([]);
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -78,6 +78,10 @@ export default function Playlits() {
     const handleInputChange = (event) => {
         setInput(event.target.value);
     };
+
+    const handleGenresSelect = (selection) => {
+        setGenresSelected(selection);
+    }
 
     // API call -> to externalize into a reducer
     useEffect(async () => {
@@ -110,21 +114,24 @@ export default function Playlits() {
         if (sortedTracks.length > 0) {
             // Sorting by Coeff based on features sliders values
             let sorted = sortList(slidersValues, initStruct);
-
             // Sorting based on direction
             if (direction !== 'asc') {
                 sorted = reverseOrder(sorted);
             }
-
             // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
             sorted = changeTracksNumber(sorted, slidersValues.tracks);
+            // Sorting by genres 
+            sorted = sorted.filter(track => {
+                let bool = true;
+                track.genres.forEach(genre => bool = bool && !genresSelected.includes(genre));
+                return bool;
+            });
 
-            // // Sorting by genres 
-            // sorted = sorted.filter(el => el !== playlistTracks.includes(...el.allGenres));
+            console.log('after', sorted);
 
             setSortedTracks(sorted)
         }
-    }, [slidersValues, direction]);
+    }, [slidersValues, direction, genresSelected]);
 
     return (
         <HeaderFooter>
@@ -168,7 +175,7 @@ export default function Playlits() {
                                 <Charts sliders={slidersSimple} list={sortedTracks} />
                             </PanelCollapse>
                             <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                                {playlistTracks.allGenres.length > 0 && playlistTracks.allGenres.map(genre => <span>{genre}, </span>)}
+                                <GenresPanel allGenres={playlistTracks.allGenres} onSelect={handleGenresSelect} />
                             </PanelCollapse>
                         </Paper>
                     }

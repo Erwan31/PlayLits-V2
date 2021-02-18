@@ -4,7 +4,7 @@ import { defaults, Line } from 'react-chartjs-2';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import { getArrayOfAudioFeature } from '../utils/getters'
 import { data, options } from './chartLogic';
-import { getChartLinearColor } from '../utils/getters'
+import { getLinearColor } from '../utils/getters'
 // Deafult font for the charts
 defaults.global.defaultFontFamily = 'Nunito';
 
@@ -64,7 +64,7 @@ export default function Charts({ list, sliders }) {
                         <div
                             key={slider.feature}
                             className={classes.chart}
-                            style={{ backgroundImage: getChartLinearColor(slider.color) }}
+                            style={{ backgroundImage: getLinearColor(slider.color) }}
                         >
                             <Line
                                 data={data(af, label)}

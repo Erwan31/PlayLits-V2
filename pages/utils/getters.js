@@ -38,7 +38,7 @@ export function getArrayOfGenres(arr) {
     return join;
 }
 
-export function getChartLinearColor(color) {
+export function getLinearColor(color) {
 
     const init = hexToRgb(color);
     const rgbArr = [init];
