@@ -1,6 +1,6 @@
 import { Box, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import CustomButton from './CustomButton'
+import CustomButton from '../Components/CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SpotifyIcon from '../utils/IconsJSX/SpotifyIcon';
 import { createPlayLits } from '../api';

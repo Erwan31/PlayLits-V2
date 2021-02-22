@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
-import CustomButton from './CustomButton'
+import CustomButton from '../Components/CustomButton'
 import DecreaseIcon from '../utils/IconsJSX/DecreaseIcon'
 import IncreaseIcon from '../utils/IconsJSX/IncreaseIcon'
 

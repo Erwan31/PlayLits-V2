@@ -33,8 +33,28 @@ export function getArrayOfArtistsIDs(arr) {
 }
 
 export function getArrayOfGenres(arr) {
+    const join = []; // content {genre: null, ids: []}
+
+    arr.map(artist => {
+        const id = artist.id;
+        artist.genres.forEach(el => {
+            let joinEl = join.find(genreEl => genreEl.genre === el);
+            if (joinEl === undefined) {
+                join.push({ genre: el, ids: [id] });
+            }
+            else {
+                const index = join.indexOf(joinEl);
+                join[index] = { genre: el, ids: [...joinEl.ids, id] };
+            }
+        })
+    });
+    console.log(join, 'joinsssdjhsjhdjshdjhsjdhsj')
+    return join;
+}
+
+export function filterGenres(arr) {
     const join = [];
-    arr.map(artist => artist.genres.forEach(el => !join.includes(el) && join.push(el)));
+    arr.forEach(el => !join.includes(el) && join.push(el));
     return join;
 }
 

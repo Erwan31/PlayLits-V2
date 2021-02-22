@@ -1,7 +1,7 @@
 import { Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { getLinearColor } from '../utils/getters';
-import CustomButton from './CustomButton'
+import CustomButton from '../Components/CustomButton'
 
 export default function GenreButton({ children, onClick }) {
 

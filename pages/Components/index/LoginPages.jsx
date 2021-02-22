@@ -3,6 +3,7 @@ import React from 'react';
 import { authEndpoint, clientId, redirectURI, scopes } from "../../api/config";
 // import Button from '@material-ui/core/Button';
 import Link from 'next/link'
+import SpotifyIcon from '../../utils/IconsJSX/SpotifyIcon';
 
 const useStyles = makeStyles((theme) => ({
     /* Login */
@@ -33,7 +34,7 @@ export default function Login() {
     return (
         <Link href={URLConnect} >
             <div className={classes.content}>
-                <img src={'/images/spotify.svg'} alt="spotify logo login" />
+                <SpotifyIcon />
                 <div className={classes.title}>Login to Spotify</div>
             </div>
         </Link>

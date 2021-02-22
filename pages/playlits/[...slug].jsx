@@ -1,27 +1,20 @@
-import { Box, Paper, TextField, Typography } from '@material-ui/core'
-import React, { useEffect } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-// import PlaylitsPage from './playlits/PlaylitsPage'
+import { Box, Paper } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles';
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
-import { mainState, selectedPlaylist, SLIDERSINIT, slidersState } from '../States/states'
+import { mainState, selectedPlaylist, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
-import { getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 import TrackList from './TrackList';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
-import { useState } from 'react'
 import { sortList, changeTracksNumber } from './utils';
-import PanelCollapse from './PanelCollapse';
-import SlidersIcon from '../utils/IconsJSX/SlidersIcon';
-import GenresIcon from '../utils/IconsJSX/GenresIcon';
-import ChartsIcon from '../utils/IconsJSX/ChartsIcon';
-import SliderPanel from './SliderPanel';
-import Charts from './Charts';
-import { slidersDouble, slidersSimple } from './slidersData';
-import DirectionButton from './DirectionButton';
 import { reverseOrder } from './utils'
-import CreatePlaylistButton from './CreatePlaylistButton';
-import { getArrayOfArtistsIDs, getArrayOfGenres, getArtistsNames } from '../utils/getters';
-import GenresPanel from './GenresPanel';
+import { getArrayOfGenres } from '../utils/getters';
+import CreatePlaylistPanel from './CreatePlaylistPanel';
+import PlaylitsPanel from './PlaylitsPanel';
+
+// To Out
+import { getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
+
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -40,9 +33,6 @@ const useStyles = makeStyles(theme => ({
     marginBottom: {
         marginBottom: theme.spacing(2),
     },
-    input: {
-        color: 'white'
-    }
 }));
 
 function dataStructureTracks(playlist, audioFeatures, genres) {
@@ -62,22 +52,19 @@ function dataStructureTracks(playlist, audioFeatures, genres) {
 export default function Playlits() {
 
     const classes = useStyles();
+    // Recoil
     const [state, setState] = useRecoilState(mainState);
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
-    const [sortedTracks, setSortedTracks] = useState([]);
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-    const [direction, setDirection] = useState('asc');
-    const [input, setInput] = useState("");
+    // Local
     const [initStruct, setInitStruct] = useState([]);
+    const [direction, setDirection] = useState('asc');
+    const [sortedTracks, setSortedTracks] = useState([]);
     const [genresSelected, setGenresSelected] = useState([]);
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
     }
-
-    const handleInputChange = (event) => {
-        setInput(event.target.value);
-    };
 
     const handleGenresSelect = (selection) => {
         setGenresSelected(selection);
@@ -127,7 +114,7 @@ export default function Playlits() {
                 return bool;
             });
 
-            console.log('after', sorted);
+            // console.log('after', sorted);
             setSortedTracks(sorted);
         }
     }, [slidersValues, direction, genresSelected]);
@@ -154,52 +141,17 @@ export default function Playlits() {
                         // Place skeleton here
                         sortedTracks.length > 0 &&
                         <Paper elevation={15} className={classes.playlitsPanel}>
-                            <Typography align='center' component='h2' variant='h5' classes={{ root: classes.title }}>
-                                PlayLits Panel
-                        </Typography>
-                            <div className={classes.marginBottom}>
-                                <DirectionButton direction={direction} onClick={handleDirection} />
-                            </div>
-                            <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
-                                <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />
-                            </PanelCollapse>
-                            <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
-                                <Charts sliders={slidersSimple} list={sortedTracks} />
-                            </PanelCollapse>
-                            <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                                <GenresPanel allGenres={playlistTracks.allGenres} onSelect={handleGenresSelect} />
-                            </PanelCollapse>
+                            <PlaylitsPanel
+                                genres={playlistTracks.allGenres}
+                                handleDirection={handleDirection}
+                                handleGenresSelect={handleGenresSelect}
+                                sortedTracks={sortedTracks}
+                                direction={direction}
+                            />
                         </Paper>
                     }
                     <Paper elevation={15} className={classes.playlitsPanel}>
-                        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
-                            <CssTextField
-                                label="New PlayLits Name"
-                                placeholder="PlayLits from ..."
-                                onChange={handleInputChange}
-                                color="secondary"
-                                classes={{ root: classes.input }}
-                                InputLabelProps={{
-                                    style: {
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        width: '100%',
-                                        color: '#DDDDDD'
-                                    }
-                                }}
-                                InputProps={{
-                                    style: {
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        width: '100%',
-                                        color: '#DDDDDD'
-                                    }
-                                }}
-                            />
-                            <CreatePlaylistButton name={input} disabled={input === ""} />
-                        </Box>
+                        <CreatePlaylistPanel />
                     </Paper>
                     {sortedTracks.length > 0 && <TrackList list={sortedTracks} />}
                 </Box>
@@ -207,33 +159,3 @@ export default function Playlits() {
         </HeaderFooter>
     )
 }
-
-const CssTextField = withStyles({
-    root: {
-        '& label.Mui-focused': {
-            color: 'purple',
-        },
-        '& .MuiInput-underline:before': {
-            borderBottomColor: '#DDDDDD',
-        },
-        '& .MuiInput-underline:hover:before': {
-            borderBottomColor: '#ffffff', // Solid underline on hover
-        },
-        '& .MuiInput-underline:after': {
-            borderBottomColor: 'purple',
-        },
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: 'purple',
-            },
-            '&:hover fieldset': {
-                borderColor: 'blue',
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: 'purple',
-            },
-        },
-    },
-})(TextField);
-
-
