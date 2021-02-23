@@ -23,16 +23,6 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         marginBottom: theme.spacing(2),
     },
-    title: {
-        marginBottom: theme.spacing(0.5),
-        color: 'transparent',
-        backgroundClip: 'text',
-        '-webkit-background-clip': 'text',
-        background: 'linear-gradient(135deg, #EEEEEE 0%, rgba(85,107,242,1) 50%, rgba(169,80,254,1) 100%)',
-    },
-    marginBottom: {
-        marginBottom: theme.spacing(2),
-    },
 }));
 
 function dataStructureTracks(playlist, audioFeatures, genres) {
@@ -107,14 +97,15 @@ export default function Playlits() {
             }
             // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
             sorted = changeTracksNumber(sorted, slidersValues.tracks);
+
+
             // Sorting by genres 
             sorted = sorted.filter(track => {
                 let bool = true;
-                track.genres.forEach(genre => bool = bool && !genresSelected.includes(genre));
+                track.genres.forEach(genre => bool = bool && (genresSelected.find(el => el.genre === genre) !== undefined));
                 return bool;
             });
 
-            // console.log('after', sorted);
             setSortedTracks(sorted);
         }
     }, [slidersValues, direction, genresSelected]);

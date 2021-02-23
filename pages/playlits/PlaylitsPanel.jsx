@@ -42,7 +42,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, handleG
                 <Charts sliders={slidersSimple} list={sortedTracks} />
             </PanelCollapse>
             <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                <GenresPanel allGenres={genres} onSelect={handleGenresSelect} />
+                <GenresPanel genres={genres} onSelect={handleGenresSelect} />
             </PanelCollapse>
         </div>
     )
