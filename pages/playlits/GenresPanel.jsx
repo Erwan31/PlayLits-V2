@@ -8,7 +8,6 @@ export default function GenresPanel({ genres, onSelect }) {
     const [idsSelected, setIdssSelected] = useState([]);
 
     const handleGenreSelect = (genre) => () => {
-        console.log(genre, 'skjdkjskaaaaaaaa')
         // Toggle genre already present in seletedgenrelist or not
         if (!genresSelected.includes(genre)) {
             setGenresSelected(current => [...current, genre]);
@@ -24,7 +23,6 @@ export default function GenresPanel({ genres, onSelect }) {
     }
 
     const isSelected = (data) => () => {
-        console.log('isSelected')
         let isSelected = true;
         data.ids.forEach(idEl => isSelected = isSelected && idsSelected.includes(idEl));
         if (isSelected) {
@@ -38,7 +36,6 @@ export default function GenresPanel({ genres, onSelect }) {
     }
 
     useEffect(() => {
-        console.log(genresSelected, idsSelected)
         onSelect(genresSelected);
     }, [genresSelected])
 

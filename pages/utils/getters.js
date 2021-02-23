@@ -48,7 +48,7 @@ export function getArrayOfGenres(arr) {
             }
         })
     });
-    console.log(join, 'joinsssdjhsjhdjshdjhsjdhsj')
+
     return join;
 }
 

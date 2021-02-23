@@ -42,6 +42,30 @@ export async function getUserPlaylists(id, token) {
   }
 }
 
+export async function areTracksSavedByUser(token, playlist) {
+
+  const ids = audioFeaturesIdsString(playlist);
+
+  try {
+    const bool = await axios.get(
+      `https://api.spotify.com/v1/me/tracks/contains?ids=${ids}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+    
+    return bool.data;
+  }
+  catch (e) {
+    console.error('getbool isTrackSaved Error', e);
+    return null;
+  }
+}
+
+
+
+
 export async function getUserPlaylistsNew(id, offset = 0, limit = 25) {
 
     let items = null;

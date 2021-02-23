@@ -5,6 +5,8 @@ import PauseIcon from '@material-ui/icons/Pause';
 import { getArtistsNames, getTrackAlbumImage, getTrackID, getTrackName } from '../utils/getters';
 import classNames from 'classnames'
 // import ScrollBarsCustom from '../Components/ScrollBarsCustom';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -60,7 +62,6 @@ export default function TrackList({ list }) {
         // setPlay(current => {...current, isPlaying: !current.isPlaying, id: track.id })
     }
 
-    // console.log('trackList', list);
     return (
         <Box
             m='2rem 0 2rem 0'
@@ -87,6 +88,9 @@ export default function TrackList({ list }) {
                                 </Typography>
                             </div>
                             <CardActions className={classes.controls}>
+                                <IconButton disabled="true" aria-label="favorite">
+                                    {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                </IconButton>
                                 <IconButton aria-label="play/pause" onClick={handlePlay(track.item)}>
                                     <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
                                     {/* {play.isPlaying && play.id === track.id ? <PlayArrowIcon className={classes.playIcon} /> : <PauseIcon className={classes.playIcon} />} */}

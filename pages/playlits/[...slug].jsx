@@ -13,7 +13,7 @@ import CreatePlaylistPanel from './CreatePlaylistPanel';
 import PlaylitsPanel from './PlaylitsPanel';
 
 // To Out
-import { getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
+import { areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function dataStructureTracks(playlist, audioFeatures, genres) {
+function dataStructureTracks(playlist, audioFeatures, genres, areSaved) {
     const struct = [];
 
     playlist.items.forEach((el, index) =>
@@ -33,6 +33,7 @@ function dataStructureTracks(playlist, audioFeatures, genres) {
             item: playlist.items[index],
             audioFeature: audioFeatures[index],
             genres: genres[index],
+            isSaved: areSaved[index]
         }
     )
 
@@ -49,11 +50,16 @@ export default function Playlits() {
     // Local
     const [initStruct, setInitStruct] = useState([]);
     const [direction, setDirection] = useState('asc');
+    const [onlySaved, setOnlySaved] = useState(false);
     const [sortedTracks, setSortedTracks] = useState([]);
     const [genresSelected, setGenresSelected] = useState([]);
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
+    }
+
+    const handleOnlySaved = () => {
+        setOnlySaved(current => !current);
     }
 
     const handleGenresSelect = (selection) => {
@@ -64,13 +70,18 @@ export default function Playlits() {
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
+        const areSaved = await areTracksSavedByUser(state.token.access_token, data);
         //get tracks albums genres
         const artistsData = await getArtistsGenres(data, state.token.access_token)
+        console.log(artistsData, 'AD')
         const allGenres = getArrayOfGenres(artistsData.artists);
         const genres = artistsData.artists.map(artist => artist.genres);
+        console.log(state.selectedPlaylist, 'AS');
+
+        console.log(areSaved, 'AS');
 
         // Initial Structure
-        const init = dataStructureTracks(data, audioFeatures, genres);
+        const init = dataStructureTracks(data, audioFeatures, genres, areSaved);
 
         setInitStruct(init);
         setPlaylistTracks(current => ({
@@ -95,20 +106,35 @@ export default function Playlits() {
             if (direction !== 'asc') {
                 sorted = reverseOrder(sorted);
             }
+
+            // Sorting based on direction
+            if (onlySaved) {
+                sorted = sorted.filter(track => track.isSaved);
+                console.log(sorted, 'after');
+            }
+
             // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
             sorted = changeTracksNumber(sorted, slidersValues.tracks);
 
-
             // Sorting by genres 
-            sorted = sorted.filter(track => {
-                let bool = true;
-                track.genres.forEach(genre => bool = bool && (genresSelected.find(el => el.genre === genre) !== undefined));
-                return bool;
-            });
+            // console.log(genresSelected, 'GS')
+            // if (genresSelected !== []) {
+            //     sorted = sorted.filter(track => {
+            //         let bool = true;
+            //         track.genres.forEach(genre => {
+            //             bool = bool && (genresSelected.find(el => el.genre === genre) !== undefined)
+            //         });
+            //         return bool;
+            //     });
+            // }
 
             setSortedTracks(sorted);
         }
-    }, [slidersValues, direction, genresSelected]);
+    }, [slidersValues, direction, genresSelected, onlySaved]);
+
+    // useEffect(() =>
+    //     console.log(sortedTracks),
+    //     [sortedTracks]);
 
     return (
         <HeaderFooter>
@@ -136,8 +162,10 @@ export default function Playlits() {
                                 genres={playlistTracks.allGenres}
                                 handleDirection={handleDirection}
                                 handleGenresSelect={handleGenresSelect}
+                                handleOnlySaved={handleOnlySaved}
                                 sortedTracks={sortedTracks}
                                 direction={direction}
+                                onlySaved={onlySaved}
                             />
                         </Paper>
                     }
