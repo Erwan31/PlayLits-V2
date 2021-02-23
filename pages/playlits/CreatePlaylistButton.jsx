@@ -53,7 +53,7 @@ export default function CreatePlaylistButton({ onClick, name, disabled }) {
     // style={{ marginRight: '0.5rem' }}
 
     return (
-        <CustomButton onClick={handleClick} color='purple' disabled={disabled}>
+        <CustomButton onClick={handleClick} color={disabled ? 'grey' : 'purple'} disabled={disabled}>
             <Box css={{ minHeight: 28 }}>
                 {content}
             </Box>
