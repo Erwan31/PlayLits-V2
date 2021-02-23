@@ -11,8 +11,16 @@ export function getArtistsNames(item) {
 }
 
 export function getTrackID(item) {
-    if (item.track) return item.track.id;
+    if (item.hasOwnProperty('audioFeature')) return item.audioFeature.id;
+    if (item.hasOwnProperty('track')) return item.track.id;
+    if (item.hasOwnProperty('item')) return item.item.track.id;
     return item.id;
+}
+
+export function getPreviewUrl(item) {
+    if (item.hasOwnProperty('track')) return item.track.preview_url;
+    if (item.hasOwnProperty('item')) return item.item.track.preview_url;
+    return null;
 }
 
 export function getLength(list) {

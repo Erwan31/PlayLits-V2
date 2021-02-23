@@ -45,7 +45,9 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
                 className={classes.marginBottom}
             >
                 <DirectionButton direction={direction} onClick={handleDirection} />
-                <div className={classes.centerContentButton}><OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} /></div>
+                <div className={classes.centerContentButton}>
+                    <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} />
+                </div>
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                 <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />

@@ -2,7 +2,7 @@ import { Box, Card, CardActions, CardContent, CardMedia, Divider, IconButton, ma
 import React, { useState } from 'react'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
-import { getArtistsNames, getTrackAlbumImage, getTrackID, getTrackName } from '../utils/getters';
+import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName } from '../utils/getters';
 import classNames from 'classnames'
 // import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -56,11 +56,29 @@ const useStyles = makeStyles((theme) => ({
 export default function TrackList({ list }) {
 
     const classes = useStyles();
-    const [play, setPlay] = useState({ isPlaying: false, id: null })
+    const [play, setPlay] = useState({ isPlaying: false, id: null, audio: null });
 
     const handlePlay = (track) => () => {
-        // setPlay(current => {...current, isPlaying: !current.isPlaying, id: track.id })
+
+        let audio = new Audio(play.audio);
+        audio.volume = 0.3;
+        audio.pause();
+
+        // if (play.isPlaying && (getTrackID(track) !== play.id)) {
+        //     setPlay(current => ({ ...current, isPlaying: true, id: getTrackID(track) }));
+        //     audio.play();
+        // }
+        // if (play.isPlaying && (getTrackID(track) === play.id)) {
+        //     setPlay(current => ({ ...current, isPlaying: false, id: getTrackID(track) }));
+        //     audio.pause();
+        // }
+        audio = new Audio(getPreviewUrl(track));
+        !play.isPlaying ? audio.play() : audio.pause();
+        setPlay(current => ({ ...current, isPlaying: !play.isPlaying, id: getTrackID(track), audio: audio }));
+
     }
+
+    console.log(play, 'LIst')
 
     return (
         <Box
@@ -91,9 +109,11 @@ export default function TrackList({ list }) {
                                 <IconButton disabled="true" aria-label="favorite">
                                     {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
-                                <IconButton aria-label="play/pause" onClick={handlePlay(track.item)}>
-                                    <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
-                                    {/* {play.isPlaying && play.id === track.id ? <PlayArrowIcon className={classes.playIcon} /> : <PauseIcon className={classes.playIcon} />} */}
+                                <IconButton aria-label="play/pause" onClick={handlePlay(track)}>
+                                    {play.isPlaying && (play.id === getTrackID(track)) ?
+                                        <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
+                                        : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
+                                    }
                                 </IconButton>
                             </CardActions>
                         </div>
