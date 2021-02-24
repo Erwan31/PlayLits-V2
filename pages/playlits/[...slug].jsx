@@ -23,6 +23,16 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         marginBottom: theme.spacing(2),
     },
+    responsiveContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        padding: '80px 2rem 0 2rem',
+        alignItems: 'flex-start',
+        [theme.breakpoints.down('md')]: {
+            flexDirection: 'column',
+        },
+    }
 }));
 
 function dataStructureTracks(playlist, audioFeatures, genres, areSaved) {
@@ -128,35 +138,49 @@ export default function Playlits() {
             <ScrollBarsCustom
                 height={'100vh'}
                 width={'100%'}
-                autoHide
+                autoHide={true}
                 autoHideTimeout={500}
                 autoHideDuration={200}
                 universal={true}
             >
-                <Box
-                    m='auto'
-                    p='80px 2rem 0 2rem'
-                    css={{
-                        maxWidth: 650,
-                        minWidth: 350,
-                    }}
-                >
-                    <Paper elevation={15} className={classes.playlitsPanel}>
-                        <PlaylitsPanel
-                            genres={playlistTracks.allGenres}
-                            handleDirection={handleDirection}
-                            handleGenresSelect={handleGenresSelect}
-                            handleOnlySaved={handleOnlySaved}
-                            sortedTracks={sortedTracks}
-                            direction={direction}
-                            onlySaved={onlySaved}
-                        />
-                    </Paper>
-                    <Paper elevation={15} className={classes.playlitsPanel}>
-                        <CreatePlaylistPanel sortedTracks={sortedTracks} />
-                    </Paper>
-                    {sortedTracks.length > 0 && <TrackList list={sortedTracks} />}
-                </Box>
+                <div className={classes.responsiveContainer}>
+                    <Box
+                        m='0 auto'
+                        // p='80px 2rem 0 2rem'
+                        css={{
+                            maxWidth: 650,
+                            minWidth: 350,
+                            width: '100%'
+                        }}
+                    >
+                        <Paper elevation={15} className={classes.playlitsPanel}>
+                            <PlaylitsPanel
+                                genres={playlistTracks.allGenres}
+                                handleDirection={handleDirection}
+                                handleGenresSelect={handleGenresSelect}
+                                handleOnlySaved={handleOnlySaved}
+                                sortedTracks={sortedTracks}
+                                direction={direction}
+                                onlySaved={onlySaved}
+                            />
+                        </Paper>
+                        <Paper elevation={15} className={classes.playlitsPanel}>
+                            <CreatePlaylistPanel sortedTracks={sortedTracks} />
+                        </Paper>
+                    </Box>
+                    <Box
+                        m='0 auto'
+                        // p='0 2rem 0 2rem'
+                        p='0 0.5rem'
+                        css={{
+                            maxWidth: 650,
+                            minWidth: 350,
+                            width: '100%'
+                        }}
+                    >
+                        {sortedTracks.length > 0 && <TrackList list={sortedTracks} />}
+                    </Box>
+                </div>
             </ScrollBarsCustom>
         </HeaderFooter>
     )
