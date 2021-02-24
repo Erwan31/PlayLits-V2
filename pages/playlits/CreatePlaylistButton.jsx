@@ -20,13 +20,17 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
     );
     const [color, setColor] = useState(disabled ? 'grey' : 'purple');
 
-    useEffect(() =>
-        setColor(disabled ? 'grey' : 'purple')
+    useEffect(() => {
+        setColor(disabled ? 'grey' : 'purple');
+
+        return function cleanup() {
+            return null
+        };
+    }
         , [disabled])
 
     const handleClick = () => {
         setLoading(true);
-        setColor('orange');
         setContent(
             <CircularProgress size={20} thickness={10} color="secondary" />
         )
@@ -35,7 +39,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
     useEffect(async () => {
         if (loading) {
             const response = await createPlayLits(state.token.access_token, name, sortedTracks);
-            setColor('blue');
+            setColor('#A054FD');
             setContent(
                 <Link href={`/playlists/`}>
                     <Box display="flex" flexDirection="row" alignItems="center" onClick={() => window.open(getSpotifyURL(response), '_blank')}>
@@ -53,6 +57,10 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
             )
             setLoading(false);
         }
+
+        return function cleanup() {
+            return null
+        };
     }, [loading])
 
     // style={{ marginRight: '0.5rem' }}

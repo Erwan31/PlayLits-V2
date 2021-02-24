@@ -123,10 +123,6 @@ export default function Playlits() {
         }
     }, [slidersValues, direction, genresSelected, onlySaved]);
 
-    // useEffect(() =>
-    //     console.log(sortedTracks),
-    //     [sortedTracks]);
-
     return (
         <HeaderFooter>
             <ScrollBarsCustom
@@ -145,21 +141,17 @@ export default function Playlits() {
                         minWidth: 350,
                     }}
                 >
-                    {
-                        // Place skeleton here
-                        sortedTracks.length > 0 &&
-                        <Paper elevation={15} className={classes.playlitsPanel}>
-                            <PlaylitsPanel
-                                genres={playlistTracks.allGenres}
-                                handleDirection={handleDirection}
-                                handleGenresSelect={handleGenresSelect}
-                                handleOnlySaved={handleOnlySaved}
-                                sortedTracks={sortedTracks}
-                                direction={direction}
-                                onlySaved={onlySaved}
-                            />
-                        </Paper>
-                    }
+                    <Paper elevation={15} className={classes.playlitsPanel}>
+                        <PlaylitsPanel
+                            genres={playlistTracks.allGenres}
+                            handleDirection={handleDirection}
+                            handleGenresSelect={handleGenresSelect}
+                            handleOnlySaved={handleOnlySaved}
+                            sortedTracks={sortedTracks}
+                            direction={direction}
+                            onlySaved={onlySaved}
+                        />
+                    </Paper>
                     <Paper elevation={15} className={classes.playlitsPanel}>
                         <CreatePlaylistPanel sortedTracks={sortedTracks} />
                     </Paper>

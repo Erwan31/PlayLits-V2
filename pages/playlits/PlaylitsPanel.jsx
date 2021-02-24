@@ -50,13 +50,16 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
                 </div>
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
-                <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />
+                {sortedTracks.length > 0 &&
+                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />}
             </PanelCollapse>
             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
-                <Charts sliders={slidersSimple} list={sortedTracks} />
+                {sortedTracks.length > 0 &&
+                    <Charts sliders={slidersSimple} list={sortedTracks} />}
             </PanelCollapse>
             <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                <GenresPanel genres={genres} onSelect={handleGenresSelect} />
+                {sortedTracks.length > 0 &&
+                    <GenresPanel genres={genres} onSelect={handleGenresSelect} />}
             </PanelCollapse>
         </div>
     )

@@ -34,7 +34,6 @@ export function getLength(list) {
 }
 
 export function getSpotifyURL(data) {
-    console.log(data, 'getSpotURL')
     if (data.hasOwnProperty('playlistCreated')) return data.playlistCreated.data.external_urls.spotify;
     if (data.hasOwnProperty('data')) return data.data.external_urls.spotify;
     if (data.hasOwnProperty('external_urls')) return data.external_urls.spotify;

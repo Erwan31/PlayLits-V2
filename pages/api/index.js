@@ -23,11 +23,15 @@ export async function getUserInfo(token) {
   
 }
 
-export async function getUserPlaylists(id, token) {
+export async function getUserPlaylists(id, token, url = null) {
+
+  if (url === null) {
+    url = `https://api.spotify.com/v1/users/${id}/playlists`;
+  }
 
   try {
     const userPlaylists = await axios.get(
-      `https://api.spotify.com/v1/users/${id}/playlists`,
+      url,
       {
         headers: {
           Authorization: "Bearer " + token
