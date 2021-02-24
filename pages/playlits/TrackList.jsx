@@ -7,6 +7,7 @@ import classNames from 'classnames'
 // import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -79,50 +80,60 @@ export default function TrackList({ list }) {
     }
 
     return (
-        <Box
-            m='2rem 0 2rem 0'
-            css={{
-                // maxHeight: '70vh',
-                width: '100%',
-            }}
+        <ScrollBarsCustom
+            height={'calc(100vh - 80px)'}
+            width={'100%'}
+            autoHide
+            autoHideTimeout={500}
+            autoHideDuration={200}
+            universal={true}
         >
-            {list.map(track =>
-                <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
-                    <CardContent key={getTrackID(track.item)} className={classes.content}>
-                        <CardMedia
-                            className={classes.cover}
-                            image={getTrackAlbumImage(track.item).url}
-                            title={'trackname'}
-                        />
-                        <div className={classes.detailsAndControl}>
-                            <div className={classes.details}>
-                                <Typography component="h3" variant="h6" className={classes.typo}>
-                                    {getTrackName(track.item)}
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    {getArtistsNames(track.item)}
-                                </Typography>
+            <Box
+                m='2rem 0 2rem 0'
+                p='0 1rem 0 0'
+                css={{
+                    // maxHeight: '70vh',
+                    width: '100%',
+                }}
+            >
+                {list.map(track =>
+                    <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
+                        <CardContent key={getTrackID(track.item)} className={classes.content}>
+                            <CardMedia
+                                className={classes.cover}
+                                image={getTrackAlbumImage(track.item).url}
+                                title={'trackname'}
+                            />
+                            <div className={classes.detailsAndControl}>
+                                <div className={classes.details}>
+                                    <Typography component="h3" variant="h6" className={classes.typo}>
+                                        {getTrackName(track.item)}
+                                    </Typography>
+                                    <Typography variant="subtitle1" color="textSecondary">
+                                        {getArtistsNames(track.item)}
+                                    </Typography>
+                                </div>
+                                <CardActions className={classes.controls}>
+                                    <IconButton disabled={true} aria-label="favorite">
+                                        {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="play/pause"
+                                        onClick={handlePlay(track)}
+                                        disabled={getPreviewUrl(track) === null}
+                                        style={{ opacity: getPreviewUrl(track) === null ? 0.2 : 1 }}
+                                    >
+                                        {play.isPlaying && (play.id === getTrackID(track)) ?
+                                            <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
+                                            : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
+                                        }
+                                    </IconButton>
+                                </CardActions>
                             </div>
-                            <CardActions className={classes.controls}>
-                                <IconButton disabled={true} aria-label="favorite">
-                                    {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                                </IconButton>
-                                <IconButton
-                                    aria-label="play/pause"
-                                    onClick={handlePlay(track)}
-                                    disabled={getPreviewUrl(track) === null}
-                                    style={{ opacity: getPreviewUrl(track) === null ? 0.2 : 1 }}
-                                >
-                                    {play.isPlaying && (play.id === getTrackID(track)) ?
-                                        <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
-                                        : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
-                                    }
-                                </IconButton>
-                            </CardActions>
-                        </div>
-                    </CardContent>
-                </Card>
-            )}
-        </Box>
+                        </CardContent>
+                    </Card>
+                )}
+            </Box>
+        </ScrollBarsCustom>
     )
 }
