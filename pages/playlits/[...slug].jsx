@@ -26,16 +26,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function dataStructureTracks(playlist, audioFeatures, genres, areSaved) {
-    const struct = [];
-
-    playlist.items.forEach((el, index) =>
-        struct[index] = {
-            item: playlist.items[index],
-            audioFeature: audioFeatures[index],
-            genres: genres[index],
-            isSaved: areSaved[index]
-        }
-    )
+    const struct = playlist.items.map((el, index) =>
+    ({
+        item: playlist.items[index],
+        audioFeature: audioFeatures[index],
+        genres: genres[index],
+        isSaved: areSaved[index]
+    }))
 
     return struct;
 }
@@ -69,6 +66,7 @@ export default function Playlits() {
     // API call -> to externalize into a reducer
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
+        console.log(data, 'INIT');
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
         const areSaved = await areTracksSavedByUser(state.token.access_token, data);
         //get tracks albums genres

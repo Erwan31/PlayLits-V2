@@ -57,6 +57,7 @@ export default function Charts({ list, sliders }) {
 
                     if (slider.feature === 'crises') return;
 
+                    console.log(list, slider.feature, 'Error??')
                     const af = getArrayOfAudioFeature(list, slider.feature);
                     const label = slider.name;
 
