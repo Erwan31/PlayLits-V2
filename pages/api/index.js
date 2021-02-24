@@ -44,23 +44,34 @@ export async function getUserPlaylists(id, token) {
 
 export async function areTracksSavedByUser(token, playlist) {
 
-  const ids = audioFeaturesIdsString(playlist);
+  const ids = playlist.items.map(track => getTrackID(track));
+  const result = [];
+  let maxIteration = Math.floor(playlist.items.length / 50) + 1;
+  let iteration = 0;
+  console.log(maxIteration, 'numIteration')
 
-  try {
-    const bool = await axios.get(
-      `https://api.spotify.com/v1/me/tracks/contains?ids=${ids}`,
-      {
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      });
-    
-    return bool.data;
-  }
-  catch (e) {
-    console.error('getbool isTrackSaved Error', e);
-    return null;
-  }
+  do {
+    const modIds = ids.splice(iteration, (iteration + 1) * 50).join(',');
+    iteration++;
+
+    try {
+      const bool = await axios.get(
+        `https://api.spotify.com/v1/me/tracks/contains?ids=${modIds}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        });
+      result.push(...bool.data);
+    }
+    catch (e) {
+      console.error('getbool isTrackSaved Error', e);
+      return null;
+    }
+  } while (maxIteration > iteration);
+  
+  return result;
+
 }
 
 
@@ -161,23 +172,33 @@ export async function getTracksAudioFeatures(playlist, token, offset = 0, limit 
 
 export async function getArtistsGenres(data, token, offset = 0, limit = 100) {
   
-  const ids = getArrayOfArtistsIDs(data.items).join(",");
-  
-  try {
-    const response = await axios.get(
-      `https://api.spotify.com/v1/artists/?ids=${ids}`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        }
-      });
+  const ids = getArrayOfArtistsIDs(data.items); //.join(",");
+  const result = {artists: []};
+  let maxIteration = Math.floor(data.items.length / 50) + 1;
+  let iteration = 0;
+  console.log(maxIteration, 'numIteration')
 
-    return response.data;
-  }
-  catch (e) {
-    console.error('getPlaylist Error', e);
-    return null;
-  }
+  do {
+    const modIds = ids.splice(iteration, (iteration + 1) * 50).join(',');
+    iteration++;
+  
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/artists/?ids=${modIds}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          }
+        });
+      result.artists.push(...response.data.artists);
+    }
+    catch (e) {
+      console.error('getPlaylist Error', e);
+      return null;
+    }
+  } while (maxIteration > iteration);
+  
+  return result;
 
 }
 

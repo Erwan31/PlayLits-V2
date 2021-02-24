@@ -72,7 +72,8 @@ export default function Playlits() {
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
         const areSaved = await areTracksSavedByUser(state.token.access_token, data);
         //get tracks albums genres
-        const artistsData = await getArtistsGenres(data, state.token.access_token)
+        const artistsData = await getArtistsGenres(data, state.token.access_token);
+        console.log(artistsData, 'artistsData');
         const allGenres = getArrayOfGenres(artistsData.artists);
         const genres = artistsData.artists.map(artist => artist.genres);
         // Initial Structure

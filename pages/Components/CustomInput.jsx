@@ -13,7 +13,7 @@ export default function CustomInput({ onChange }) {
 
     return (
         <CssTextField
-            label="New PlayLits Name"
+            label="Name your new PlayLits"
             placeholder="PlayLits from ..."
             onChange={onChange}
             color="secondary"

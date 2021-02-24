@@ -9,8 +9,8 @@ import ScrollBarsCustom from '../Components/ScrollBarsCustom'
 export default function SliderPanel({ list, slidersSimple, slidersDouble, direction }) {
 
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
-    const tracksMax = playlistTracks.audioFeatures.length;
-    const [reverse, setReverse] = useState(false);
+    // const tracksMax = playlistTracks.audioFeatures.length;
+    // const [reverse, setReverse] = useState(false);
 
     return (
         <ScrollBarsCustom
@@ -33,7 +33,7 @@ export default function SliderPanel({ list, slidersSimple, slidersDouble, direct
                 direction="column"
                 m='0 1rem 0 1rem'
             >
-                {tracksMax > 10 && slidersDouble.map((item, index) => <SliderDouble key={index} info={item} max={tracksMax} />)}
+                {playlistTracks.audioFeatures.length > 10 && slidersDouble.map((item, index) => <SliderDouble key={index} info={item} max={playlistTracks.audioFeatures.length} />)}
                 {slidersSimple.map((item, index) => <SliderSimple key={index} info={item} direction={direction} />)}
             </Box >
         </ScrollBarsCustom>
