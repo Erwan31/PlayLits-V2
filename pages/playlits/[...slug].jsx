@@ -66,12 +66,10 @@ export default function Playlits() {
     // API call -> to externalize into a reducer
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
-        console.log(data, 'INIT');
         const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
         const areSaved = await areTracksSavedByUser(state.token.access_token, data);
         //get tracks albums genres
         const artistsData = await getArtistsGenres(data, state.token.access_token);
-        console.log(artistsData, 'artistsData');
         const allGenres = getArrayOfGenres(artistsData.artists);
         const genres = artistsData.artists.map(artist => artist.genres);
         // Initial Structure
@@ -104,7 +102,6 @@ export default function Playlits() {
             // Sorting based on direction
             if (onlySaved) {
                 sorted = sorted.filter(track => track.isSaved);
-                console.log(sorted, 'after');
             }
 
             // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list

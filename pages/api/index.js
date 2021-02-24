@@ -53,7 +53,6 @@ export async function areTracksSavedByUser(token, playlist) {
 
   do {
     const spliceIds = ids.slice(iteration * APILIMIT, (iteration + 1) * APILIMIT).join(',');
-    console.log(ids.slice(iteration * APILIMIT, (iteration + 1) * APILIMIT), 'SI', iteration * APILIMIT, (iteration + 1) * APILIMIT);
     iteration++;
 
     try {
@@ -102,7 +101,7 @@ export async function getUserPlaylistsNew(id, offset = 0, limit = 25) {
       data = await response.data;
     }
     catch(error){
-      console.log("more playlists...", error);
+      // console.log("more playlists...", error);
       this.setState({
         no_data: true,
       });
@@ -120,35 +119,63 @@ export async function getUserPlaylistsNew(id, offset = 0, limit = 25) {
     return items;
 }
 
-export async function getUserPlaylistTracks(playlist, token, offset = 0, limit = 100) {
+export async function getUserPlaylistTracks(playlist, token, offset = 0, limit = 20) {
+
+  const headers = { Authorization: "Bearer " + token };
+  const result = {
+    info: {
+      href: null,
+      next: null,
+      previous: null,
+      total: null,
+    },
+    items: null,
+  };
 
   try {
     const tracks = await axios.get(
       playlist.tracks.href,
       {
-        headers: {
-          Authorization: "Bearer " + token,
-          // params: {
-          //   offset: offset,
-          //   limit: limit
-          // }
-        }
+        headers: headers,
       });
 
-    return {
-      info: {
-        href: tracks.data.href,
-        next: tracks.data.next,
-        previous: tracks.data.previous,
-        total: tracks.data.total,
-      },
-      items: tracks.data.items,
+    result.info = {
+      href: tracks.data.href,
+      next: tracks.data.next,
+      previous: tracks.data.previous,
+      total: tracks.data.total,
     };
+    result.items = tracks.data.items;
   }
   catch (e) {
     console.error('getPlaylist Error', e);
     return null;
   }
+
+  while (result.info.next !== null) {
+    try {
+      const tracks = await axios.get(
+        result.info.next,
+        {
+          headers: { headers }
+        });
+
+      result.info = {
+        href: tracks.data.href,
+        next: tracks.data.next,
+        previous: tracks.data.previous,
+        total: tracks.data.total,
+      };
+      result.items.push(tracks.data.items);
+    }
+    catch (e) {
+      console.error('getPlaylist Error', e);
+      return null;
+    }
+  }
+
+  return result;
+
 }
 
 export async function getTracksAudioFeatures(playlist, token, offset = 0, limit = 100) {
@@ -178,7 +205,6 @@ export async function getTracksAudioFeatures(playlist, token, offset = 0, limit 
       return null;
     }
   } while (maxIteration > iteration);
-  console.log(result, 'AFALL');
   return result;
 }
 
@@ -240,7 +266,6 @@ export async function createPlayLits(token, name, tracks) {
                                 'content-type': 'application/json',
                               });
     allResponses.playlistCreated = response;
-    console.log(allResponses.playlistCreated, allResponses.playlistCreated.data.id);
   }
   catch(error){
       console.error("create playlist", error);
@@ -254,7 +279,6 @@ export async function createPlayLits(token, name, tracks) {
     // const URIs = encodeURIComponent(tracks.map(track => getTrackURI(track)).join(','));
     // console.log(URIs, 'URIS')
     const ADDTRACKSURL = `https://api.spotify.com/v1/playlists/${allResponses.playlistCreated.data.id}/tracks?uris=${URIs}`;
-    console.log(ADDTRACKSURL, 'ATU');
       const response = await axios.post(
           ADDTRACKSURL,
           {},
