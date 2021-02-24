@@ -107,7 +107,12 @@ export default function TrackList({ list }) {
                                 <IconButton disabled={true} aria-label="favorite">
                                     {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
-                                <IconButton aria-label="play/pause" onClick={handlePlay(track)}>
+                                <IconButton
+                                    aria-label="play/pause"
+                                    onClick={handlePlay(track)}
+                                    disabled={getPreviewUrl(track) === null}
+                                    style={{ opacity: getPreviewUrl(track) === null ? 0.2 : 1 }}
+                                >
                                     {play.isPlaying && (play.id === getTrackID(track)) ?
                                         <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
                                         : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
