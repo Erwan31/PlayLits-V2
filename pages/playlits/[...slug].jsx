@@ -73,13 +73,8 @@ export default function Playlits() {
         const areSaved = await areTracksSavedByUser(state.token.access_token, data);
         //get tracks albums genres
         const artistsData = await getArtistsGenres(data, state.token.access_token)
-        console.log(artistsData, 'AD')
         const allGenres = getArrayOfGenres(artistsData.artists);
         const genres = artistsData.artists.map(artist => artist.genres);
-        console.log(state.selectedPlaylist, 'AS');
-
-        console.log(areSaved, 'AS');
-
         // Initial Structure
         const init = dataStructureTracks(data, audioFeatures, genres, areSaved);
 
@@ -148,9 +143,9 @@ export default function Playlits() {
             >
                 <Box
                     m='auto'
-                    p='80px 0 0 0'
+                    p='80px 2rem 0 2rem'
                     css={{
-                        maxWidth: 600,
+                        maxWidth: 650,
                         minWidth: 350,
                     }}
                 >
@@ -170,7 +165,7 @@ export default function Playlits() {
                         </Paper>
                     }
                     <Paper elevation={15} className={classes.playlitsPanel}>
-                        <CreatePlaylistPanel />
+                        <CreatePlaylistPanel sortedTracks={sortedTracks} />
                     </Paper>
                     {sortedTracks.length > 0 && <TrackList list={sortedTracks} />}
                 </Box>

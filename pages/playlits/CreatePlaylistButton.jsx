@@ -7,8 +7,9 @@ import { createPlayLits } from '../api';
 import { mainState } from '../States/states';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
+import { getSpotifyURL, getTrackID } from '../utils/getters';
 
-export default function CreatePlaylistButton({ onClick, name, disabled }) {
+export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 
     const [state, setState] = useRecoilState(mainState);
     const [loading, setLoading] = useState(false);
@@ -17,23 +18,27 @@ export default function CreatePlaylistButton({ onClick, name, disabled }) {
             Create your PlayLits
         </Typography>
     );
+    const [color, setColor] = useState(disabled ? 'grey' : 'purple');
+
+    useEffect(() =>
+        setColor(disabled ? 'grey' : 'purple')
+        , [disabled])
 
     const handleClick = () => {
         setLoading(true);
+        setColor('orange');
         setContent(
             <CircularProgress size={20} thickness={10} color="secondary" />
         )
     }
 
-    // const handlePlayLitsLinkClick = () => { window.open(response.url, '_blank'); }
-
     useEffect(async () => {
         if (loading) {
-            const response = await createPlayLits(state.token.access_token, name, '');
-            console.log(response);
+            const response = await createPlayLits(state.token.access_token, name, sortedTracks);
+            setColor('blue');
             setContent(
                 <Link href={`/playlists/`}>
-                    <Box display="flex" flexDirection="row" alignItems="center" onClick={() => window.open(response.url, '_blank')}>
+                    <Box display="flex" flexDirection="row" alignItems="center" onClick={() => window.open(getSpotifyURL(response), '_blank')}>
                         <Typography
                             align='left'
                             component='h3'
@@ -53,7 +58,7 @@ export default function CreatePlaylistButton({ onClick, name, disabled }) {
     // style={{ marginRight: '0.5rem' }}
 
     return (
-        <CustomButton onClick={handleClick} color={disabled ? 'grey' : 'purple'} disabled={disabled}>
+        <CustomButton onClick={handleClick} color={color} disabled={disabled}>
             <Box css={{ minHeight: 28 }}>
                 {content}
             </Box>

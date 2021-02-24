@@ -6,7 +6,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 
 export default function PanelCollapse({ children, name, icon }) {
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const handleChange = () => {
         setOpen(prev => !prev);

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import CustomInput from '../Components/CustomInput';
 import CreatePlaylistButton from './CreatePlaylistButton';
 
-export default function CreatePlaylistPanel() {
+export default function CreatePlaylistPanel({ sortedTracks }) {
 
     const [input, setInput] = useState("");
 
@@ -14,7 +14,7 @@ export default function CreatePlaylistPanel() {
     return (
         <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
             <CustomInput onChange={handleInputChange} />
-            <CreatePlaylistButton name={input} disabled={input === ""} />
+            <CreatePlaylistButton name={input} disabled={input === ""} sortedTracks={sortedTracks} />
         </Box>
     )
 }

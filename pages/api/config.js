@@ -7,11 +7,11 @@ export const scopes = [
     //"user-top-read",
     //"user-read-currently-playing",
     //"user-read-playback-state",
-    "user-library-read",
     "playlist-read-private",    // access playlists of the user
     "playlist-read-collaborative", // access collaborative playlist of the user
     "playlist-modify-private",  // create new playlist
     "playlist-modify-public",
+    "user-library-read",
     //"streaming" // Web Playback SDK in the case 
 ]; 
 

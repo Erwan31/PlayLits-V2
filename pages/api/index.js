@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { audioFeaturesIdsString } from '../playlits/utils';
-import { getArrayOfArtistsIDs } from '../utils/getters';
+import { getArrayOfArtistsIDs, getTrackID, getTrackURI } from '../utils/getters';
 
 export async function getUserInfo(token) {
 
@@ -181,71 +181,58 @@ export async function getArtistsGenres(data, token, offset = 0, limit = 100) {
 
 }
 
-export async function createPlayLits(token, name, tracksIDs) {
+export async function createPlayLits(token, name, tracks) {
   
-  let external_url;
+  let allResponses = { playlistCreated: null, tracksAdded: null };
+  const headers = { Authorization: "Bearer " + token };
 
+  // TO PUT INTO AN ISOLATED FCT COMPARING WITH CURRENT STATE
   const responseID = await axios.get(
                           "https://api.spotify.com/v1/me",
-                          {
-                            headers: {
-                              Authorization: "Bearer " + token,
-                            }
-                          });
+                          {headers: headers});
   const dataID = await responseID.data;
 
-  console.log(dataID);
-
-  const CREATEPLAYLITSURL = `https://api.spotify.com/v1/users/${dataID.id}/playlists`;
-  let newPlaylistID = 0;
-
-  let URIs= Array.from( tracksIDs, element =>
-          "spotify%3Atrack%3A" + element
-          );
-  URIs = URIs.join(",");
-
-  //console.log("URIs", URIs);
-
-  const data = {
-      name: "Playlits: " + name,
-      public: true
-  };
-
-  try{
+  try {
+      const CREATEPLAYLITSURL = `https://api.spotify.com/v1/users/${dataID.id}/playlists`;
+      const data = {
+        name: "PlayLits: " + name,
+        public: false
+      };
       const response = await axios.post(
                               CREATEPLAYLITSURL, 
                               data,
                               {
-                                headers: { Authorization: "Bearer " + token,
-                                  'content-type': 'application/json',
-                                }
+                                headers: headers,
+                                'content-type': 'application/json',
                               });
-      console.log(response);
-
-    newPlaylistID = response.data.id;
-    external_url = response.data.external_url.spotify;
-    console.log(newPlaylistID, external_url);
+    allResponses.playlistCreated = response;
+    console.log(allResponses.playlistCreated, allResponses.playlistCreated.data.id);
   }
   catch(error){
       console.error("create playlist", error);
   };
 
-  try{
-      const ADDTRACKSURL = `https://api.spotify.com/v1/playlists/${newPlaylistID}/tracks?uris=${URIs}`;
+  try {
+    let URIs= Array.from( tracks.map( track => getTrackID(track)), element =>
+                "spotify%3Atrack%3A" + element
+                );
+        URIs = URIs.join(",");
+    // const URIs = encodeURIComponent(tracks.map(track => getTrackURI(track)).join(','));
+    // console.log(URIs, 'URIS')
+    const ADDTRACKSURL = `https://api.spotify.com/v1/playlists/${allResponses.playlistCreated.data.id}/tracks?uris=${URIs}`;
+    console.log(ADDTRACKSURL, 'ATU');
       const response = await axios.post(
           ADDTRACKSURL,
           {},
           {
-              Authorization: "Bearer " + token,
+              headers: headers,
               'content-type': 'application/json',
           });
-      console.log(response);
+    allResponses.tracksAdded = response;
   }
   catch(error){
       console.error("add tracks to playlist", error);
   };
 
-  return {
-    url: external_url,
-  }
+  return allResponses;
 }

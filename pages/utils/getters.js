@@ -17,6 +17,11 @@ export function getTrackID(item) {
     return item.id;
 }
 
+export function getTrackURI(item) {
+    if (item.hasOwnProperty('item')) return item.item.track.uri;
+    return item.id;
+}
+
 export function getPreviewUrl(item) {
     if (item.hasOwnProperty('track')) return item.track.preview_url;
     if (item.hasOwnProperty('item')) return item.item.track.preview_url;
@@ -26,6 +31,13 @@ export function getPreviewUrl(item) {
 export function getLength(list) {
     if (list.length > 0) return list.length;
     return list.info.total;
+}
+
+export function getSpotifyURL(data) {
+    console.log(data, 'getSpotURL')
+    if (data.hasOwnProperty('playlistCreated')) return data.playlistCreated.data.external_urls.spotify;
+    if (data.hasOwnProperty('data')) return data.data.external_urls.spotify;
+    if (data.hasOwnProperty('external_urls')) return data.external_urls.spotify;
 }
 
 export function getPlaylistID(playlist) {
