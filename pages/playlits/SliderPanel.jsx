@@ -1,7 +1,7 @@
 import { Box, makeStyles } from '@material-ui/core'
 import React, { useState } from 'react'
-import SliderDouble from './SliderDouble'
-import SliderSimple from './SliderSimple'
+import SliderDouble from './Components/SliderDouble'
+import SliderSimple from './Components/SliderSimple'
 import { mainState, selectedPlaylist } from '../States/states'
 import { useRecoilState } from 'recoil';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom'

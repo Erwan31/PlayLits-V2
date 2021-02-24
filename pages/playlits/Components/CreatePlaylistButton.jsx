@@ -1,13 +1,13 @@
 import { Box, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import CustomButton from '../Components/CustomButton'
+import CustomButton from '../../Components/CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import SpotifyIcon from '../utils/IconsJSX/SpotifyIcon';
-import { createPlayLits } from '../api';
-import { mainState } from '../States/states';
+import SpotifyIcon from '../../utils/IconsJSX/SpotifyIcon';
+import { createPlayLits } from '../../api';
+import { mainState } from '../../States/states';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
-import { getSpotifyURL, getTrackID } from '../utils/getters';
+import { getSpotifyURL, getTrackID } from '../../utils/getters';
 
 export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 

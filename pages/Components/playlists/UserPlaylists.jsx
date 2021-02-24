@@ -32,8 +32,6 @@ export default function UserPlaylists() {
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
 
-    console.log(state, 'S');
-
     const handleLoadMore = async () => {
         if (state.playlists.next !== null) {
             const token = state.token.access_token;
@@ -83,7 +81,6 @@ export default function UserPlaylists() {
 
             // if (userInfo && tokenURL && playlists === []) {
             const userPlaylists = await getUserPlaylists(userInfo.data.display_name, tokenURL.access_token);
-            console.log(userPlaylists, 'UP');
             setState(current => ({ ...current, infoLoaded: true, user: userInfo, token: tokenURL, playlists: userPlaylists }));
 
             // console.log('getPlaylist', userPlaylists.items, state.token);

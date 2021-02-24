@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
 import React, { useState } from 'react'
 import CustomInput from '../Components/CustomInput';
-import CreatePlaylistButton from './CreatePlaylistButton';
+import CreatePlaylistButton from './Components/CreatePlaylistButton';
 
 export default function CreatePlaylistPanel({ sortedTracks }) {
 

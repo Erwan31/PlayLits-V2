@@ -3,14 +3,15 @@ import React from 'react'
 import ChartsIcon from '../utils/IconsJSX/ChartsIcon'
 import GenresIcon from '../utils/IconsJSX/GenresIcon'
 import SlidersIcon from '../utils/IconsJSX/SlidersIcon'
-import Charts from './Charts'
-import DirectionButton from './DirectionButton'
+import DirectionButton from './Components/DirectionButton'
 import GenresPanel from './GenresPanel'
-import OnlySavedButton from './OnlySavedButton'
-import PanelCollapse from './PanelCollapse'
 import SliderPanel from './SliderPanel'
+import OnlySavedButton from './Components/OnlySavedButton'
+import PanelCollapse from './Components/PanelCollapse'
+import Charts from './Components/Charts'
 import { slidersSimple, slidersDouble } from './slidersData'
 import classNames from 'classnames'
+
 
 const useStyles = makeStyles(theme => ({
     title: {

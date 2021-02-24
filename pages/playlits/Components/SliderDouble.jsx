@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { SliderRenderTrack, SliderRenderThumb } from './SlidersOptions';
 import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Typography } from '@material-ui/core';
-import theme from '../../styles/theme/theme';
 import { useRecoilState } from 'recoil';
-import { slidersState } from '../States/states';
+import { slidersState } from '../../States/states';
 
 const useStyles = makeStyles((theme) => ({
     text: {

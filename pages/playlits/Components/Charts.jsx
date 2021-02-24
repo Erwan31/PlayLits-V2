@@ -1,10 +1,10 @@
 import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import { defaults, Line } from 'react-chartjs-2';
-import ScrollBarsCustom from '../Components/ScrollBarsCustom';
-import { getArrayOfAudioFeature } from '../utils/getters'
-import { data, options } from './chartLogic';
-import { getLinearColor } from '../utils/getters'
+import ScrollBarsCustom from '../../Components/ScrollBarsCustom';
+import { getArrayOfAudioFeature } from '../../utils/getters'
+import { data, options } from '../chartLogic';
+import { getLinearColor } from '../../utils/getters'
 // Deafult font for the charts
 defaults.global.defaultFontFamily = 'Nunito';
 
