@@ -4,27 +4,22 @@ import Link from 'next/link'
 import { mainState } from '../../States/states'
 import { useRecoilState } from 'recoil';
 // import DefaultThumbnail from '/static/images/default_thumbnail.svg'
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        minWidth: 170,
-        width: '25vw',
-        // height: '10vw',
-        height: "100%",
-        maxWidth: 200,
-        margin: theme.spacing(3),
         backgroundColor: '#2c3049',
         color: 'white',
         display: 'flex',
         alignItems: 'center',
         alignContent: 'flex-start',
         justifyContent: 'center',
+        borderRadius: theme.spacing(1.5),
         // textOverflow: 'ellipsis',
         // /* Required for text-overflow to do anything */
         // whiteSpace: 'nowrap',
         // overflow: 'hidden',
         // textAlign: 'left',
-        borderRadius: theme.spacing(2),
     },
     media: {
         width: '100%',
@@ -48,8 +43,15 @@ const useStyles = makeStyles((theme) => ({
             margin: '2rem 0rem',
         }
     },
-
 }));
+
+const item = {
+    hidden: { y: -20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1
+    }
+};
 
 export default function PlaylistCard({ playlist }) {
 
@@ -64,13 +66,24 @@ export default function PlaylistCard({ playlist }) {
         <Link href={`/playlits/${encodeURIComponent(playlist.name)}`}>
             <Card className={classes.root} elevation={10} onClick={handleSelect}>
                 <CardActionArea>
-                    <CardMedia
-                        classes={{
-                            root: classes.media
+                    <motion.div
+                        whileHover={{
+                            scale: 1.1,
+                            transition: {
+                                delay: 0.4,
+                                ease: "easeOut",
+                                duration: 0.4,
+                            }
                         }}
-                        image={playlist.images[0] !== undefined ? playlist.images[0].url : '/static/images/default_thumbnail.svg'}
-                        title={playlist.name}
-                    />
+                    >
+                        <CardMedia
+                            classes={{
+                                root: classes.media
+                            }}
+                            image={playlist.images[0] !== undefined ? playlist.images[0].url : '/static/images/default_thumbnail.svg'}
+                            title={playlist.name}
+                        />
+                    </motion.div>
                     <CardContent>
                         <Typography className={classes.typo} gutterBottom noWrap={true} variant="body2" component="h2">
                             {playlist.name}

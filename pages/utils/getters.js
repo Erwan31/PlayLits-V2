@@ -7,7 +7,18 @@ export function getTrackName(item) {
 }
 
 export function getArtistsNames(item) {
-    return item.track.album.artists[0].name;
+    let artists = '';
+
+    item.track.album.artists.map((artist, index) => {
+        if (index === 0) {
+            artists = artist.name.toString();
+        }
+        else {
+            artists += ', ' + artist.name.toString();
+        }
+    });
+    
+    return artists;
 }
 
 export function getTrackID(item) {

@@ -8,6 +8,8 @@ import classNames from 'classnames'
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -52,7 +54,17 @@ const useStyles = makeStyles((theme) => ({
     typo: {
         color: '#EEEEEE',
     }
-}))
+}));
+
+const item = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: [0, 0, 1],
+        transition: {
+            duration: 0.3
+        }
+    }
+};
 
 export default function TrackList({ list }) {
 
@@ -96,43 +108,55 @@ export default function TrackList({ list }) {
                     width: '100%',
                 }}
             >
-                {list.map(track =>
-                    <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
-                        <CardContent key={getTrackID(track.item)} className={classes.content}>
-                            <CardMedia
-                                className={classes.cover}
-                                image={getTrackAlbumImage(track.item).url}
-                                title={'trackname'}
-                            />
-                            <div className={classes.detailsAndControl}>
-                                <div className={classes.details}>
-                                    <Typography component="h3" variant="h6" className={classes.typo}>
-                                        {getTrackName(track.item)}
-                                    </Typography>
-                                    <Typography variant="subtitle1" color="textSecondary">
-                                        {getArtistsNames(track.item)}
-                                    </Typography>
-                                </div>
-                                <CardActions className={classes.controls}>
-                                    <IconButton disabled={true} aria-label="favorite">
-                                        {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                                    </IconButton>
-                                    <IconButton
-                                        aria-label="play/pause"
-                                        onClick={handlePlay(track)}
-                                        disabled={getPreviewUrl(track) === null}
-                                        style={{ opacity: getPreviewUrl(track) === null ? 0.2 : 1 }}
-                                    >
-                                        {play.isPlaying && (play.id === getTrackID(track)) ?
-                                            <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
-                                            : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
-                                        }
-                                    </IconButton>
-                                </CardActions>
-                            </div>
-                        </CardContent>
-                    </Card>
-                )}
+                {list.length === 0 ?
+                    [...Array(4)].map((el, index) =>
+                        <Card key={index} className={classes.card} elevation={3} >
+                            <Skeleton animation="wave" variant="rect" width={'100%'} height={120} />
+                        </Card>
+                    )
+                    :
+                    list.map(track =>
+                        <motion.div
+                            variants={item}
+                        >
+                            <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
+                                <CardContent key={getTrackID(track.item)} className={classes.content}>
+                                    <CardMedia
+                                        className={classes.cover}
+                                        image={getTrackAlbumImage(track.item).url}
+                                        title={getArtistsNames(track.item)}
+                                    />
+                                    <div className={classes.detailsAndControl}>
+                                        <div className={classes.details}>
+                                            <Typography component="h3" variant="h6" className={classes.typo}>
+                                                {getTrackName(track.item)}
+                                            </Typography>
+                                            <Typography variant="subtitle1" color="textSecondary">
+                                                {getArtistsNames(track.item)}
+                                            </Typography>
+                                        </div>
+                                        <CardActions className={classes.controls}>
+                                            <IconButton disabled={true} aria-label="favorite">
+                                                {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                            </IconButton>
+                                            <IconButton
+                                                aria-label="play/pause"
+                                                onClick={handlePlay(track)}
+                                                disabled={getPreviewUrl(track) === null}
+                                                style={{ opacity: getPreviewUrl(track) === null ? 0.2 : 1 }}
+                                            >
+                                                {play.isPlaying && (play.id === getTrackID(track)) ?
+                                                    <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
+                                                    : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
+                                                }
+                                            </IconButton>
+                                        </CardActions>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    )
+                }
             </Box>
         </ScrollBarsCustom>
     )

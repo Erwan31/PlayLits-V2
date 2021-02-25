@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil';
 import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
 import CustomButton from '../CustomButton';
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,6 +19,14 @@ const useStyles = makeStyles((theme) => ({
         // padding: '5rem',
         // overflow: 'scroll',
     },
+    playlistCardSize: {
+        minWidth: 170,
+        width: '25vw',
+        // height: '10vw',
+        height: "100%",
+        maxWidth: 200,
+        margin: theme.spacing(3),
+    },
     paper: {
         height: 140,
         width: 100,
@@ -26,6 +35,27 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
     },
 }));
+
+/* Framer Motion Variants */
+const container = {
+    hidden: { opacity: 0, scale: 1 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            delayChildren: 0.2,
+            staggerChildren: 0.1
+        }
+    }
+};
+
+const item = {
+    hidden: { y: 10, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1
+    }
+};
 
 export default function UserPlaylists() {
 
@@ -101,42 +131,54 @@ export default function UserPlaylists() {
             autoHideDuration={200}
             universal={true}
         >
-            <Box
-                m='0 auto 5rem auto'
-                p='90px 0 0 0'
-                // m='0 1rem 0 1rem'
-                css={{
-                    maxWidth: 1100,
-                    width: '90%',
-                    minWidth: 350,
-                }}
-            >
-                <Grid container className={classes.root} spacing={2}>
-                    <Grid item xs={12}>
-                        <Grid container justify="center" spacing={8}>
-                            {state.playlists !== {} &&
-                                state.playlists.items.map((list, index) => (
-                                    // console.log(list)
-                                    <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
-                                ))}
-                        </Grid>
-                    </Grid>
-                </Grid >
-            </Box>
-            {
-                state.playlists.next !== null &&
-                <Box
-                    display="flex"
-                    justifyContent='center'
-                    m='0 0 2rem 0'
+            {state.playlists !== {} &&
+                <motion.div
+                    className="container"
+                    variants={container}
+                    initial="hidden"
+                    animate="visible"
                 >
-                    <CustomButton onClick={handleLoadMore}>
-                        <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
-                            Load More Playlists
+                    <Box
+                        m='0 auto 5rem auto'
+                        p='90px 0 0 0'
+                        // m='0 1rem 0 1rem'
+                        css={{
+                            maxWidth: 1100,
+                            width: '90%',
+                            minWidth: 350,
+                        }}
+                    >
+                        <Grid container className={classes.root} spacing={2}>
+                            <Grid item xs={12}>
+                                <Grid container justify="center" spacing={8}>
+                                    {state.playlists.items.map((list, index) => (
+                                        <motion.div
+                                            key={index}
+                                            variants={item}
+                                            className={classes.playlistCardSize}
+                                        >
+                                            <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
+                                        </motion.div>
+                                    ))}
+                                </Grid>
+                            </Grid>
+                        </Grid >
+                    </Box>
+                    {
+                        state.playlists.next !== null &&
+                        <Box
+                            display="flex"
+                            justifyContent='center'
+                            m='0 0 2rem 0'
+                        >
+                            <CustomButton onClick={handleLoadMore}>
+                                <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
+                                    Load More Playlists
                     </Typography>
-                    </CustomButton>
-                </Box>
-            }
+                            </CustomButton>
+                        </Box>
+                    }
+                </motion.div>}
         </ScrollBarsCustom>
     );
 }

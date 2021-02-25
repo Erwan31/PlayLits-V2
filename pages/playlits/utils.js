@@ -103,3 +103,15 @@ export const reverseOrder = (arr) => {
     const sorted = arr.reverse();
     return sorted;
 }
+
+export function dataStructureTracks(playlist, audioFeatures, genres, areSaved) {
+    const struct = playlist.items.map((el, index) =>
+    ({
+        item: playlist.items[index],
+        audioFeature: audioFeatures[index],
+        genres: genres[index],
+        isSaved: areSaved[index]
+    }))
+
+    return struct;
+}

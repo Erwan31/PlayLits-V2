@@ -1,4 +1,4 @@
-import { Box, Paper } from '@material-ui/core'
+import { Box, Paper, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
@@ -6,11 +6,13 @@ import { mainState, selectedPlaylist, slidersState } from '../States/states'
 import { useRecoilState } from 'recoil';
 import TrackList from './TrackList';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
-import { sortList, changeTracksNumber } from './utils';
+import { sortList, changeTracksNumber, dataStructureTracks } from './utils';
 import { reverseOrder } from './utils'
 import { getArrayOfGenres } from '../utils/getters';
 import CreatePlaylistPanel from './CreatePlaylistPanel';
 import PlaylitsPanel from './PlaylitsPanel';
+import { motion } from 'framer-motion';
+import LoadingRings from '../Components/LoadingRings';
 
 // To Out
 import { areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
@@ -35,17 +37,28 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function dataStructureTracks(playlist, audioFeatures, genres, areSaved) {
-    const struct = playlist.items.map((el, index) =>
-    ({
-        item: playlist.items[index],
-        audioFeature: audioFeatures[index],
-        genres: genres[index],
-        isSaved: areSaved[index]
-    }))
-
-    return struct;
-}
+/* Framer Motion Variants */
+const container = {
+    hidden: { opacity: 0, scale: 1 },
+    visible: {
+        opacity: [0, 0, 1],
+        scale: 1,
+        transition: {
+            delay: 0.3,
+            // delayChildren: 0.3,
+            // staggerChildren: 0.4
+        }
+    },
+    exit: {
+        opacity: [1, 0, 0, 0],
+        scale: [1, 0.5, 1],
+        transition: {
+            ease: 'easeOut',
+            // delayChildren: 0.3,
+            // staggerChildren: 0.4
+        }
+    }
+};
 
 export default function Playlits() {
 
@@ -143,45 +156,56 @@ export default function Playlits() {
                 autoHideDuration={200}
                 universal={true}
             >
-                <div className={classes.responsiveContainer}>
-                    <Box
-                        m='0 auto'
-                        // p='80px 2rem 0 2rem'
-                        css={{
-                            maxWidth: 650,
-                            minWidth: 350,
-                            width: '100%'
-                        }}
+                {sortedTracks.length === 0 ?
+                    <LoadingRings />
+                    :
+                    <motion.div
+                        className="container"
+                        variants={container}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className={classes.responsiveContainer}
                     >
-                        <Paper elevation={15} className={classes.playlitsPanel}>
-                            <PlaylitsPanel
-                                genres={playlistTracks.allGenres}
-                                handleDirection={handleDirection}
-                                handleGenresSelect={handleGenresSelect}
-                                handleOnlySaved={handleOnlySaved}
-                                sortedTracks={sortedTracks}
-                                direction={direction}
-                                onlySaved={onlySaved}
-                            />
-                        </Paper>
-                        <Paper elevation={15} className={classes.playlitsPanel}>
-                            <CreatePlaylistPanel sortedTracks={sortedTracks} />
-                        </Paper>
-                    </Box>
-                    <Box
-                        m='0 auto'
-                        // p='0 2rem 0 2rem'
-                        p='0 0.5rem'
-                        css={{
-                            maxWidth: 650,
-                            minWidth: 350,
-                            width: '100%'
-                        }}
-                    >
-                        {sortedTracks.length > 0 && <TrackList list={sortedTracks} />}
-                    </Box>
-                </div>
+                        <Box
+                            m='0 auto'
+                            // p='80px 2rem 0 2rem'
+                            css={{
+                                maxWidth: 650,
+                                minWidth: 350,
+                                width: '100%'
+                            }}
+                        >
+                            <Paper elevation={15} className={classes.playlitsPanel}>
+                                <PlaylitsPanel
+                                    genres={playlistTracks.allGenres}
+                                    handleDirection={handleDirection}
+                                    handleGenresSelect={handleGenresSelect}
+                                    handleOnlySaved={handleOnlySaved}
+                                    sortedTracks={sortedTracks}
+                                    direction={direction}
+                                    onlySaved={onlySaved}
+                                />
+                            </Paper>
+                            <Paper elevation={15} className={classes.playlitsPanel}>
+                                <CreatePlaylistPanel sortedTracks={sortedTracks} />
+                            </Paper>
+                        </Box>
+                        <Box
+                            m='0 auto'
+                            // p='0 2rem 0 2rem'
+                            p='0 0.5rem'
+                            css={{
+                                maxWidth: 650,
+                                minWidth: 350,
+                                width: '100%'
+                            }}
+                        >
+                            <TrackList list={sortedTracks} />
+                        </Box>
+                    </motion.div>}
             </ScrollBarsCustom>
         </HeaderFooter>
     )
 }
+
