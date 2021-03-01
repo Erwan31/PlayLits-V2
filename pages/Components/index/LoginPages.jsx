@@ -1,9 +1,10 @@
-import { BottomNavigation, Button, makeStyles, ThemeProvider } from '@material-ui/core';
+import { BottomNavigation, Button, makeStyles, ThemeProvider, Typography } from '@material-ui/core';
 import React from 'react';
 import { authEndpoint, clientId, redirectURI, scopes } from "../../api/config";
 // import Button from '@material-ui/core/Button';
 import Link from 'next/link'
 import SpotifyIcon from '../../utils/IconsJSX/SpotifyIcon';
+import CustomButton from '../CustomButton';
 
 const useStyles = makeStyles((theme) => ({
     /* Login */
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     title: {
         padding: theme.spacing(1),
     },
+    marginAround: {
+        margin: theme.spacing(4),
+    }
 }));
 
 const URLConnect = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectURI}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`
@@ -32,11 +36,15 @@ export default function Login() {
     const classes = useStyles();
 
     return (
-        <Link href={URLConnect} >
-            <div className={classes.content}>
-                <SpotifyIcon />
-                <div className={classes.title}>Login to Spotify</div>
-            </div>
-        </Link>
+        <div className={classes.marginAround}>
+            <Link href={URLConnect} >
+                <CustomButton className={classes.content} color='purple'>
+                    <Typography align='left' component='h3' variant='h6' className={classes.title}>
+                        Login to Spotify
+                </Typography>
+                    <SpotifyIcon />
+                </CustomButton>
+            </Link>
+        </div>
     );
 }

@@ -1,4 +1,4 @@
-import { Box, makeStyles, Typography } from '@material-ui/core'
+import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core'
 import React from 'react'
 import ChartsIcon from '../utils/IconsJSX/ChartsIcon'
 import GenresIcon from '../utils/IconsJSX/GenresIcon'

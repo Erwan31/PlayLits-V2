@@ -13,6 +13,7 @@ import CreatePlaylistPanel from './CreatePlaylistPanel';
 import PlaylitsPanel from './PlaylitsPanel';
 import { motion } from 'framer-motion';
 import LoadingRings from '../Components/LoadingRings';
+import classNames from 'classnames'
 
 // To Out
 import { areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
@@ -34,6 +35,9 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('md')]: {
             flexDirection: 'column',
         },
+    },
+    marginBottom: {
+        marginBottom: theme.spacing(3)
     }
 }));
 
@@ -41,10 +45,11 @@ const useStyles = makeStyles(theme => ({
 const container = {
     hidden: { opacity: 0, scale: 1 },
     visible: {
-        opacity: [0, 0, 1],
+        opacity: [0, 1],
         scale: 1,
         transition: {
-            delay: 0.3,
+            ease: 'easeIn',
+            // delay: 0.3,
             // delayChildren: 0.3,
             // staggerChildren: 0.4
         }
@@ -147,7 +152,7 @@ export default function Playlits() {
     }, [slidersValues, direction, genresSelected, onlySaved]);
 
     return (
-        <HeaderFooter>
+        <HeaderFooter backButton={true}>
             <ScrollBarsCustom
                 height={'100vh'}
                 width={'100%'}
@@ -168,7 +173,7 @@ export default function Playlits() {
                         className={classes.responsiveContainer}
                     >
                         <Box
-                            m='0 auto'
+                            m='1rem auto'
                             // p='80px 2rem 0 2rem'
                             css={{
                                 maxWidth: 650,
@@ -187,12 +192,12 @@ export default function Playlits() {
                                     onlySaved={onlySaved}
                                 />
                             </Paper>
-                            <Paper elevation={15} className={classes.playlitsPanel}>
+                            <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>
                                 <CreatePlaylistPanel sortedTracks={sortedTracks} />
                             </Paper>
                         </Box>
                         <Box
-                            m='0 auto'
+                            m='1rem auto'
                             // p='0 2rem 0 2rem'
                             p='0 0.5rem'
                             css={{

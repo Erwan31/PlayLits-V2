@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Range, Direction, getTrackBackground } from 'react-range';
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
 import { slidersState } from '../../States/states';
 
@@ -37,7 +37,9 @@ export default function SliderDouble({ info, max }) {
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
-            <Typography variant="body1" component="h3">{info.name}</Typography>
+            <Tooltip title={info.tooltip} arrow placement="left">
+                <Typography variant="body1" component="h3">{info.name}</Typography>
+            </Tooltip>
             <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
                 {diff()}
             </Typography>
@@ -87,47 +89,49 @@ export default function SliderDouble({ info, max }) {
                     </div>
                 )}
                 renderThumb={({ props, isDragged, index }) => (
-                    <div
-                        {...props}
-                        style={{
-                            ...props.style,
-                            height: '20px',
-                            width: '24px',
-                            borderRadius: '4px',
-                            backgroundColor: '#FFF',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            boxShadow: '0px 2px 6px #2C3049',
-                            outline: 'none'
-                        }}
-                    >
-                        { isDragged &&
+                    <Tooltip title={info.thumb[index]} arrow>
+                        <div
+                            {...props}
+                            style={{
+                                ...props.style,
+                                height: '20px',
+                                width: '24px',
+                                borderRadius: '4px',
+                                backgroundColor: '#FFF',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                boxShadow: '0px 2px 6px #2C3049',
+                                outline: 'none'
+                            }}
+                        >
+                            {isDragged &&
+                                <div
+                                    style={{
+                                        position: 'absolute',
+                                        top: '0px',
+                                        left: '24px',
+                                        color: '#fff',
+                                        fontWeight: 'bold',
+                                        fontSize: '11px',
+                                        fontFamily: 'Arial,Helvetica Neue,Helvetica,sans-serif',
+                                        padding: '4px',
+                                        borderRadius: '4px',
+                                        backgroundColor: '5ABCDE'
+                                    }}
+                                >
+                                    {state.values[index]}
+                                </div>
+                            }
                             <div
                                 style={{
-                                    position: 'absolute',
-                                    top: '0px',
-                                    left: '24px',
-                                    color: '#fff',
-                                    fontWeight: 'bold',
-                                    fontSize: '11px',
-                                    fontFamily: 'Arial,Helvetica Neue,Helvetica,sans-serif',
-                                    padding: '4px',
-                                    borderRadius: '4px',
-                                    backgroundColor: '5ABCDE'
+                                    width: '14px',
+                                    height: '4px',
+                                    backgroundColor: isDragged ? info.color : '#CCC'
                                 }}
-                            >
-                                {state.values[index]}
-                            </div>
-                        }
-                        <div
-                            style={{
-                                width: '14px',
-                                height: '4px',
-                                backgroundColor: isDragged ? info.color : '#CCC'
-                            }}
-                        />
-                    </div>
+                            />
+                        </div>
+                    </Tooltip>
                 )}
             />
         </Box>

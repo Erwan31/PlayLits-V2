@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Typography, Tooltip } from '@material-ui/core'
 import React from 'react'
 import CustomButton from '../../Components/CustomButton'
 import DecreaseIcon from '../../utils/IconsJSX/DecreaseIcon'
@@ -12,9 +12,13 @@ export default function DirectionButton({ direction, onClick }) {
 
     return (
         <CustomButton onClick={onClick} color='purple'>
-            <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
-                Direction
+            {/* <Tooltip title="Change the ascending/descending order of your track list (see Sliders & Charts)" placement="right-end"> */}
+            <div>
+                <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
+                    Direction
             </Typography>
+            </div>
+            {/* </Tooltip> */}
             {direction === 'asc' ? <IncreaseIcon /> : <DecreaseIcon />}
         </CustomButton>
     )

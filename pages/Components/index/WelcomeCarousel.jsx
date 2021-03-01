@@ -57,6 +57,40 @@ const images = [
     "https://d33wubrfki0l68.cloudfront.net/594de66469079c21fc54c14db0591305a1198dd6/3f4b1/static/images/wallpapers/bridge-01@2x.png"
 ];
 
+const directionOffset = 800;
+
+const variants = {
+    enter: (direction) => {
+        return {
+            x: direction > 0 ? -directionOffset : directionOffset,
+            opacity: 0
+        };
+    },
+    center: {
+        zIndex: 1,
+        x: 0,
+        opacity: 1
+    },
+    exit: (direction) => {
+        return {
+            zIndex: 0,
+            x: direction < 0 ? -directionOffset : directionOffset,
+            opacity: 0
+        };
+    }
+};
+
+/**
+ * Experimenting with distilling swipe offset and velocity into a single variable, so the
+ * less distance a user has swiped, the more velocity they need to register as a swipe.
+ * Should accomodate longer swipes and short flicks without having binary checks on
+ * just distance thresholds and velocity > 0.
+ */
+const swipeConfidenceThreshold = 100;
+const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
+};
+
 
 
 export default function WelcomeCarousel() {
@@ -88,7 +122,7 @@ export default function WelcomeCarousel() {
                     exit="exit"
                     exitBeforeEnter
                     transition={{
-                        x: { type: "spring", stiffness: 1000, damping: 30 },
+                        // x: { type: "spring", stiffness: 800, damping: 10, duration: 0.1 },
                         opacity: { duration: 1 }
                     }}
                     drag="x"
@@ -97,10 +131,10 @@ export default function WelcomeCarousel() {
                     onDragEnd={(e, { offset, velocity }) => {
                         const swipe = swipePower(offset.x, velocity.x);
 
-                        if (swipe < -swipeConfidenceThreshold) {
-                            paginate(1);
-                        } else if (swipe > swipeConfidenceThreshold) {
+                        if (swipe < swipeConfidenceThreshold) {
                             paginate(-1);
+                        } else if (swipe > -swipeConfidenceThreshold) {
+                            paginate(1);
                         }
                     }}
                 />
@@ -113,37 +147,5 @@ export default function WelcomeCarousel() {
             </div>
         </div>
     );
-};
-
-const variants = {
-    enter: (direction) => {
-        return {
-            x: direction > 0 ? 1000 : -1000,
-            opacity: 0
-        };
-    },
-    center: {
-        zIndex: 1,
-        x: 0,
-        opacity: 1
-    },
-    exit: (direction) => {
-        return {
-            zIndex: 0,
-            x: direction < 0 ? 1000 : -1000,
-            opacity: 0
-        };
-    }
-};
-
-/**
- * Experimenting with distilling swipe offset and velocity into a single variable, so the
- * less distance a user has swiped, the more velocity they need to register as a swipe.
- * Should accomodate longer swipes and short flicks without having binary checks on
- * just distance thresholds and velocity > 0.
- */
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset, velocity) => {
-    return Math.abs(offset) * velocity;
 };
 

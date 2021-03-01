@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Range, Direction, getTrackBackground } from 'react-range';
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
 import { slidersState } from '../../States/states';
 
@@ -29,7 +29,9 @@ export default function SliderSimple({ info, direction = 'asc' }) {
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
-            <Typography variant="body1" component="h3">{info.name}</Typography>
+            <Tooltip title={info.tooltip} arrow placement="top">
+                <Typography variant="body1" component="h3">{info.name}</Typography>
+            </Tooltip>
             <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
                 {direction === 'asc' ? info.labelUp : info.labelDown}
             </Typography>

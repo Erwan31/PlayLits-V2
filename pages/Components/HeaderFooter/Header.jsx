@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, IconButton, Typography } from '@material-ui/core';
+import { AppBar, IconButton, Typography, Tooltip, Box } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Link from 'next/link'
 
 const useStyles = makeStyles((theme) => ({
@@ -30,22 +31,36 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
+    textSize: {
+        width: 100,
+    },
 }));
 
-export default function Header() {
+export default function Header({ backButton = false }) {
 
     const classes = useStyles();
 
     return (
         <AppBar static="true" className={classes.root}>
             <Link href="/">
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <img src={"/static/images/logoCustom.svg"} className={classes.logo} alt="logo" />
-                </IconButton>
+                <Tooltip title="Back to Connection Page" arrow>
+                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                        <img src={"/static/images/logoCustom.svg"} className={classes.logo} alt="logo" />
+                    </IconButton>
+                </Tooltip>
             </Link>
             <Typography variant="h6" className={classes.title}>
                 PlayLits
             </Typography>
+            {   backButton &&
+                <Link href="/playlists">
+                    <Box display='flex' direction="row" alignItems="center" m="0 1rem 0 0" css={{ cursor: 'pointer' }}>
+                        <ArrowBackIcon />
+                        <Typography align="center" variant="body2" className={classes.textSize}>
+                            Back to your Playlists
+                    </Typography>
+                    </Box>
+                </Link>}
         </AppBar>
     )
 }
