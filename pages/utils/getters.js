@@ -114,3 +114,4 @@ function hexToRgb(hex) {
 export function linkToSpotify(data) {
     window.open(getSpotifyURL(data), '_blank');
 }
+

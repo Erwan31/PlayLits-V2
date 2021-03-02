@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import SpotifyIcon from '../../utils/IconsJSX/SpotifyIcon';
 import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName, linkToSpotify } from '../../utils/getters';
-import { CardMedia, makeStyles } from '@material-ui/core';
+import { CardMedia, makeStyles, Tooltip } from '@material-ui/core';
 import { motion } from 'framer-motion';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,35 +31,37 @@ export default function MediaTrack({ track, hovering }) {
     }
 
     return (
-        <motion.div
-            // whileHover={{}}
-            animate={{
-                scale: hovered ? 1.1 : 1,
-                transition: {
-                    duration: 0.15,
-                    ease: 'easeIn'
-                }
-            }}
-            className={classes.mediaCard}
-            onClick={handleClick(track)}
-        >
-            <CardMedia
-                className={classes.cover}
-                image={getTrackAlbumImage(track.item).url}
-                title={getArtistsNames(track.item)}
-                style={{ opacity: hovered ? 0.7 : 1 }}
-            />
+        <Tooltip title="PLAY ON SPOTIFY" arrow placement="left">
             <motion.div
-                style={{
-                    position: 'absolute',
-                    top: 'calc(50% - 10px)',
-                    left: 'calc(50% - 10px)',
+                // whileHover={{}}
+                animate={{
+                    scale: hovered ? 1.1 : 1,
+                    transition: {
+                        duration: 0.15,
+                        ease: 'easeIn'
+                    }
                 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: hovered ? 1 : 0 }}
+                className={classes.mediaCard}
+                onClick={handleClick(track)}
             >
-                <SpotifyIcon />
+                <CardMedia
+                    className={classes.cover}
+                    image={getTrackAlbumImage(track.item).url}
+                    title={getArtistsNames(track.item)}
+                    style={{ opacity: hovered ? 0.7 : 1 }}
+                />
+                <motion.div
+                    style={{
+                        position: 'absolute',
+                        top: 'calc(50% - 10px)',
+                        left: 'calc(50% - 10px)',
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: hovered ? 1 : 0 }}
+                >
+                    <SpotifyIcon />
+                </motion.div>
             </motion.div>
-        </motion.div>
+        </Tooltip>
     );
 }

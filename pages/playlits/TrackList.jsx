@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function TrackList({ list }) {
 
     const classes = useStyles();
+    // const { height, width } = useWindowDimensions();
     const [state, setState] = useRecoilState(mainState);
     const [play, setPlay] = useState({ isPlaying: false, id: null, audio: null });
     const listRef = createRef();
@@ -79,6 +80,7 @@ export default function TrackList({ list }) {
         }, false);
     }
 
+    //https://codesandbox.io/s/00nw2w1jv?file=/src/CustomList.js
     const handleScroll = ({ target }) => {
         const { scrollTop } = target;
 
@@ -120,7 +122,7 @@ export default function TrackList({ list }) {
                             </Card>
                         )
                         :
-                        <div style={{ height: 520 }}>
+                        <div style={{ height: 'calc(100vh - 120px)' }}>
                             <AutoSizer >
                                 {({ height, width }) => (
                                     <FixedSizeList

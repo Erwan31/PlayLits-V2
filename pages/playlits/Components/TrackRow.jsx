@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion';
-import { Card, CardContent, Typography, IconButton, makeStyles, CardActions } from '@material-ui/core';
+import { Card, CardContent, Typography, IconButton, makeStyles, CardActions, Tooltip } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -10,13 +10,15 @@ import MediaTrack from './MediaTrack';
 import classNames from 'classnames'
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        paddingBottom: theme.spacing(2),
+    },
     card: {
         display: 'flex',
         flexDirection: 'column',
         background: 'none',
         // backDropFilter: 'blur(1rem)',
         width: '100%',
-        marginBottom: theme.spacing(1),
     },
     details: {
         display: 'flex',
@@ -73,9 +75,10 @@ export default function TrackRow({ data, index, style }) {
             onHoverStart={() => setHovering({ bool: true, elevation: 7 })}
             onHoverEnd={() => setHovering({ bool: false, elevation: 4 })}
             style={style}
+            className={classes.root}
         >
             <Card key={getTrackID(track.item)} className={classes.card} elevation={hovering.elevation} >
-                <CardContent key={getTrackID(track.item)} className={classes.content}>
+                <CardContent className={classes.content}>
                     <MediaTrack track={track} hovering={hovering.bool} />
                     <div className={classes.detailsAndControl}>
                         <div className={classes.details}>
