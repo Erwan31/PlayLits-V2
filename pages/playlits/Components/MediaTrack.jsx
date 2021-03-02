@@ -47,6 +47,7 @@ export default function MediaTrack({ track, hovering }) {
                 className={classes.cover}
                 image={getTrackAlbumImage(track.item).url}
                 title={getArtistsNames(track.item)}
+                style={{ opacity: hovered ? 0.7 : 1 }}
             />
             <motion.div
                 style={{

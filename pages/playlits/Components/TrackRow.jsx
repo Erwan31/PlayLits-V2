@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         background: 'none',
         // backDropFilter: 'blur(1rem)',
         width: '100%',
-        marginBottom: theme.spacing(1.5),
+        marginBottom: theme.spacing(1),
     },
     details: {
         display: 'flex',
@@ -63,21 +63,20 @@ export default function TrackRow({ data, index, style }) {
     const classes = useStyles();
     const { list, handlePlay, play } = data;
     const track = list[index];
-    const [hovering, setHovering] = useState(false);
-
+    const [hovering, setHovering] = useState({ bool: false, elevation: 4 });
     // console.log(list[index]);
 
     return (
         <motion.div
             key={getTrackID(track.item)}
             variants={item}
-            onHoverStart={() => setHovering(true)}
-            onHoverEnd={() => setHovering(false)}
+            onHoverStart={() => setHovering({ bool: true, elevation: 7 })}
+            onHoverEnd={() => setHovering({ bool: false, elevation: 4 })}
             style={style}
         >
-            <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
+            <Card key={getTrackID(track.item)} className={classes.card} elevation={hovering.elevation} >
                 <CardContent key={getTrackID(track.item)} className={classes.content}>
-                    <MediaTrack track={track} hovering={hovering} />
+                    <MediaTrack track={track} hovering={hovering.bool} />
                     <div className={classes.detailsAndControl}>
                         <div className={classes.details}>
                             <Typography component="h3" variant="h6" className={classes.typo}>
