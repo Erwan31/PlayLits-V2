@@ -1,5 +1,5 @@
 import { Box, Card, CardActions, CardContent, CardMedia, Divider, IconButton, makeStyles, Typography } from '@material-ui/core'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName } from '../utils/getters';
@@ -12,6 +12,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { motion } from "framer-motion";
 import { useRecoilState } from 'recoil';
 import { mainState } from '../States/states';
+import SpotifyIcon from '../utils/IconsJSX/SpotifyIcon';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -31,10 +32,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         flex: '1 0 auto',
     },
+    mediaCard: {
+        position: 'relative',
+        marginRight: theme.spacing(3),
+    },
     cover: {
         width: 80,
         height: 80,
-        marginRight: theme.spacing(3),
         borderRadius: theme.spacing(0.5),
     },
     detailsAndControl: {
@@ -73,8 +77,7 @@ export default function TrackList({ list }) {
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
     const [play, setPlay] = useState({ isPlaying: false, id: null, audio: null });
-
-    console.log(state);
+    const [hoveringId, setHoveringId] = useState(null);
 
     const handlePlay = (track) => () => {
         let audio = play.audio;
@@ -131,15 +134,14 @@ export default function TrackList({ list }) {
                         :
                         list.map(track =>
                             <motion.div
+                                key={getTrackID(track.item)}
                                 variants={item}
+                                onHoverStart={() => setHoveringId(getTrackID(track.item))}
+                                onHoverEnd={() => setHoveringId(null)}
                             >
                                 <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
                                     <CardContent key={getTrackID(track.item)} className={classes.content}>
-                                        <CardMedia
-                                            className={classes.cover}
-                                            image={getTrackAlbumImage(track.item).url}
-                                            title={getArtistsNames(track.item)}
-                                        />
+                                        <MediaTrack track={track} hovering={hoveringId === getTrackID(track.item)} />
                                         <div className={classes.detailsAndControl}>
                                             <div className={classes.details}>
                                                 <Typography component="h3" variant="h6" className={classes.typo}>
@@ -173,6 +175,47 @@ export default function TrackList({ list }) {
                     }
                 </Box>
             </ScrollBarsCustom>
-        </div>
+        </div >
     )
+}
+
+function MediaTrack({ track, hovering }) {
+
+    const [hovered, setHovered] = useState(hovering);
+    const classes = useStyles();
+
+    useMemo(() => {
+        setHovered(hovering);
+    }, [hovering]);
+
+    return (
+        <motion.div
+            // whileHover={{}}
+            animate={{
+                scale: hovered ? 1.1 : 1,
+                transition: {
+                    duration: 0.15,
+                    ease: 'easeIn'
+                }
+            }}
+            className={classes.mediaCard}
+        >
+            <CardMedia
+                className={classes.cover}
+                image={getTrackAlbumImage(track.item).url}
+                title={getArtistsNames(track.item)}
+            />
+            <motion.div
+                style={{
+                    position: 'absolute',
+                    top: 'calc(50% - 10px)',
+                    left: 'calc(50% - 10px)',
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: hovered ? 1 : 0 }}
+            >
+                <SpotifyIcon />
+            </motion.div>
+        </motion.div>
+    );
 }
