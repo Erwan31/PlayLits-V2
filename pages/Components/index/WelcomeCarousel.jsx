@@ -62,20 +62,25 @@ const directionOffset = 800;
 const variants = {
     enter: (direction) => {
         return {
-            x: direction > 0 ? -directionOffset : directionOffset,
-            opacity: 0
+            // x: direction > 0 ? directionOffset : -directionOffset,
+            opacity: 0,
         };
     },
     center: {
         zIndex: 1,
-        x: 0,
-        opacity: 1
+        // x: 0,
+        opacity: 1,
+        transition: {
+            delay: 0.1,
+            duration: 0.4,
+            ease: "easeInOut"
+        }
     },
     exit: (direction) => {
         return {
             zIndex: 0,
-            x: direction < 0 ? -directionOffset : directionOffset,
-            opacity: 0
+            // x: direction < 0 ? directionOffset : -directionOffset,
+            opacity: 0,
         };
     }
 };
@@ -86,10 +91,10 @@ const variants = {
  * Should accomodate longer swipes and short flicks without having binary checks on
  * just distance thresholds and velocity > 0.
  */
-const swipeConfidenceThreshold = 100;
-const swipePower = (offset, velocity) => {
-    return Math.abs(offset) * velocity;
-};
+// const swipeConfidenceThreshold = 100;
+// const swipePower = (offset, velocity) => {
+//     return Math.abs(offset) * velocity;
+// };
 
 
 
@@ -110,35 +115,35 @@ export default function WelcomeCarousel() {
 
     return (
         <div className={classes.root}>
-            <AnimatePresence className={classes.image} initial={false} custom={direction}>
-                <motion.img
-                    className={classes.image}
-                    key={page}
-                    src={images[imageIndex]}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    exitBeforeEnter
-                    transition={{
-                        // x: { type: "spring", stiffness: 800, damping: 10, duration: 0.1 },
-                        opacity: { duration: 1 }
-                    }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={1}
-                    onDragEnd={(e, { offset, velocity }) => {
-                        const swipe = swipePower(offset.x, velocity.x);
+            {/* <AnimatePresence className={classes.image} initial={false} custom={direction}> */}
+            <motion.img
+                className={classes.image}
+                key={page}
+                src={images[imageIndex]}
+                // custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                exitBeforeEnter
+            // transition={{
+            //     // x: { type: "spring", stiffness: 800, damping: 10, duration: 0.1 },
+            //     opacity: { duration: 1 }
+            // }}
+            // drag="x"
+            // dragConstraints={{ left: 0, right: 0 }}
+            // dragElastic={1}
+            // onDragEnd={(e, { offset, velocity }) => {
+            //     const swipe = swipePower(offset.x, velocity.x);
 
-                        if (swipe < swipeConfidenceThreshold) {
-                            paginate(-1);
-                        } else if (swipe > -swipeConfidenceThreshold) {
-                            paginate(1);
-                        }
-                    }}
-                />
-            </AnimatePresence>
+            //     if (swipe < swipeConfidenceThreshold) {
+            //         paginate(-1);
+            //     } else if (swipe > -swipeConfidenceThreshold) {
+            //         paginate(1);
+            //     }
+            // }}
+            />
+            {/* </AnimatePresence> */}
             <div className={classNames(classes.prev, classes.icons)} onClick={() => paginate(1)}>
                 <ArrowBackIcon />
             </div>
