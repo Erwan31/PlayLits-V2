@@ -1,18 +1,17 @@
 import { Box, Card, CardActions, CardContent, CardMedia, Divider, IconButton, makeStyles, Typography } from '@material-ui/core'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, createRef } from 'react'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
-import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName } from '../utils/getters';
+import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName, linkToSpotify } from '../utils/getters';
 import classNames from 'classnames'
-// import ScrollBarsCustom from '../Components/ScrollBarsCustom';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { motion } from "framer-motion";
 import { useRecoilState } from 'recoil';
 import { mainState } from '../States/states';
-import SpotifyIcon from '../utils/IconsJSX/SpotifyIcon';
+import { FixedSizeList } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
+import TrackRow from './Components/TrackRow';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -31,15 +30,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         flex: '1 0 auto',
-    },
-    mediaCard: {
-        position: 'relative',
-        marginRight: theme.spacing(3),
-    },
-    cover: {
-        width: 80,
-        height: 80,
-        borderRadius: theme.spacing(0.5),
     },
     detailsAndControl: {
         display: 'flex',
@@ -62,22 +52,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const item = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: [0, 0, 1],
-        transition: {
-            duration: 0.3
-        }
-    }
-};
-
 export default function TrackList({ list }) {
 
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
     const [play, setPlay] = useState({ isPlaying: false, id: null, audio: null });
-    const [hoveringId, setHoveringId] = useState(null);
+    const listRef = createRef();
 
     const handlePlay = (track) => () => {
         let audio = play.audio;
@@ -99,6 +79,12 @@ export default function TrackList({ list }) {
         }, false);
     }
 
+    const handleScroll = ({ target }) => {
+        const { scrollTop } = target;
+
+        listRef.current.scrollTo(scrollTop);
+    };
+
     return (
         <div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -116,6 +102,7 @@ export default function TrackList({ list }) {
                 autoHideTimeout={500}
                 autoHideDuration={200}
                 universal={true}
+                onScroll={handleScroll}
             >
                 <Box
                     m='2rem 0 2rem 0'
@@ -125,6 +112,7 @@ export default function TrackList({ list }) {
                         width: '100%',
                     }}
                 >
+                    {/* <TrackRow data={{ list, handlePlay, play }} index={0} style={{}} /> */}
                     {list.length === 0 ?
                         [...Array(4)].map((el, index) =>
                             <Card key={index} className={classes.card} elevation={3} >
@@ -132,46 +120,25 @@ export default function TrackList({ list }) {
                             </Card>
                         )
                         :
-                        list.map(track =>
-                            <motion.div
-                                key={getTrackID(track.item)}
-                                variants={item}
-                                onHoverStart={() => setHoveringId(getTrackID(track.item))}
-                                onHoverEnd={() => setHoveringId(null)}
-                            >
-                                <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
-                                    <CardContent key={getTrackID(track.item)} className={classes.content}>
-                                        <MediaTrack track={track} hovering={hoveringId === getTrackID(track.item)} />
-                                        <div className={classes.detailsAndControl}>
-                                            <div className={classes.details}>
-                                                <Typography component="h3" variant="h6" className={classes.typo}>
-                                                    {getTrackName(track.item)}
-                                                </Typography>
-                                                <Typography variant="subtitle1" color="textSecondary">
-                                                    {getArtistsNames(track.item)}
-                                                </Typography>
-                                            </div>
-                                            <CardActions className={classes.controls}>
-                                                <IconButton disabled={true} aria-label="favorite">
-                                                    {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                                                </IconButton>
-                                                <IconButton
-                                                    aria-label="play/pause"
-                                                    onClick={handlePlay(track)}
-                                                    disabled={getPreviewUrl(track) === null}
-                                                    style={{ opacity: getPreviewUrl(track) === null ? 0.2 : 1 }}
-                                                >
-                                                    {play.isPlaying && (play.id === getTrackID(track)) ?
-                                                        <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
-                                                        : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
-                                                    }
-                                                </IconButton>
-                                            </CardActions>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        )
+                        <div style={{ height: 520 }}>
+                            <AutoSizer >
+                                {({ height, width }) => (
+                                    <FixedSizeList
+                                        itemData={{ list, handlePlay, play }}
+                                        className="List"
+                                        height={height}
+                                        itemCount={list.length}
+                                        itemSize={120}
+                                        width={width}
+                                        style={{ overflow: false }}
+                                        ref={listRef}
+                                    >
+                                        {TrackRow}
+                                    </FixedSizeList>
+                                )}
+                            </AutoSizer>
+                        </div>
+
                     }
                 </Box>
             </ScrollBarsCustom>
@@ -179,43 +146,45 @@ export default function TrackList({ list }) {
     )
 }
 
-function MediaTrack({ track, hovering }) {
-
-    const [hovered, setHovered] = useState(hovering);
-    const classes = useStyles();
-
-    useMemo(() => {
-        setHovered(hovering);
-    }, [hovering]);
-
-    return (
-        <motion.div
-            // whileHover={{}}
-            animate={{
-                scale: hovered ? 1.1 : 1,
-                transition: {
-                    duration: 0.15,
-                    ease: 'easeIn'
-                }
-            }}
-            className={classes.mediaCard}
-        >
-            <CardMedia
-                className={classes.cover}
-                image={getTrackAlbumImage(track.item).url}
-                title={getArtistsNames(track.item)}
-            />
-            <motion.div
-                style={{
-                    position: 'absolute',
-                    top: 'calc(50% - 10px)',
-                    left: 'calc(50% - 10px)',
-                }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: hovered ? 1 : 0 }}
-            >
-                <SpotifyIcon />
-            </motion.div>
-        </motion.div>
-    );
-}
+// {
+//     list.map(track =>
+//         <motion.div
+//             key={getTrackID(track.item)}
+//             variants={item}
+//             onHoverStart={() => setHoveringId(getTrackID(track.item))}
+//             onHoverEnd={() => setHoveringId(null)}
+//         >
+//             <Card key={getTrackID(track.item)} className={classes.card} elevation={3} >
+//                 <CardContent key={getTrackID(track.item)} className={classes.content}>
+//                     <MediaTrack track={track} hovering={hoveringId === getTrackID(track.item)} />
+//                     <div className={classes.detailsAndControl}>
+//                         <div className={classes.details}>
+//                             <Typography component="h3" variant="h6" className={classes.typo}>
+//                                 {getTrackName(track.item)}
+//                             </Typography>
+//                             <Typography variant="subtitle1" color="textSecondary">
+//                                 {getArtistsNames(track.item)}
+//                             </Typography>
+//                         </div>
+//                         <CardActions className={classes.controls}>
+//                             <IconButton disabled={true} aria-label="favorite">
+//                                 {track.isSaved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+//                             </IconButton>
+//                             <IconButton
+//                                 aria-label="play/pause"
+//                                 onClick={handlePlay(track)}
+//                                 disabled={getPreviewUrl(track) === null}
+//                                 style={{ opacity: getPreviewUrl(track) === null ? 0.2 : 1 }}
+//                             >
+//                                 {play.isPlaying && (play.id === getTrackID(track)) ?
+//                                     <PauseIcon className={classNames(classes.playIcon, classes.typo)} />
+//                                     : <PlayArrowIcon className={classNames(classes.playIcon, classes.typo)} />
+//                                 }
+//                             </IconButton>
+//                         </CardActions>
+//                     </div>
+//                 </CardContent>
+//             </Card>
+//         </motion.div>
+//     )
+// }

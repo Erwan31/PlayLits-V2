@@ -61,6 +61,7 @@ export default function ScrollBarsCustom({ children, ...props }) {
             style={{ width: width, height: height }}
             thumbMinSize={50}
             universal={true}
+            {...props}
         >
             {children}
         </Scrollbars>
