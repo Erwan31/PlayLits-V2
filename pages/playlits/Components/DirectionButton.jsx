@@ -11,7 +11,7 @@ export default function DirectionButton({ direction, onClick }) {
     };
 
     return (
-        <CustomButton onClick={onClick} color='purple'>
+        <CustomButton onClick={onClick}>
             {/* <Tooltip title="Change the ascending/descending order of your track list (see Sliders & Charts)" placement="right-end"> */}
             <div>
                 <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>

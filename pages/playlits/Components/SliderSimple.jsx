@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SliderSimple({ info, direction = 'asc' }) {
+export const SliderSimple = React.memo(function ({ info, direction = 'asc' }) {
 
     const STEP = 1, MIN = 0, MAX = 100;
     const classes = useStyles();
@@ -26,6 +26,8 @@ export default function SliderSimple({ info, direction = 'asc' }) {
         setState(current => ({ ...current, values: values, final: values }));
         setSliderValue(current => ({ ...current, [info.feature]: values[0] }));
     }
+
+    console.log('render');
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
@@ -126,4 +128,4 @@ export default function SliderSimple({ info, direction = 'asc' }) {
             />
         </Box>
     );
-}
+})

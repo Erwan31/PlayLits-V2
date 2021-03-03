@@ -19,7 +19,7 @@ export default function GenreButton({ onClick, data, isSelected }) {
 
     return (
         <div style={{ margin: '0.5rem' }}>
-            <CustomButton onClick={handleSelection} color={!selected ? 'purple' : 'grey'}>
+            <CustomButton onClick={handleSelection} color={!selected ? '#7438FD' : 'grey'}>
                 <Typography align='left' variant="body2" style={{ marginRight: '0.5rem' }}>
                     {data.genre}
                 </Typography>

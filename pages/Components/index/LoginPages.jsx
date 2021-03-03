@@ -38,7 +38,7 @@ export default function Login() {
     return (
         <div className={classes.marginAround}>
             <Link href={URLConnect} >
-                <CustomButton className={classes.content} color='purple'>
+                <CustomButton className={classes.content}>
                     <Typography align='left' component='h3' variant='h6' className={classes.title}>
                         Login to Spotify
                 </Typography>

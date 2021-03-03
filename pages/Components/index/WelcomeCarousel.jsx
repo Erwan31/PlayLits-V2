@@ -17,9 +17,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         maxWidth: 700,
         maxHeight: 600,
-    },
-    image: {
-        width: '80%',
+        marginTop: 80,
     },
     icons: {
         top: 'calc(50 % - 20px)',
@@ -46,15 +44,16 @@ const useStyles = makeStyles((theme) => ({
         left: ' 10px',
     },
     image: {
-        width: '70%',
-        height: '70%',
+        width: '100%',
+        height: '100%',
     }
 }));
 
 const images = [
-    "https://d33wubrfki0l68.cloudfront.net/dd23708ebc4053551bb33e18b7174e73b6e1710b/dea24/static/images/wallpapers/shared-colors@2x.png",
-    "https://d33wubrfki0l68.cloudfront.net/49de349d12db851952c5556f3c637ca772745316/cfc56/static/images/wallpapers/bridge-02@2x.png",
-    "https://d33wubrfki0l68.cloudfront.net/594de66469079c21fc54c14db0591305a1198dd6/3f4b1/static/images/wallpapers/bridge-01@2x.png"
+    "/static/images/Slide-1.png",
+    "/static/images/Slide-2.png",
+    "/static/images/Slide-3.png",
+    "/static/images/Slide-4.png",
 ];
 
 const directionOffset = 800;
@@ -126,28 +125,13 @@ export default function WelcomeCarousel() {
                 animate="center"
                 exit="exit"
                 exitBeforeEnter
-            // transition={{
-            //     // x: { type: "spring", stiffness: 800, damping: 10, duration: 0.1 },
-            //     opacity: { duration: 1 }
-            // }}
-            // drag="x"
-            // dragConstraints={{ left: 0, right: 0 }}
-            // dragElastic={1}
-            // onDragEnd={(e, { offset, velocity }) => {
-            //     const swipe = swipePower(offset.x, velocity.x);
-
-            //     if (swipe < swipeConfidenceThreshold) {
-            //         paginate(-1);
-            //     } else if (swipe > -swipeConfidenceThreshold) {
-            //         paginate(1);
-            //     }
-            // }}
+                style={{ borderRadius: '0.5rem' }}
             />
             {/* </AnimatePresence> */}
-            <div className={classNames(classes.prev, classes.icons)} onClick={() => paginate(1)}>
+            <div className={classNames(classes.prev, classes.icons)} onClick={() => paginate(-1)}>
                 <ArrowBackIcon />
             </div>
-            <div className={classNames(classes.next, classes.icons)} onClick={() => paginate(-1)}>
+            <div className={classNames(classes.next, classes.icons)} onClick={() => paginate(1)}>
                 <ArrowForwardIcon />
             </div>
         </div>
