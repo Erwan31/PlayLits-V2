@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import hash, { cleanHash } from '../../api/hash'
 // import localStorage from "localStorage"
-import { getUserPlaylists, getUserInfo } from '../../api';
+import { getUserPlaylists, getUserInfo } from '../../api/spotifyAPICall';
 import { Grid, makeStyles, Box, Typography } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
 import { mainState } from '../../States/states'

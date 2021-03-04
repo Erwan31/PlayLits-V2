@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@material-ui/core'
+import { Box, Paper } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
@@ -16,7 +16,10 @@ import LoadingRings from '../Components/LoadingRings';
 import classNames from 'classnames'
 
 // To Out
-import { areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures, getUserPlaylistTracks } from '../api';
+import {
+    areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures,
+    getUserPlaylistTracks
+} from '../api/spotifyAPICall';
 
 
 const useStyles = makeStyles(theme => ({

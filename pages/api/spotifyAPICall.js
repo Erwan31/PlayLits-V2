@@ -1,68 +1,6 @@
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
-import { audioFeaturesIdsString } from '../playlits/utils';
-import { mainState } from '../States/states';
 import { getArrayOfArtistsIDs, getTrackID, getTrackURI } from '../utils/getters';
-
-
-export async function asyncGetCall( {endPoint = null, offset = 0, limit = 25} ) {
-  
-  if (endPoint === null) {
-    throw new Error('Endpoint expected');
-  }
-  
-  const token = window.localStorage.getItem("pl_token");
-  const myHeader = {
-    Authorization: "Bearer " + token,
-    'content-type': 'application/json',
-  };
-  let response;
-
-  try {
-    response = await axios.get(
-      endPoint,
-      {
-        headers: myHeader
-      });
-  }
-  catch (e) {
-    console.error('Error GET', e);
-    return null;
-  }
-
-  return response.data;
-}
-
-export async function asyncPostCall( {endPoint = null, data, offset = 0, limit = 25} ) {
-  const [state, mainState] = useRecoilState(mainState);
-  const { token } = state;
-  const myHeader = {
-    Authorization: "Bearer " + token,
-    'content-type': 'application/json',
-  };
-  const myParams = {
-    offset: offset,
-    limit: limit
-  };
-
-  let response;
-
-  try {
-    response = await axios.post(
-      endPoint,
-      data,
-      {
-        headers: myHeader,
-        params: myParams,
-      });
-  }
-  catch (e) {
-    console.error('Error POST', e);
-    return null;
-  }
-
-  return response;
-}
+import { asyncGetCall, asyncPostCall } from './apiCall';
 
 export async function getUserInfo() {
   return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
@@ -76,21 +14,6 @@ export async function getUserPlaylists(next = null) {
   if (next !== null) url = next;
 
   return await asyncGetCall({ endPoint: url });  
-  // try {
-  //   const userPlaylists = await axios.get(
-  //     url,
-  //     {
-  //       headers: {
-  //         Authorization: "Bearer " + token
-  //       }
-  //     });
-
-  //   return userPlaylists.data;
-  // }
-  // catch (e) {
-  //   console.error('getUserInfo Error', e);
-  //   return null;
-  // }
 }
 
 // Looped 50
@@ -124,50 +47,6 @@ export async function areTracksSavedByUser(token, playlist) {
   
   return result;
 
-}
-
-
-
-
-export async function getUserPlaylistsNew(id, offset = 0, limit = 25) {
-
-    let items = null;
-    let data = null;
-
-    // Get up to 100 tracks from playlist 
-    const token = this.state.token;
-    const headerContent = {
-        Authorization: "Bearer " + token
-    };
-
-    try{
-      const response = await axios.get(`https://api.spotify.com/v1/users/${id}/playlists`,
-                                        {
-                                          headers: headerContent, 
-                                          params: {
-                                            offset: offset,
-                                            limit: limit
-                                          }
-                                        });
-      data = await response.data;
-    }
-    catch(error){
-      // console.log("more playlists...", error);
-      this.setState({
-        no_data: true,
-      });
-    }
-  
-    items = data.items;
-
-    if(items !== null){
-      let limit = data.limit;
-      let playlists = this.state.playlists;
-      playlists.push(...items);
-      this.setState({ limit, playlists });
-    }
-
-    return items;
 }
 
 export async function getUserPlaylistTracks(playlist, token, offset = 0, limit = 20) {
@@ -292,56 +171,28 @@ export async function getArtistsGenres(data, token, offset = 0, limit = 100) {
 
 }
 
-export async function createPlayLits(token, name, tracks) {
+export async function createPlayLits({name, tracks}) {
   
+  const id = window.localStorage.getItem("pl_user_id");
+  console.log(id);
   let allResponses = { playlistCreated: null, tracksAdded: null };
-  const headers = { Authorization: "Bearer " + token };
-
-  // TO PUT INTO AN ISOLATED FCT COMPARING WITH CURRENT STATE
-  const responseID = await axios.get(
-                          "https://api.spotify.com/v1/me",
-                          {headers: headers});
-  const dataID = await responseID.data;
-
-  try {
-      const CREATEPLAYLITSURL = `https://api.spotify.com/v1/users/${dataID.id}/playlists`;
-      const data = {
+  const data = {
         name: "PlayLits: " + name,
         public: false
-      };
-      const response = await axios.post(
-                              CREATEPLAYLITSURL, 
-                              data,
-                              {
-                                headers: headers,
-                                'content-type': 'application/json',
-                              });
-    allResponses.playlistCreated = response;
-  }
-  catch(error){
-      console.error("create playlist", error);
   };
-
-  try {
-    let URIs= Array.from( tracks.map( track => getTrackID(track)), element =>
+  const URIs= Array.from( tracks.map( track => getTrackID(track)), element =>
                 "spotify%3Atrack%3A" + element
-                );
-        URIs = URIs.join(",");
-    // const URIs = encodeURIComponent(tracks.map(track => getTrackURI(track)).join(','));
-    // console.log(URIs, 'URIS')
-    const ADDTRACKSURL = `https://api.spotify.com/v1/playlists/${allResponses.playlistCreated.data.id}/tracks?uris=${URIs}`;
-      const response = await axios.post(
-          ADDTRACKSURL,
-          {},
-          {
-              headers: headers,
-              'content-type': 'application/json',
-          });
-    allResponses.tracksAdded = response;
-  }
-  catch(error){
-      console.error("add tracks to playlist", error);
-  };
+                ).join(",");
+
+  // Create an empty playlist
+  allResponses.playlistCreated = await asyncPostCall({
+    endPoint: `https://api.spotify.com/v1/users/${id}/playlists`,
+    data
+  });
+
+  allResponses.tracksAdded = await asyncPostCall({
+    endPoint: `https://api.spotify.com/v1/playlists/${allResponses.playlistCreated.id}/tracks?uris=${URIs}`,
+  });
 
   return allResponses;
 }

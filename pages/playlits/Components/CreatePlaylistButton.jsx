@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import CustomButton from '../../Components/CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SpotifyIcon from '../../utils/IconsJSX/SpotifyIcon';
-import { createPlayLits } from '../../api';
 import { mainState } from '../../States/states';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import { getSpotifyURL, getTrackID } from '../../utils/getters';
+import { createPlayLits } from '../../api/spotifyAPICall';
 
 export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 
@@ -38,7 +38,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 
     useEffect(async () => {
         if (loading) {
-            const response = await createPlayLits(state.token.access_token, name, sortedTracks);
+            const response = await createPlayLits({ name, tracks: sortedTracks });
             setColor('#A054FD');
             setContent(
                 <Link href={`/playlists/`}>
