@@ -1,57 +1,96 @@
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { audioFeaturesIdsString } from '../playlits/utils';
 import { mainState } from '../States/states';
 import { getArrayOfArtistsIDs, getTrackID, getTrackURI } from '../utils/getters';
 
 
-export async function asyncRESTCall() {
+export async function asyncGetCall( {endPoint = null, offset = 0, limit = 25} ) {
+  
+  if (endPoint === null) {
+    throw new Error('Endpoint expected');
+  }
+  
+  const token = window.localStorage.getItem("pl_token");
+  const myHeader = {
+    Authorization: "Bearer " + token,
+    'content-type': 'application/json',
+  };
+  let response;
+
+  try {
+    response = await axios.get(
+      endPoint,
+      {
+        headers: myHeader
+      });
+  }
+  catch (e) {
+    console.error('Error GET', e);
+    return null;
+  }
+
+  return response.data;
+}
+
+export async function asyncPostCall( {endPoint = null, data, offset = 0, limit = 25} ) {
   const [state, mainState] = useRecoilState(mainState);
   const { token } = state;
-  
-}
-export async function getUserInfo(token) {
+  const myHeader = {
+    Authorization: "Bearer " + token,
+    'content-type': 'application/json',
+  };
+  const myParams = {
+    offset: offset,
+    limit: limit
+  };
 
-    // Make a call using the token
-  try {
-    const userInfo = await axios.get(
-      'https://api.spotify.com/v1/me',
-      {
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      });
-    
-    return userInfo;
-  }
-  catch (e) {
-    console.error('getUserInfo Error', e);
-    return null;
-  }
-  
-}
-
-export async function getUserPlaylists(id, token, url = null) {
-
-  if (url === null) {
-    url = `https://api.spotify.com/v1/users/${id}/playlists`;
-  }
+  let response;
 
   try {
-    const userPlaylists = await axios.get(
-      url,
+    response = await axios.post(
+      endPoint,
+      data,
       {
-        headers: {
-          Authorization: "Bearer " + token
-        }
+        headers: myHeader,
+        params: myParams,
       });
-
-    return userPlaylists.data;
   }
   catch (e) {
-    console.error('getUserInfo Error', e);
+    console.error('Error POST', e);
     return null;
   }
+
+  return response;
+}
+
+export async function getUserInfo() {
+  return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
+}
+
+export async function getUserPlaylists(next = null) {
+
+  const id = window.localStorage.getItem("pl_user_id");
+  let url = `https://api.spotify.com/v1/users/${id}/playlists`;
+
+  if (next !== null) url = next;
+
+  return await asyncGetCall({ endPoint: url });  
+  // try {
+  //   const userPlaylists = await axios.get(
+  //     url,
+  //     {
+  //       headers: {
+  //         Authorization: "Bearer " + token
+  //       }
+  //     });
+
+  //   return userPlaylists.data;
+  // }
+  // catch (e) {
+  //   console.error('getUserInfo Error', e);
+  //   return null;
+  // }
 }
 
 // Looped 50

@@ -62,14 +62,12 @@ export default function UserPlaylists() {
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
 
+    // Load more playlists
     const handleLoadMore = async () => {
         if (state.playlists.next !== null) {
-            const token = state.token.access_token;
-            const id = state.user.data.id;
-            const next = state.playlists.next;
-            const nextPlaylists = await getUserPlaylists(id, token, next);
+            const { next } = state.playlists;
+            const nextPlaylists = await getUserPlaylists(next);
 
-            console.log(nextPlaylists, 'NP');
             setState(current => ({
                 ...current,
                 playlists: {
@@ -80,30 +78,30 @@ export default function UserPlaylists() {
         }
     }
 
+    // Get Access Token first
     useEffect(async () => {
         let { token } = state;
         if (token.access_token === null) {
             token = await hash();
+            // let tokenURL = window.localStorage.getItem("pl_token");
+            // Save in local storage for future page refresh/reload...
+            window.localStorage.setItem("pl_token", token.access_token);
             setState(current => ({ ...current, token }));
         }
     }, [])
 
+    // Get playlist data then
     useEffect(async () => {
         const { token, infoLoaded } = state;
 
         if (token.access_token !== null && !infoLoaded) {
-            // let tokenURL = window.localStorage.getItem("pl_token");
             // let userInfo = window.localStorage.getItem("pl_user_id");
             cleanHash();
 
-            // Save in local storage for future page refresh/reload...
-            // window.localStorage.setItem("pl_token", tokenURL);
+            const userInfo = await getUserInfo();
+            window.localStorage.setItem("pl_user_id", userInfo.id);
 
-            const userInfo = await getUserInfo(token.access_token);
-            // Save in local storage for future page refresh/reload...
-            // await localStorage.setItem("pl_user_id", userInfo.data.display_name);
-
-            const userPlaylists = await getUserPlaylists(userInfo.data.display_name, token.access_token);
+            const userPlaylists = await getUserPlaylists();
             setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
         }
     }, [state.token]);
@@ -117,7 +115,7 @@ export default function UserPlaylists() {
             autoHideDuration={200}
             universal={true}
         >
-            {state.playlists !== {} &&
+            {state.infoLoaded &&
                 <motion.div
                     className="container"
                     variants={container}

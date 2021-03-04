@@ -43,6 +43,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
             <Box
                 display="flex"
                 justifyContent="space-evenly"
+                flexWrap="wrap"
                 className={classes.marginBottom}
             >
                 <DirectionButton direction={direction} onClick={handleDirection} />

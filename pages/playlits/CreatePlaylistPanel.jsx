@@ -12,7 +12,11 @@ export default function CreatePlaylistPanel({ sortedTracks }) {
     };
 
     return (
-        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
+        <Box display="flex"
+            alignItems="center"
+            justifyContent="space-evenly"
+            flexWrap="wrap"
+        >
             <CustomInput onChange={handleInputChange} />
             <CreatePlaylistButton name={input} disabled={input === ""} sortedTracks={sortedTracks} />
         </Box>

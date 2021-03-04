@@ -12,10 +12,6 @@ export const mainState = atom({
   default: {
       infoLoaded: false,
       user: {
-        config: {},
-        data: {},
-        header: {},
-        request: {}
       },
       token: {
         access_token: null,
