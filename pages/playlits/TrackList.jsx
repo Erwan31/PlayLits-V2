@@ -1,12 +1,8 @@
-import { Box, Card, CardActions, CardContent, CardMedia, Divider, IconButton, makeStyles, Typography } from '@material-ui/core'
+import { Box, Card, makeStyles, Typography } from '@material-ui/core'
 import React, { useState, useEffect, useMemo, createRef } from 'react'
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName, linkToSpotify } from '../utils/getters';
-import classNames from 'classnames'
+import { getPreviewUrl, getTrackID } from '../utils/getters';
 import ScrollBarsCustom from '../Components/ScrollBarsCustom';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { motion } from "framer-motion";
 import { useRecoilState } from 'recoil';
 import { mainState } from '../States/states';
 import { FixedSizeList } from "react-window";

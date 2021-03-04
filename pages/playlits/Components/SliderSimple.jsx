@@ -27,7 +27,7 @@ export const SliderSimple = React.memo(function ({ info, direction = 'asc' }) {
         setSliderValue(current => ({ ...current, [info.feature]: values[0] }));
     }
 
-    console.log('render');
+    // console.log('render');
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>

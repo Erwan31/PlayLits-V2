@@ -1,7 +1,15 @@
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
 import { audioFeaturesIdsString } from '../playlits/utils';
+import { mainState } from '../States/states';
 import { getArrayOfArtistsIDs, getTrackID, getTrackURI } from '../utils/getters';
 
+
+export async function asyncRESTCall() {
+  const [state, mainState] = useRecoilState(mainState);
+  const { token } = state;
+  
+}
 export async function getUserInfo(token) {
 
     // Make a call using the token

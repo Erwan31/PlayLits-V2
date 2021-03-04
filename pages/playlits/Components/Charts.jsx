@@ -39,18 +39,6 @@ export default function Charts({ list, sliders }) {
     return (
         <ScrollBarsCustom
             height={150}
-        // width={'100%'}
-        // hasHorizontal={true}
-        // hasVertical={false}
-        // autoWidth
-        // autoWidthMin={200}
-        // autoWidthMax={600}
-        // autoHide
-        // autoHideTimeout={500}
-        // autoHideDuration={200}
-        // style={{ width: '100%', height: 220 }}
-        // thumbMinSize={50}
-        // universal={true}
         >
             <div className={classes.root}>
                 {sliders.map(slider => {

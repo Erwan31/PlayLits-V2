@@ -80,47 +80,33 @@ export default function UserPlaylists() {
         }
     }
 
-    // const [token, setToken] = useState(null);
-    // const [id, setId] = useState(null);
-    // const [playlists, setPlaylists] = useState([]);
-    // const [nextURL, setNextURL] = useState('');
+    useEffect(async () => {
+        let { token } = state;
+        if (token.access_token === null) {
+            token = await hash();
+            setState(current => ({ ...current, token }));
+        }
+    }, [])
 
     useEffect(async () => {
+        const { token, infoLoaded } = state;
 
-        if (!state.infoLoaded) {// let tokenURL = window.localStorage.getItem("pl_token");
+        if (token.access_token !== null && !infoLoaded) {
+            // let tokenURL = window.localStorage.getItem("pl_token");
             // let userInfo = window.localStorage.getItem("pl_user_id");
+            cleanHash();
 
-            // if (tokenURL === null) {
-            const tokenURL = await hash();
-            // setToken(tokenURL);
             // Save in local storage for future page refresh/reload...
             // window.localStorage.setItem("pl_token", tokenURL);
 
-            // cleanHash();
-            // console.log('getHash', state.playlists, tokenURL.access_token);
-            // }
-
-            // if (userInfo === null) {
-            const userInfo = await getUserInfo(tokenURL.access_token);
-            // setId(userInfo.data.display_name);
+            const userInfo = await getUserInfo(token.access_token);
             // Save in local storage for future page refresh/reload...
             // await localStorage.setItem("pl_user_id", userInfo.data.display_name);
 
-            // console.log('getUserInfo', state.playlists, userInfo.data.display_name, tokenURL.access_token);
-            // }
-
-            // if (userInfo && tokenURL && playlists === []) {
-            const userPlaylists = await getUserPlaylists(userInfo.data.display_name, tokenURL.access_token);
-            setState(current => ({ ...current, infoLoaded: true, user: userInfo, token: tokenURL, playlists: userPlaylists }));
-
-            // console.log('getPlaylist', userPlaylists.items, state.token);
-            // }
-
-            // console.log('playlists', playlists, id, token);
-
-            cleanHash();
+            const userPlaylists = await getUserPlaylists(userInfo.data.display_name, token.access_token);
+            setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
         }
-    }, []);
+    }, [state.token]);
 
     return (
         <ScrollBarsCustom
