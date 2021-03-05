@@ -97,10 +97,13 @@ export default function Playlits() {
     // API call -> to externalize into a reducer
     useEffect(async () => {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
-        const audioFeatures = await getTracksAudioFeatures(data, state.token.access_token);
-        const areSaved = await areTracksSavedByUser(state.token.access_token, data);
+        let audioFeatures = await getTracksAudioFeatures(data);
+        // PB with get result loop -> should always return an array, period.
+        audioFeatures = audioFeatures[0].audio_features;
+        console.log(audioFeatures);
+        const areSaved = await areTracksSavedByUser(data);
         //get tracks albums genres
-        const artistsData = await getArtistsGenres(data, state.token.access_token);
+        const artistsData = await getArtistsGenres(data);
         const allGenres = getArrayOfGenres(artistsData.artists);
         const genres = artistsData.artists.map(artist => artist.genres);
         // Initial Structure
