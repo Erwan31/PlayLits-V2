@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { getArrayOfArtistsIDs, getTrackID, getTrackURI } from '../utils/getters';
+import { getArrayOfArtistsIDs, getTrackID} from '../utils/getters';
 import { asyncGetCall, asyncLoopGetCall, asyncPostCall } from './apiCall';
 
 export async function getUserPlaylistTracks(playlist) {
@@ -31,33 +30,7 @@ export async function getUserPlaylistTracks(playlist) {
     }
   }while(result.info.next !== null);
 
-  console.log(result)
   return result;
-}
-
-export async function getTracksInfo() {
-  
-  do {
-    try {
-      const tracks = await axios.get(
-        result.info.next,
-        {
-          headers: { headers }
-        });
-
-      result.info = {
-        href: tracks.data.href,
-        next: tracks.data.next,
-        previous: tracks.data.previous,
-        total: tracks.data.total,
-      };
-      result.items.push(tracks.data.items);
-    }
-    catch (e) {
-      console.error('getPlaylist Error', e);
-      return null;
-    }
-  } while (result.info.next !== null);
 }
 
 export async function getUserInfo() {
@@ -92,7 +65,7 @@ export async function getTracksAudioFeatures(playlist) {
   
   let result = [];
   const ids = playlist.items.map(track => getTrackID(track));
-   const params = {
+  const params = {
     ids
   };
   
