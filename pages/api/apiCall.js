@@ -62,7 +62,6 @@ export async function asyncLoopGetCall({ endPoint = null, params = null, offset 
         console.error('Loop GET Error', e);
         }
     } while (maxIteration > iteration);
-    console.log('result!!', result);
     return result;
 }
 

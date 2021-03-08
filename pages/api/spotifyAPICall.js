@@ -136,14 +136,22 @@ export async function areTracksSavedByUser(playlist) {
 
 export async function getTracksAudioFeatures(playlist) {
   
+  let result = [];
   const ids = playlist.items.map(track => getTrackID(track));
    const params = {
     ids
   };
-  return await asyncLoopGetCall({
+  
+  let afArray = await asyncLoopGetCall({
     endPoint: `https://api.spotify.com/v1/audio-features`,
     params
   });
+
+  afArray.forEach(el =>
+    result = [...result, ...el.audio_features]
+  );
+  
+  return result;
 }
 
 // Looped 50

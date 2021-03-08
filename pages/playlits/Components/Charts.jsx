@@ -44,7 +44,7 @@ export default function Charts({ list, sliders }) {
                 {sliders.map(slider => {
 
                     if (slider.feature === 'crises') return;
-
+                    console.log(list, 'lookijg');
                     const af = getArrayOfAudioFeature(list, slider.feature);
                     const label = slider.name;
 

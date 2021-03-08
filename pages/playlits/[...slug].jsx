@@ -99,8 +99,6 @@ export default function Playlits() {
         const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
         let audioFeatures = await getTracksAudioFeatures(data);
         // PB with get result loop -> should always return an array, period.
-        audioFeatures = audioFeatures[0].audio_features;
-        console.log(audioFeatures);
         const areSaved = await areTracksSavedByUser(data);
         //get tracks albums genres
         const artistsData = await getArtistsGenres(data);
