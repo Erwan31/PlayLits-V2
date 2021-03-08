@@ -96,7 +96,7 @@ export default function Playlits() {
 
     // API call -> to externalize into a reducer
     useEffect(async () => {
-        const data = await getUserPlaylistTracks(state.selectedPlaylist.info, state.token.access_token);
+        const data = await getUserPlaylistTracks(state.selectedPlaylist.info);
         let audioFeatures = await getTracksAudioFeatures(data);
         // PB with get result loop -> should always return an array, period.
         const areSaved = await areTracksSavedByUser(data);

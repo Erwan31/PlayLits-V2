@@ -2,67 +2,42 @@ import axios from 'axios';
 import { getArrayOfArtistsIDs, getTrackID, getTrackURI } from '../utils/getters';
 import { asyncGetCall, asyncLoopGetCall, asyncPostCall } from './apiCall';
 
-export async function getUserPlaylistTracks(playlist, token, offset = 0, limit = 20) {
+export async function getUserPlaylistTracks(playlist) {
 
-  const headers = { Authorization: "Bearer " + token };
   const result = {
     info: {
       href: null,
-      next: null,
+      next: playlist.tracks.href,
       previous: null,
       total: null,
     },
-    items: null,
+    items: [],
   };
 
-  try {
-    const tracks = await axios.get(
-      playlist.tracks.href,
-      {
-        headers: headers,
-      });
-
-    result.info = {
-      href: tracks.data.href,
-      next: tracks.data.next,
-      previous: tracks.data.previous,
-      total: tracks.data.total,
-    };
-    result.items = tracks.data.items;
-  }
-  catch (e) {
-    console.error('getPlaylist Error', e);
-    return null;
-  }
-
-  while (result.info.next !== null) {
+  do {
     try {
-      const tracks = await axios.get(
-        result.info.next,
-        {
-          headers: { headers }
-        });
+      const respObj = await asyncGetCall({ endPoint: result.info.next });
 
       result.info = {
-        href: tracks.data.href,
-        next: tracks.data.next,
-        previous: tracks.data.previous,
-        total: tracks.data.total,
+        href: respObj.href,
+        next: respObj.next,
+        previous: respObj.previous,
+        total: respObj.total,
       };
-      result.items.push(tracks.data.items);
+      result.items.push(...respObj.items);
     }
     catch (e) {
       console.error('getPlaylist Error', e);
-      return null;
     }
-  }
+  }while(result.info.next !== null);
 
+  console.log(result)
   return result;
 }
 
 export async function getTracksInfo() {
   
-  while (result.info.next !== null) {
+  do {
     try {
       const tracks = await axios.get(
         result.info.next,
@@ -82,28 +57,7 @@ export async function getTracksInfo() {
       console.error('getPlaylist Error', e);
       return null;
     }
-  }
-}
-
-export async function getPlaylistInfo() {
-    try {
-    const tracks = await axios.get(
-      playlist.tracks.href,
-      {
-        headers: headers,
-      });
-
-    result.info = {
-      href: tracks.data.href,
-      next: tracks.data.next,
-      previous: tracks.data.previous,
-      total: tracks.data.total,
-    };
-    result.items = tracks.data.items;
-  }
-  catch (e) {
-    console.error('getPlaylist Error', e);
-  }
+  } while (result.info.next !== null);
 }
 
 export async function getUserInfo() {
@@ -150,7 +104,7 @@ export async function getTracksAudioFeatures(playlist) {
   afArray.forEach(el =>
     result = [...result, ...el.audio_features]
   );
-  
+
   return result;
 }
 

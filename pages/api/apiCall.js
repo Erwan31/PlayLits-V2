@@ -49,10 +49,11 @@ export async function asyncLoopGetCall({ endPoint = null, params = null, offset 
         try {
             const response = await asyncGetCall({
                 endPoint,
-                params: {[key]: query},
+                params: { [key]: query },
                 offset,
                 limit
-            }) 
+            });
+
             if (Array.isArray(response)) {
                 result.push(...response);
             }
