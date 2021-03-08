@@ -5,6 +5,7 @@ import { mainState } from '../../States/states'
 import { useRecoilState } from 'recoil';
 // import DefaultThumbnail from '/static/images/default_thumbnail.svg'
 import { motion } from "framer-motion";
+import { getSmallestImage } from '../../utils/getters';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -80,7 +81,7 @@ export default function PlaylistCard({ playlist }) {
                             classes={{
                                 root: classes.media
                             }}
-                            image={playlist.images[0] !== undefined ? playlist.images[0].url : '/static/images/default_thumbnail.svg'}
+                            image={getSmallestImage(playlist.images) !== undefined ? getSmallestImage(playlist.images).url : '/static/images/default_thumbnail.svg'}
                             title={playlist.name}
                         />
                     </motion.div>

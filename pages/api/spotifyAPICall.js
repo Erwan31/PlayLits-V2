@@ -2,33 +2,6 @@ import axios from 'axios';
 import { getArrayOfArtistsIDs, getTrackID, getTrackURI } from '../utils/getters';
 import { asyncGetCall, asyncLoopGetCall, asyncPostCall } from './apiCall';
 
-export async function getUserInfo() {
-  return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
-}
-
-export async function getUserPlaylists(next = null) {
-
-  const id = window.localStorage.getItem("pl_user_id");
-  let url = `https://api.spotify.com/v1/users/${id}/playlists`;
-
-  if (next !== null) url = next;
-
-  return await asyncGetCall({ endPoint: url });  
-}
-
-// Looped 50
-export async function areTracksSavedByUser(playlist) {
-
-  const ids = playlist.items.map(track => getTrackID(track));
-  const params = {
-    ids
-  };
-  return await asyncLoopGetCall({
-    endPoint: `https://api.spotify.com/v1/me/tracks/contains`,
-    params
-  });
-}
-
 export async function getUserPlaylistTracks(playlist, token, offset = 0, limit = 20) {
 
   const headers = { Authorization: "Bearer " + token };
@@ -85,8 +58,81 @@ export async function getUserPlaylistTracks(playlist, token, offset = 0, limit =
   }
 
   return result;
-
 }
+
+export async function getTracksInfo() {
+  
+  while (result.info.next !== null) {
+    try {
+      const tracks = await axios.get(
+        result.info.next,
+        {
+          headers: { headers }
+        });
+
+      result.info = {
+        href: tracks.data.href,
+        next: tracks.data.next,
+        previous: tracks.data.previous,
+        total: tracks.data.total,
+      };
+      result.items.push(tracks.data.items);
+    }
+    catch (e) {
+      console.error('getPlaylist Error', e);
+      return null;
+    }
+  }
+}
+
+export async function getPlaylistInfo() {
+    try {
+    const tracks = await axios.get(
+      playlist.tracks.href,
+      {
+        headers: headers,
+      });
+
+    result.info = {
+      href: tracks.data.href,
+      next: tracks.data.next,
+      previous: tracks.data.previous,
+      total: tracks.data.total,
+    };
+    result.items = tracks.data.items;
+  }
+  catch (e) {
+    console.error('getPlaylist Error', e);
+  }
+}
+
+export async function getUserInfo() {
+  return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
+}
+
+export async function getUserPlaylists(next = null) {
+
+  const id = window.localStorage.getItem("pl_user_id");
+  let url = `https://api.spotify.com/v1/users/${id}/playlists`;
+
+  if (next !== null) url = next;
+
+  return await asyncGetCall({ endPoint: url });  
+}
+
+// Looped 50
+export async function areTracksSavedByUser(playlist) {
+
+  const ids = playlist.items.map(track => getTrackID(track));
+  const params = {
+    ids
+  };
+  return await asyncLoopGetCall({
+    endPoint: `https://api.spotify.com/v1/me/tracks/contains`,
+    params
+  });
+}
+
 
 export async function getTracksAudioFeatures(playlist) {
   
@@ -98,26 +144,6 @@ export async function getTracksAudioFeatures(playlist) {
     endPoint: `https://api.spotify.com/v1/audio-features`,
     params
   });
- 
-  // const result = [];
-  // const APILIMIT = 50;
-  // let maxIteration = Math.floor(playlist.items.length / APILIMIT) + 1;
-  // let iteration = 0;
-
-  // do {
-  //   const spliceIds = ids.slice(iteration* APILIMIT, (iteration + 1) * APILIMIT).join(',');
-  //   iteration++;
-
-  //   try {
-  //     const af = await asyncGetCall({ endPoint: `https://api.spotify.com/v1/audio-features/?ids=${spliceIds}` });
-  //     result.push(...af.audio_features);
-  //   }
-  //   catch (e) {
-  //     console.error('getPlaylist Error', e);
-  //     return null;
-  //   }
-  // } while (maxIteration > iteration);
-  // return result;
 }
 
 // Looped 50

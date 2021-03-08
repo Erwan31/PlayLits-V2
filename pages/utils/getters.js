@@ -1,5 +1,5 @@
 export function getTrackAlbumImage(item) {
-    return item.track.album.images[1] || item.track.album.images[0];
+    return getSmallestImage(item.track.album.images);
 }
 
 export function getTrackName(item) {
@@ -81,6 +81,14 @@ export function getArrayOfGenres(arr) {
     });
 
     return join;
+}
+
+export function getSmallestImage(images){
+        // images[0] width's is 640, after its 300 -> what we want if we can
+        if (images.length > 1) {
+            return images[1];
+        }
+        return images[0];
 }
 
 export function filterGenres(arr) {
