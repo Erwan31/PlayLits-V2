@@ -45,13 +45,19 @@ const useStyles = makeStyles(theme => ({
         top: 0,
         right: 0,
     },
-    sizeAndCenter: {
-        width: '70%',
-        height: '100%',
+    pointer: {
+        cursor: 'pointer',
+    },
+    modal: {
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        margin: 'auto',
+        justifyContent: 'center',
+    },
+    noFocus: {
+        '&:focus': {
+            outline: 'none',
+            boxShadow: 'none',
+        }
     }
 }));
 
@@ -70,7 +76,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
 
     return (
         <div className={classes.relative}>
-            <InfoIcon color={'#6167F3'} className={classes.positionCorner} onClick={handleOpen} />
+            <InfoIcon color={'#A452FD'} className={classNames(classes.positionCorner, classes.pointer)} onClick={handleOpen} />
             <Typography gutterBottom align='center' component='h2' variant='h5' classes={{ root: classNames(classes.marginBottom, classes.title) }}>
                 PlayLits Panel
                  <IconButton className={classes.iconSize}>
@@ -112,7 +118,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
                     timeout: 500,
                 }}
             >
-                <div className={classes.sizeAndCenter}>
+                <div className={classes.noFocus}>
                     <WelcomeCarousel />
                 </div>
             </Modal>

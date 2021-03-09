@@ -15,6 +15,7 @@ export default function Home() {
         autoHideTimeout={500}
         autoHideDuration={200}
       > */}
+      <div style={{marginTop: 80 }}></div>
       <WelcomeCarousel />
       <LoginPages />
       

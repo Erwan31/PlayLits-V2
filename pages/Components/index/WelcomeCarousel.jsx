@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         maxWidth: 700,
         maxHeight: 600,
-        marginTop: 80,
+        // marginTop: 80,
     },
     icons: {
         top: 'calc(50 % - 20px)',
