@@ -1,21 +1,18 @@
-import { Box, makeStyles, Tooltip, Typography, IconButton } from '@material-ui/core'
 import React, { useState } from 'react'
-import ChartsIcon from '../utils/IconsJSX/ChartsIcon'
-import GenresIcon from '../utils/IconsJSX/GenresIcon'
-import InfoIcon from '../utils/IconsJSX/InfoIcon'
-import SlidersIcon from '../utils/IconsJSX/SlidersIcon'
-import DirectionButton from './Components/DirectionButton'
+import classNames from 'classnames'
+import { Box, makeStyles, Tooltip, Typography, IconButton, Modal, Backdrop } from '@material-ui/core'
+import ChartsIcon from '../../../pages/utils/IconsJSX/ChartsIcon'
+import GenresIcon from '../../../pages/utils/IconsJSX/GenresIcon'
+import InfoIcon from '../../../pages/utils/IconsJSX/InfoIcon'
+import SlidersIcon from '../../../pages/utils/IconsJSX/SlidersIcon'
+import OnlySavedButton from '../OnlySavedButton'
 import GenresPanel from './GenresPanel'
 import SliderPanel from './SliderPanel'
-import OnlySavedButton from './Components/OnlySavedButton'
-import PanelCollapse from './Components/PanelCollapse'
-import Charts from './Components/Charts'
-import { slidersSimple, slidersDouble } from './slidersData'
-import classNames from 'classnames'
-// import { motion } from 'framer-motion'
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import WelcomeCarousel from '../Components/index/WelcomeCarousel'
+import Charts from '../Charts'
+import WelcomeCarousel from '../../index/WelcomeCarousel'
+import DirectionButton from '../DirectionButton'
+import PanelCollapse from '../PanelCollapse'
+import { slidersSimple, slidersDouble } from '../../../utils/playlits/slidersData'
 
 const useStyles = makeStyles(theme => ({
     title: {

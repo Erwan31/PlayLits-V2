@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, makeStyles, Box } from '@material-ui/core';
 import Link from 'next/link'
-import { mainState } from '../../States/states'
+import { mainState } from '../../utils/States/states'
 import { useRecoilState } from 'recoil';
 // import DefaultThumbnail from '/static/images/default_thumbnail.svg'
 import { motion } from "framer-motion";

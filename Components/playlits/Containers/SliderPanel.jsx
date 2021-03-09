@@ -1,10 +1,10 @@
 import { Box, makeStyles } from '@material-ui/core'
 import React, { useState } from 'react'
-import SliderDouble from './Components/SliderDouble'
-import { SliderSimple } from './Components/SliderSimple'
-import { mainState, selectedPlaylist } from '../States/states'
+import { SliderSimple } from '../SliderSimple'
+import { mainState, selectedPlaylist } from '../../../utils/States/states'
 import { useRecoilState } from 'recoil';
-import ScrollBarsCustom from '../Components/ScrollBarsCustom'
+import ScrollBarsCustom from '../../ScrollBarsCustom'
+import SliderDouble from '../SliderDouble'
 
 export default function SliderPanel({ list, slidersSimple, slidersDouble, direction }) {
 

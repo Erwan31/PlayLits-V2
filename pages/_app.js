@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <RecoilRoot>
       <MuiThemeProvider theme={theme}>
-        <Component {...pageProps} />
+          <Component {...pageProps} />
       </MuiThemeProvider>
     </RecoilRoot>
   )

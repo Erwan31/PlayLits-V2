@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import SpotifyIcon from '../../utils/IconsJSX/SpotifyIcon';
+import SpotifyIcon from '../../pages/utils/IconsJSX/SpotifyIcon';
 import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName, linkToSpotify } from '../../utils/getters';
 import { CardMedia, makeStyles, Tooltip } from '@material-ui/core';
 import { motion } from 'framer-motion';

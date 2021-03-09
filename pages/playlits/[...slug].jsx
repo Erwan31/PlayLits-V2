@@ -1,25 +1,23 @@
 import { Box, Paper } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
-import { mainState, selectedPlaylist, slidersState } from '../States/states'
-import { useRecoilState } from 'recoil';
-import TrackList from './TrackList';
-import ScrollBarsCustom from '../Components/ScrollBarsCustom';
-import { sortList, changeTracksNumber, dataStructureTracks } from './utils';
-import { reverseOrder } from './utils'
-import { getArrayOfGenres } from '../utils/getters';
-import CreatePlaylistPanel from './CreatePlaylistPanel';
-import PlaylitsPanel from './PlaylitsPanel';
 import { motion } from 'framer-motion';
-import LoadingRings from '../Components/LoadingRings';
 import classNames from 'classnames'
-
+import { useRecoilState } from 'recoil';
+import { mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
+import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder } from '../../utils/playlits/utils';
+import { getArrayOfGenres } from '../../utils/getters';
+import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
+import PlaylitsPanel from '../../Components/playlits/Containers/PlaylitsPanel';
+import TrackList from '../../Components/playlits/Containers/TrackList'
+import HeaderFooter from '../../Components/HeaderFooter/HeaderFooter';
+import ScrollBarsCustom from '../../Components/ScrollBarsCustom';
+import LoadingRings from '../../Components/LoadingRings'
 // To Out
 import {
     areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures,
     getUserPlaylistTracks
-} from '../api/spotifyAPICall';
+} from '../../api/spotifyAPICall';
 
 
 const useStyles = makeStyles(theme => ({

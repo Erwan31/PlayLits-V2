@@ -1,6 +1,6 @@
 import { makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
-import CustomButton from '../../Components/CustomButton'
+import CustomButton from '../CustomButton'
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 

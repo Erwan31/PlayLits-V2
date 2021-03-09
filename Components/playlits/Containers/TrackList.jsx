@@ -1,13 +1,13 @@
 import { Box, Card, makeStyles, Typography } from '@material-ui/core'
 import React, { useState, useEffect, useMemo, createRef } from 'react'
-import { getPreviewUrl, getTrackID } from '../utils/getters';
-import ScrollBarsCustom from '../Components/ScrollBarsCustom';
+import { getPreviewUrl, getTrackID } from '../../../utils/getters';
+import ScrollBarsCustom from '../../ScrollBarsCustom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useRecoilState } from 'recoil';
-import { mainState } from '../States/states';
+import { mainState } from '../../../utils/States/states';
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import TrackRow from './Components/TrackRow';
+import TrackRow from '../TrackRow';
 
 const useStyles = makeStyles((theme) => ({
     card: {

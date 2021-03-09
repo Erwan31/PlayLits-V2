@@ -4,7 +4,7 @@ import hash, { cleanHash } from '../../api/hash'
 import { getUserPlaylists, getUserInfo } from '../../api/spotifyAPICall';
 import { Grid, makeStyles, Box, Typography } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
-import { mainState } from '../../States/states'
+import { mainState } from '../../utils/States/states'
 import { useRecoilState } from 'recoil';
 import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';

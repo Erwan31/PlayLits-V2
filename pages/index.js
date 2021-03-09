@@ -1,6 +1,6 @@
-import HeaderFooter from './Components/HeaderFooter/HeaderFooter'
-import LoginPages from './Components/index/LoginPages'
-import WelcomeCarousel from './Components/index/WelcomeCarousel'
+import HeaderFooter from '../Components/HeaderFooter/HeaderFooter'
+import LoginPages from '../Components/index/LoginPages'
+import WelcomeCarousel from '../Components/index/WelcomeCarousel'
 // import { Scrollbars } from 'react-custom-scrollbars';
 
 export default function Home() {

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
-import { slidersState } from '../../States/states';
+import { slidersState } from '../../utils/States/states';
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -10,38 +10,32 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SliderDouble({ info, max }) {
+export const SliderSimple = React.memo(function ({ info, direction = 'asc' }) {
 
-    const STEP = 1, MIN = 0, MAX = max;
-
+    const STEP = 1, MIN = 0, MAX = 100;
     const classes = useStyles();
-    const [state, setState] = useState({ values: [0, max], final: [0, max] });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-
-    useEffect(() => {
-        setSliderValue(current => ({ ...current, tracks: [state.values[0], state.values[1]] }));
-    }, [])
+    const [state, setState] = useState({ values: [slidersValues[info.feature]], final: [slidersValues[info.feature]] });
 
     const handleChange = (values) => {
         setState(current => ({ ...current, values: values }));
     }
 
     const handleFinalChange = (values) => {
+        // console.log(values, 'values');
         setState(current => ({ ...current, values: values, final: values }));
-        setSliderValue(current => ({ ...current, tracks: [values[0], values[1]] }));
+        setSliderValue(current => ({ ...current, [info.feature]: values[0] }));
     }
 
-    const diff = () => {
-        return state.values[1] - state.values[0] > 10 ? state.values[1] - state.values[0] : 10;
-    }
+    // console.log('render');
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
-            <Tooltip title={info.tooltip} arrow placement="left">
+            <Tooltip title={info.tooltip} arrow placement="top">
                 <Typography variant="body1" component="h3">{info.name}</Typography>
             </Tooltip>
             <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
-                {diff()}
+                {direction === 'asc' ? info.labelUp : info.labelDown}
             </Typography>
             <Range
                 className='sliderRange'
@@ -75,7 +69,7 @@ export default function SliderDouble({ info, max }) {
                                 borderRadius: '4px',
                                 background: getTrackBackground({
                                     values: state.values,
-                                    colors: ['#ccc', info.color, '#ccc'],
+                                    colors: [info.color, '#ccc'],
                                     min: MIN,
                                     max: MAX,
                                     direction: Direction.Up
@@ -88,52 +82,50 @@ export default function SliderDouble({ info, max }) {
                         </div>
                     </div>
                 )}
-                renderThumb={({ props, isDragged, index }) => (
-                    <Tooltip title={info.thumb[index]} arrow>
-                        <div
-                            {...props}
-                            style={{
-                                ...props.style,
-                                height: '20px',
-                                width: '24px',
-                                borderRadius: '4px',
-                                backgroundColor: '#FFF',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                boxShadow: '0px 2px 6px #2C3049',
-                                outline: 'none'
-                            }}
-                        >
-                            {isDragged &&
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        top: '0px',
-                                        left: '24px',
-                                        color: '#fff',
-                                        fontWeight: 'bold',
-                                        fontSize: '11px',
-                                        fontFamily: 'Arial,Helvetica Neue,Helvetica,sans-serif',
-                                        padding: '4px',
-                                        borderRadius: '4px',
-                                        backgroundColor: '5ABCDE'
-                                    }}
-                                >
-                                    {state.values[index]}
-                                </div>
-                            }
+                renderThumb={({ props, isDragged }) => (
+                    <div
+                        {...props}
+                        style={{
+                            ...props.style,
+                            height: '20px',
+                            width: '24px',
+                            borderRadius: '4px',
+                            backgroundColor: '#FFF',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            boxShadow: '0px 2px 6px #2C3049',
+                            outline: 'none'
+                        }}
+                    >
+                        { isDragged &&
                             <div
                                 style={{
-                                    width: '14px',
-                                    height: '4px',
-                                    backgroundColor: isDragged ? info.color : '#CCC'
+                                    position: 'absolute',
+                                    top: '0px',
+                                    left: '24px',
+                                    color: '#fff',
+                                    fontWeight: 'bold',
+                                    fontSize: '11px',
+                                    fontFamily: 'Arial,Helvetica Neue,Helvetica,sans-serif',
+                                    padding: '4px',
+                                    borderRadius: '4px',
+                                    backgroundColor: '5ABCDE'
                                 }}
-                            />
-                        </div>
-                    </Tooltip>
+                            >
+                                {state.values[0]}
+                            </div>
+                        }
+                        <div
+                            style={{
+                                width: '14px',
+                                height: '4px',
+                                backgroundColor: isDragged ? info.color : '#CCC'
+                            }}
+                        />
+                    </div>
                 )}
             />
         </Box>
     );
-}
+})

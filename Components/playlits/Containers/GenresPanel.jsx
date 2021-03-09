@@ -1,6 +1,7 @@
 import { Box } from '@material-ui/core';
 import React, { useState, useEffect } from 'react'
-import GenreButton from './Components/GenreButton'
+import GenreButton from '../GenreButton';
+
 
 export default function GenresPanel({ genres, onSelect }) {
 

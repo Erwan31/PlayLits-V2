@@ -1,14 +1,12 @@
 import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import { defaults, Line } from 'react-chartjs-2';
-import ScrollBarsCustom from '../../Components/ScrollBarsCustom';
+import ScrollBarsCustom from '../ScrollBarsCustom';
 import { getArrayOfAudioFeature } from '../../utils/getters'
-import { data, options } from '../chartLogic';
 import { getLinearColor } from '../../utils/getters'
-// Deafult font for the charts
+import { data, options } from '../../utils/playlits/chartLogic';
+// Deafult font for the charts  
 defaults.global.defaultFontFamily = 'Nunito';
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,7 +42,6 @@ export default function Charts({ list, sliders }) {
                 {sliders.map(slider => {
 
                     if (slider.feature === 'crises') return;
-                    console.log(list, 'lookijg');
                     const af = getArrayOfAudioFeature(list, slider.feature);
                     const label = slider.name;
 

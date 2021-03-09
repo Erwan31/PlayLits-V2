@@ -1,4 +1,4 @@
-import { getArrayOfAudioFeature, getTrackID } from "../utils/getters";
+import { getArrayOfAudioFeature, getTrackID } from "../getters";
 
 export function audioFeaturesIdsString(tracks) {
 
