@@ -7,6 +7,13 @@ import {
   useRecoilValue,
 } from 'recoil';
 
+export const errorState = atom({
+  key: 'errorState',
+  default: {
+    type: null,
+  }
+});
+
 export const mainState = atom({
   key: 'mainState',
   default: {
