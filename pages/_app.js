@@ -9,7 +9,15 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <meta name="viewport" content="viewport-fit=cover" />
+        {/* https://ahrefs.com/blog/seo-meta-tags/ */}
+        <meta name="viewport" content="viewport-fit=cover" key="viewport" />
+        <meta
+          name="description"
+          content="Reorder and sort your Spotify playlists easily! Create new playlist based on tracks characteristics, loved songs... Enjoy!"
+          key="long-description"
+        />
+        <meta name="robots" content="index, follow" />
+        <meta charset="UTF-8" />
         <title>PlayLits</title>
       </Head>
       <RecoilRoot>
