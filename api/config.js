@@ -1,8 +1,12 @@
 export const authEndpoint = "https://accounts.spotify.com/authorize";
 
+const dev = process.env.NODE_ENV !== 'production'
+
+// const app = next({ dev });
+
 // Replace with your app's client ID, redirect URI and desired scopes
 export const clientId = "4f5288c7f7ca4f8e995e861a262eb902";
-export const redirectURI = "http://localhost:3000/playlists"; //"https://playlits.herokuapp.com/redirect";
+export const redirectURI = dev ? "http://localhost:3000/playlists" : "https://playlits.vercel.app/"; //"https://playlits.herokuapp.com/redirect";
 export const scopes = [
     //"user-top-read",
     //"user-read-currently-playing",
