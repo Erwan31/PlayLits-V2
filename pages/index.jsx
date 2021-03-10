@@ -6,7 +6,7 @@ import WelcomeCarousel from '../Components/index/WelcomeCarousel'
 export default function Home() {
 
   return (
-      <HeaderFooter>
+    <HeaderFooter>
       {/* <Scrollbars
         autoHeight
         autoHeightMin={450}
@@ -15,10 +15,10 @@ export default function Home() {
         autoHideTimeout={500}
         autoHideDuration={200}
       > */}
-      <div style={{marginTop: 80 }}></div>
-      <WelcomeCarousel />
+      <div style={{ marginTop: 80, marginLeft: '1.5rem', marginRight: '1.5rem' }}>
+        <WelcomeCarousel />
+      </div>
       <LoginPages />
-      
       {/* </Scrollbars> */}
     </HeaderFooter>
   )

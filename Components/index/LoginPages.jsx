@@ -3,7 +3,7 @@ import React from 'react';
 import { authEndpoint, clientId, redirectURI, scopes } from "../../api/config";
 // import Button from '@material-ui/core/Button';
 import Link from 'next/link'
-import SpotifyIcon from '../../pages/utils/IconsJSX/SpotifyIcon';
+import SpotifyIcon from '../IconsJSX/SpotifyIcon';
 import CustomButton from '../CustomButton';
 
 const useStyles = makeStyles((theme) => ({

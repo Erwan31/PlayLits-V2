@@ -2,7 +2,7 @@ import { Box, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../../Components/CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import SpotifyIcon from '../../pages/utils/IconsJSX/SpotifyIcon';
+import SpotifyIcon from '../IconsJSX/SpotifyIcon';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import { getSpotifyURL, getTrackID } from '../../utils/getters';

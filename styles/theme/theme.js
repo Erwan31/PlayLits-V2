@@ -1,11 +1,11 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme, responsiveFontSizes} from '@material-ui/core';
 
 const colors = {
   primary: { main: '#2c3049' },
   secondary: { main: '#FFFFFF'},
 };
 
-export const theme = createMuiTheme({
+let themeCreate = createMuiTheme({
   breakpoints: {
     values: {
       xs: 0,
@@ -21,7 +21,7 @@ export const theme = createMuiTheme({
     "fontWeightLight": 300,
     "fontWeightRegular": 400,
     "fontWeightMedium": 500
-   },
+  },
   spacing: 10,
   palette: {
     primary: colors.primary,
@@ -31,7 +31,7 @@ export const theme = createMuiTheme({
   overrides: {
     MuiCard: {
         root: {
-               backgroundColor: 'white'
+              backgroundColor: 'white'
             }
     },
     MuiTypography: {
@@ -47,4 +47,4 @@ export const theme = createMuiTheme({
   },
 });
 
-export default theme;
+export const theme = responsiveFontSizes(themeCreate);
