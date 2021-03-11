@@ -127,7 +127,7 @@ export async function asyncLoopPostWithIds({ endPoint = null, params = null, off
         if (Array.isArray(query)) query = query.join(',');
         iteration++;
         const uglyEndPoint = endPoint + '?uris=' + query;
-        console.log('question', uglyEndPoint, key, query, endPoint, offset, limit);
+        // console.log('question', uglyEndPoint, key, query, endPoint, offset, limit);
         try {
             const response = await asyncPostCall({
                 endPoint: uglyEndPoint,
@@ -136,11 +136,7 @@ export async function asyncLoopPostWithIds({ endPoint = null, params = null, off
                 // limit
             });
 
-            console.log('response', response, params, endPoint, offset, limit);
-            // if (Array.isArray(response)) {
-            //     result.push(...response);
-            // }
-            // else result.push(response);
+            // console.log('response', response, params, endPoint, offset, limit);
         }
         catch (e) {
             console.error('Loop POST Error', e);

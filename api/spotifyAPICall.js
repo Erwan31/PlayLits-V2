@@ -122,7 +122,7 @@ export async function createPlayLits({name, tracks}, errorHandler ) {
     params: { uris: URIs },
 
   },
-  errorHanlder);
+  errorHandler);
 
   return allResponses;
 }
