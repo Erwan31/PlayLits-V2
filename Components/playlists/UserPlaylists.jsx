@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import hash, { cleanHash } from '../../api/hash'
 // import localStorage from "localStorage"
 import { getUserPlaylists, getUserInfo } from '../../api/spotifyAPICall';
@@ -10,6 +10,7 @@ import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
 import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
+import ThrowError from '../Errors/ThrowError';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,12 +62,17 @@ export default function UserPlaylists() {
 
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
+    const [hasError, setHasError] = useState(false);
+
+    const handleError = () => {
+        setHasError(true);
+    }
 
     // Load more playlists
     const handleLoadMore = async () => {
         if (state.playlists.next !== null) {
             const { next } = state.playlists;
-            const nextPlaylists = await getUserPlaylists(next);
+            const nextPlaylists = await getUserPlaylists(next, handleError);
 
             setState(current => ({
                 ...current,
@@ -77,6 +83,7 @@ export default function UserPlaylists() {
             }));
         }
     }
+
 
     // Get Access Token first
     useEffect(async () => {
@@ -98,10 +105,10 @@ export default function UserPlaylists() {
             // let userInfo = window.localStorage.getItem("pl_user_id");
             cleanHash();
 
-            const userInfo = await getUserInfo();
+            const userInfo = await getUserInfo(handleError);
             window.localStorage.setItem("pl_user_id", userInfo.id);
 
-            const userPlaylists = await getUserPlaylists();
+            const userPlaylists = await getUserPlaylists(null, handleError);
             setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
         }
     }, [state.token]);
@@ -163,6 +170,7 @@ export default function UserPlaylists() {
                         </Box>
                     }
                 </motion.div>}
+            {hasError && <ThrowError />}
         </ScrollBarsCustom>
     );
 }

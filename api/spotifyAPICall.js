@@ -20,7 +20,7 @@ export async function getUserPlaylistTracks(playlist, errorHandler) {
   };
 
   do {
-      const respObj = await asyncGetCall({ endPoint: result.info.next , errorHandler});
+      const respObj = await asyncGetCall({ endPoint: result.info.next}, errorHandler);
 
       result.info = {
         href: respObj.href,
@@ -36,7 +36,7 @@ export async function getUserPlaylistTracks(playlist, errorHandler) {
 }
 
 export async function getUserInfo(errorHandler) {
-  return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me', errorHandler });  
+  return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' }, errorHandler);  
 }
 
 export async function getUserPlaylists(next = null, errorHandler) {
@@ -91,7 +91,7 @@ export async function getArtistsGenres(data, errorHandler) {
   const ids = getArrayOfArtistsIDs(data.items);
   let genres = { artists: [] };
   const artists = [];
-  let respArray = await asyncLoopGetWithIds({ endPoint: `https://api.spotify.com/v1/artists`, params: ids, errorHandler});
+  let respArray = await asyncLoopGetWithIds({ endPoint: `https://api.spotify.com/v1/artists`, params: ids}, errorHandler);
 
   respArray.map(arr => artists.push(...arr.artists));
   genres.artists = artists;
@@ -99,7 +99,7 @@ export async function getArtistsGenres(data, errorHandler) {
   return genres;
 }
 
-export async function createPlayLits({name, tracks, errorHandler}) {
+export async function createPlayLits({name, tracks}, errorHandler ) {
   
   const id = window.localStorage.getItem("pl_user_id");
   const data = {
@@ -113,16 +113,16 @@ export async function createPlayLits({name, tracks, errorHandler}) {
 
   // Create an empty playlist
   allResponses.playlistCreated = await asyncPostCall({
-    endPoint: `https://api.spotify.com/v1/users/${id}/playlists`,
-    data,
-    errorHandler
-  });
+    endPoint: `https://api.spotify.com/v1/users/${id}/playlists`, data
+  }
+    , errorHandler);
 
   allResponses.tracksAdded = await asyncLoopPostWithIds({
     endPoint: `https://api.spotify.com/v1/playlists/${allResponses.playlistCreated.id}/tracks`,
     params: { uris: URIs },
-    errorHandler
-  });
+
+  },
+  errorHanlder);
 
   return allResponses;
 }

@@ -1,7 +1,6 @@
 import axios from "axios";
-import { errorHandler } from "../Components/HeaderFooter/HeaderFooter";
 
-export async function asyncGetCall({ endPoint = null, params = null, offset = 0, limit = 25, errorHandler }) {
+export async function asyncGetCall({ endPoint = null, params = null, offset = 0, limit = 25}, errorHandler = () => {} ) {
     
     if (endPoint === null) {
         throw new Error('Endpoint expected');
@@ -36,7 +35,7 @@ export async function asyncGetCall({ endPoint = null, params = null, offset = 0,
     return response.data;
 }
 
-export async function asyncLoopGetWithIds({ endPoint = null, params = null, offset = 0, limit = 50, errorHandler }) {
+export async function asyncLoopGetWithIds({ endPoint = null, params = null, offset = 0, limit = 50}, errorHandler = () => {}) {
 
     if (endPoint === null || params === null) {
         throw new Error('Expected endpoint or params for get call');
@@ -76,7 +75,7 @@ export async function asyncLoopGetWithIds({ endPoint = null, params = null, offs
     return result;
 }
 
-export async function asyncPostCall({ endPoint = null, data = {}, offset = 0, limit = 25, errorHandler }) {
+export async function asyncPostCall({ endPoint = null, data = {}, offset = 0, limit = 25 }, errorHandler = () => {} ) {
     
     if (endPoint === null) {
         throw new Error('Endpoint expected');
@@ -111,7 +110,7 @@ export async function asyncPostCall({ endPoint = null, data = {}, offset = 0, li
     return response.data;
 }
 
-export async function asyncLoopPostWithIds({ endPoint = null, params = null, offset = 0, limit = 50, errorHandler }) {
+export async function asyncLoopPostWithIds({ endPoint = null, params = null, offset = 0, limit = 50}, errorHandler = () => {} ) {
 
     if (endPoint === null || params === null) {
         throw new Error('Expected endpoint or params for post call');

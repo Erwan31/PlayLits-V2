@@ -9,6 +9,12 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    noFocus: {
+        '&:focus': {
+            outline: 'none',
+            boxShadow: 'none',
+        }
+    }
 }));
 
 export default function ErrorFallback({ error }) {
@@ -26,7 +32,7 @@ export default function ErrorFallback({ error }) {
                 timeout: 500,
             }}
         >
-            <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" className={classes.noFocus}>
                 <Typography gutterBottom>
                     Oops...something went wrong, sorry about that <span role="img" aria-label="anger">❗</span>
                 </Typography>
