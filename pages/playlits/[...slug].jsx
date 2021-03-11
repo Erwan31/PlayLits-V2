@@ -18,6 +18,8 @@ import {
     areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures,
     getUserPlaylistTracks
 } from '../../api/spotifyAPICall';
+import { useErrorHandler } from 'react-error-boundary';
+import ThrowError from '../../Components/Errors/ThrowError';
 
 
 const useStyles = makeStyles(theme => ({
@@ -79,6 +81,7 @@ export default function Playlits() {
     const [onlySaved, setOnlySaved] = useState(false);
     const [sortedTracks, setSortedTracks] = useState([]);
     const [genresSelected, setGenresSelected] = useState([]);
+    const [hasError, setHasError] = useState(false);
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -92,14 +95,18 @@ export default function Playlits() {
         setGenresSelected(selection);
     }
 
+    const handleError = () => {
+        setHasError(true);
+    }
+
     // API call -> to externalize into a reducer
     useEffect(async () => {
-        const data = await getUserPlaylistTracks(state.selectedPlaylist.info);
-        let audioFeatures = await getTracksAudioFeatures(data);
+        const data = await getUserPlaylistTracks(state.selectedPlaylist.info, handleError);
+        let audioFeatures = await getTracksAudioFeatures(data, handleError);
         // PB with get result loop -> should always return an array, period.
-        const areSaved = await areTracksSavedByUser(data);
+        const areSaved = await areTracksSavedByUser(data, handleError);
         //get tracks albums genres
-        const artistsData = await getArtistsGenres(data);
+        const artistsData = await getArtistsGenres(data, handleError);
         const allGenres = getArrayOfGenres(artistsData.artists);
         const genres = artistsData.artists.map(artist => artist.genres);
         // Initial Structure
@@ -212,6 +219,7 @@ export default function Playlits() {
                         </Box>
                     </motion.div>}
             </ScrollBarsCustom>
+            {hasError && <ThrowError />}
         </HeaderFooter>
     )
 }
