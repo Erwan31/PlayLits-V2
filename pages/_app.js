@@ -18,11 +18,14 @@ function MyApp({ Component, pageProps }) {
         />
         <meta name="robots" content="index, follow" />
         <meta charset="UTF-8" />
+
+        <link rel="icon" href="/static/images/favicon.svg" type="image/icon type" />
+        
         <title>PlayLits</title>
       </Head>
       <RecoilRoot>
         <MuiThemeProvider theme={theme}>
-            <Component {...pageProps} />
+            <Component {...pageProps} /> 
         </MuiThemeProvider>
       </RecoilRoot>
     </>

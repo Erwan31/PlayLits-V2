@@ -9,24 +9,29 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        flexGrow: 1,
         marginLeft: theme.spacing(2),
         // backgroundColor: 'transparent',
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
         backdropFilter: 'blur(0.5rem)',
-        // '& ::before': {
-        //     backdropFilter: 'blur(10rem)'
+        '-webkit-backdrop-filter': 'blur(0.5rem)',
+        // For Mozilla
+        // '&:after': {
+        //     filter: 'blur(0.5rem)',
+        //     width: 600,
+        //     height: 100,
+        //     margin: 100,
+        //     background: 'black',
         // }
         // filter: 'blur(10rem)'
     },
     menuButton: {
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         margin: theme.spacing(1),
     },
     logo: {
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
     },
     title: {
         flexGrow: 1,
