@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
     line: {
         display: 'inline-block',
         width: '3rem',
-        height: '0.05rem',
+        height: 1,
         backgroundColor: 'white',
         border: 'white',
         marginBottom: ' 0.3rem',
@@ -39,7 +39,7 @@ export default function Footer() {
                 <a href="https://www.erwanspilmont.dev">
                     <img src={"/static/images/link.svg"} alt="link" className={classes.footLink} />
                 </a>
-                <a href="https://github.com/Erwan31/progressive-playlist">
+                <a href="https://github.com/Erwan31/PlayLits-V2">
                     <img src={"/static/images/github.svg"} alt="github" className={classes.footLink} />
                 </a>
             </Box>
