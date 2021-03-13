@@ -71,10 +71,30 @@ export function newSortList(slidersValues, previousList, list) {
 
     let sorted = list;
 
+    console.log('before', sorted);
+
     for (const property in slidersValues) {
-        sorted = sorted.filter(track => track.audioFeature[property] < slidersValues[property].max)
-                    .filter(track => track.audioFeature[property] > slidersValues[property].min);
+        sorted = sorted.filter(track =>
+            track.audioFeature[property] < (slidersValues[property].max + 0.001)
+        )
+        .filter(track =>
+            track.audioFeature[property] > (slidersValues[property].min - 0.001)
+        );
     }
+
+    if (sorted.length < 10) sorted = previousList;
+
+    console.log('after', sorted);
+
+    return sorted;
+}
+
+export function newSortListBySliderMove(slidersValues, previousList, list, sliderModified) {
+
+    let sorted = list;
+
+    sorted = sorted.filter(track => track.audioFeature[sliderModified] < slidersValues[sliderModified].max)
+                .filter(track => track.audioFeature[sliderModified] > slidersValues[sliderModified].min);
 
     if (sorted.length < 10) sorted = previousList;
 

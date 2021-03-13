@@ -138,7 +138,7 @@ export default function Playlits() {
             if (onlySaved) {
                 sorted = sorted.filter(track => track.isSaved);
             }
-
+            setLengthArr(sorted.length);
             setSortedTracks(sorted);
         }
     }, [slidersValues]);

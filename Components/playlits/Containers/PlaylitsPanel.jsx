@@ -89,7 +89,10 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
                 flexWrap="wrap"
                 className={classes.marginBottom}
             >
-                <DirectionButton direction={direction} onClick={handleDirection} />
+                <Typography gutterBottom align='center' component='h3' variant='h6' classes={{ root: classNames(classes.marginBottom) }}>
+                    {length} Tracks
+                    </Typography>
+                {/* <DirectionButton direction={direction} onClick={handleDirection} /> */}
                 <div className={classes.centerContentButton}>
                     <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} disabled={!hasLovedSong} />
                 </div>

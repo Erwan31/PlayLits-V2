@@ -21,14 +21,14 @@ export default function SliderDouble({ info }) {
     console.log(slidersValues);
     let MIN = 0;
     let MAX = 1;
-    let STEP = (MAX - MIN) / 100;
+    let STEP = (MAX - MIN) / 100000;
     const [state, setState] = useState({ values: [0, 1], final: [0, 1] });
 
-    useEffect(() => {
-        MIN = toFixed(slidersValues[info.feature].min);
-        MAX = toFixed(slidersValues[info.feature].max);
-        STEP = (MAX - MIN) / 100;
-    }, []);
+    // useEffect(() => {
+    //     MIN = toFixed(slidersValues[info.feature].min);
+    //     MAX = toFixed(slidersValues[info.feature].max);
+    //     STEP = (MAX - MIN) / 100000;
+    // }, []);
 
     console.log(MAX, MIN, STEP, slidersValues[info.feature]);
 
