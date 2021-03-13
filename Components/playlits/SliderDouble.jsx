@@ -10,45 +10,45 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SliderDouble({ info, max, length }) {
+function toFixed(value) {
+    return Number.parseFloat(value).toFixed(2);
+}
 
-    const STEP = 1, MIN = 0;
-    const [MAX, setMax] = useState(max);
+export default function SliderDouble({ info }) {
+
     const classes = useStyles();
-    const [state, setState] = useState({ values: [0, max], final: [0, max] });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-
-    console.log(length, max);
-
-    useEffect(() => {
-        setMax(current => current = length);
-        setState(current => ({ ...current, values: [0, length], final: [0, length] }))
-    }, [length]);
+    console.log(slidersValues);
+    let MIN = 0;
+    let MAX = 1;
+    let STEP = (MAX - MIN) / 100;
+    const [state, setState] = useState({ values: [0, 1], final: [0, 1] });
 
     useEffect(() => {
-        setSliderValue(current => ({ ...current, tracks: [state.values[0], state.values[1]] }));
-    }, [])
+        MIN = toFixed(slidersValues[info.feature].min);
+        MAX = toFixed(slidersValues[info.feature].max);
+        STEP = (MAX - MIN) / 100;
+    }, []);
+
+    console.log(MAX, MIN, STEP, slidersValues[info.feature]);
 
     const handleChange = (values) => {
+        console.log(values);
         setState(current => ({ ...current, values: values }));
     }
 
     const handleFinalChange = (values) => {
         setState(current => ({ ...current, values: values, final: values }));
-        setSliderValue(current => ({ ...current, tracks: [values[0], values[1]] }));
-    }
-
-    const diff = () => {
-        return state.values[1] - state.values[0] > 10 ? state.values[1] - state.values[0] : 10;
+        setSliderValue(current => ({ ...current, [info.feature]: { min: values[0], max: values[1] } }));
     }
 
     return (
-        <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
+        <Box align="center" p={'1rem'} css={{ width: 95, boxSizing: 'border-box', color: 'white' }}>
             <Tooltip title={info.tooltip} arrow placement="left">
-                <Typography variant="body1" component="h3">{info.name}</Typography>
+                <Typography variant="body2" component="h3">{info.name}</Typography>
             </Tooltip>
             <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
-                {diff()}
+                {/* {direction === 'asc' ? info.labelUp : info.labelDown} */}
             </Typography>
             <Range
                 className='sliderRange'

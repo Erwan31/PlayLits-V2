@@ -43,6 +43,45 @@ export function changeTracksNumber(list, limits) {
     return list;
 }
 
+export function computeSlidersValues(list){
+    //Compute average on the list of each feature and store them
+    const minAndMax = {
+        acousticness: { min: null, max: null },
+        danceability: { min: null, max: null },
+        energy: { min: null, max: null },
+        instrumentalness: { min: null, max: null },
+        liveness: { min: null, max: null },
+        valence: { min: null, max: null },
+        speechiness: { min: null, max: null }
+    };
+
+    console.log(Math.min(...getArrayOfAudioFeature(list, 'acousticness')))
+    for (const property in minAndMax) {
+        minAndMax[property] = {
+            min: Math.min(...getArrayOfAudioFeature(list, property)),
+            max: Math.max(...getArrayOfAudioFeature(list, property)),
+        };
+    }
+    
+    console.log(minAndMax, 'M&M');
+    return minAndMax;
+}
+
+export function newSortList(slidersValues, list) {
+    // const sortedIDs = sortedIdsList(slidersValues, list);
+    // const sorted = sortedIDs.map(item => list.filter(track => getTrackID(track.item) === item.id)[0]);
+    let sorted = list;
+    console.log(sorted, slidersValues, 'WTFFFFF!');
+    for (const property in slidersValues) {
+        console.log( slidersValues[property].min, slidersValues[property].max);
+        sorted = sorted.filter(track =>track.audioFeature[property] < slidersValues[property].max)
+                    .filter(track => track.audioFeature[property] > slidersValues[property].min);
+        console.log('sorted', sorted);
+    }
+
+    return sorted
+}
+
 export function sortList(slidersValues, list) {
     const sortedIDs = sortedIdsList(slidersValues, list);
     const sorted = sortedIDs.map(item => list.filter(track => getTrackID(track.item) === item.id)[0]);

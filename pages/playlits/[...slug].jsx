@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil';
 import { mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
-import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder } from '../../utils/playlits/utils';
+import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder, computeSlidersValues, newSortList } from '../../utils/playlits/utils';
 import { getArrayOfGenres } from '../../utils/getters';
 import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
 import PlaylitsPanel from '../../Components/playlits/Containers/PlaylitsPanel';
@@ -20,7 +20,6 @@ import {
 } from '../../api/spotifyAPICall';
 import { useErrorHandler } from 'react-error-boundary';
 import ThrowError from '../../Components/Errors/ThrowError';
-
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -113,6 +112,8 @@ export default function Playlits() {
         // Initial Structure
         const init = dataStructureTracks(data, audioFeatures, genres, areSaved);
 
+        const getSlidersValues = computeSlidersValues(init);
+
         setInitStruct(init);
         setPlaylistTracks(current => ({
             ...current,
@@ -123,7 +124,7 @@ export default function Playlits() {
             allGenres
         }));
         setSortedTracks(init);
-        setSliderValue(current => ({ ...current, tracks: [0, init.length] }));
+        setSliderValue(current => ({ ...current, ...getSlidersValues }));
         setLengthArr(init.length);
     }, []);
 
@@ -131,39 +132,16 @@ export default function Playlits() {
     // Compute coeff and sort tracks
     useEffect(() => {
         if (sortedTracks.length > 0) {
-            let length = sortedTracks.length;
-            // Sorting by Coeff based on features sliders values
-            let sorted = sortList(slidersValues, initStruct);
-            // Sorting based on direction
-            if (direction !== 'asc') {
-                sorted = reverseOrder(sorted);
-            }
+            let sorted = newSortList(slidersValues, initStruct);
 
             //Sorting based on direction
             if (onlySaved) {
                 sorted = sorted.filter(track => track.isSaved);
             }
 
-            // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
-            sorted = changeTracksNumber(sorted, slidersValues.tracks);
-
-            // Sorting by genres 
-            // console.log(genresSelected, 'GS')
-            // if (genresSelected !== []) {
-            //     sorted = sorted.filter(track => {
-            //         let bool = true;
-            //         track.genres.forEach(genre => {
-            //             bool = bool && (genresSelected.find(el => el.genre === genre) !== undefined)
-            //         });
-            //         return bool;
-            //     });
-            // }
-
             setSortedTracks(sorted);
-            // setLengthArr(length);
-            // setSliderValue(current => ({ ...current, tracks: [0, length] }));
         }
-    }, [slidersValues, direction]);
+    }, [slidersValues]);
 
     useEffect(() => {
         if (sortedTracks.length > 0) {
