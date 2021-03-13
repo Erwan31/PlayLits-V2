@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         flex: '1 0 auto',
+        "&:last-child": {
+            paddingBottom: theme.spacing(1.5),
+        }
     },
     detailsAndControl: {
         display: 'flex',
@@ -47,7 +50,19 @@ const useStyles = makeStyles((theme) => ({
     },
     typo: {
         color: '#EEEEEE',
-    }
+    },
+    /* Ellipsis */
+    ellipsis: {
+        overflow: 'hidden',
+        display: '-webkit-box',
+        '-webkit-box-orient': 'vertical',
+    },
+    clamp2lines: {
+        '-webkit-line-clamp': 2,
+    },
+    clamp1lines: {
+        '-webkit-line-clamp': 1,
+    },
 }));
 
 const item = {
@@ -82,10 +97,16 @@ export default function TrackRow({ data, index, style }) {
                     <MediaTrack track={track} hovering={hovering.bool} />
                     <div className={classes.detailsAndControl}>
                         <div className={classes.details}>
-                            <Typography component="h3" variant="h6" className={classes.typo}>
+                            <Typography
+                                component="h3" variant="h6"
+                                className={classNames(classes.typo, classes.ellipsis, classes.clamp2lines)}
+                            >
                                 {getTrackName(track.item)}
                             </Typography>
-                            <Typography variant="subtitle1" color="textSecondary">
+                            <Typography
+                                variant="subtitle1" color="textSecondary"
+                                className={classNames(classes.ellipsis, classes.clamp1lines)}
+                            >
                                 {getArtistsNames(track.item)}
                             </Typography>
                         </div>

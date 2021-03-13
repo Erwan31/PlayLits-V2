@@ -113,8 +113,6 @@ export default function UserPlaylists() {
         }
     }, [state.token]);
 
-    console.log(state.playlists)
-
     return (
         <ScrollBarsCustom
             height={'100vh'}

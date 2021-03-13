@@ -2,8 +2,10 @@ import '../styles/globals.css'
 import { RecoilRoot } from 'recoil';
 // Material UI
 import { theme }from '../styles/theme/theme'
-import { MuiThemeProvider } from '@material-ui/core';
+import { MuiThemeProvider, responsiveFontSizes } from '@material-ui/core';
 import Head from 'next/head';
+
+const themeRespFont = responsiveFontSizes(theme);
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -24,7 +26,7 @@ function MyApp({ Component, pageProps }) {
         <title>PlayLits</title>
       </Head>
       <RecoilRoot>
-        <MuiThemeProvider theme={theme}>
+        <MuiThemeProvider theme={themeRespFont}>
             <Component {...pageProps} /> 
         </MuiThemeProvider>
       </RecoilRoot>
