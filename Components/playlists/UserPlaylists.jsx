@@ -113,6 +113,8 @@ export default function UserPlaylists() {
         }
     }, [state.token]);
 
+    console.log(state.playlists)
+
     return (
         <ScrollBarsCustom
             height={'100vh'}
@@ -142,15 +144,19 @@ export default function UserPlaylists() {
                         <Grid container className={classes.root} spacing={2}>
                             <Grid item xs={12}>
                                 <Grid container justify="center" spacing={8}>
-                                    {state.playlists.items.map((list, index) => (
-                                        <motion.div
-                                            key={index}
-                                            variants={item}
-                                            className={classes.playlistCardSize}
-                                        >
-                                            <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
-                                        </motion.div>
-                                    ))}
+                                    {
+                                        state.playlists.items
+                                            .filter(list => list.tracks.total > 0)
+                                            .map((list, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    variants={item}
+                                                    className={classes.playlistCardSize}
+                                                >
+                                                    <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
+                                                </motion.div>
+                                            ))
+                                    }
                                 </Grid>
                             </Grid>
                         </Grid >
