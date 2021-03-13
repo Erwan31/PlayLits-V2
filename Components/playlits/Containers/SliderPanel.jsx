@@ -14,7 +14,7 @@ export default function SliderPanel({ list, slidersSimple, slidersDouble, direct
 
     return (
         <ScrollBarsCustom
-            height={170}
+            height={160}
             width={'100%'}
         >
             <Box

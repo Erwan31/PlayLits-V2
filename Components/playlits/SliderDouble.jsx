@@ -69,7 +69,7 @@ export default function SliderDouble({ info }) {
                             width: '24px',
                             display: 'flex',
                             alignSelf: 'center',
-                            height: '95%',
+                            height: '150%',
                             margin: '1rem auto 1rem auto'
                         }}
                     >
@@ -101,7 +101,7 @@ export default function SliderDouble({ info }) {
                             {...props}
                             style={{
                                 ...props.style,
-                                height: '20px',
+                                height: '14px',
                                 width: '24px',
                                 borderRadius: '4px',
                                 backgroundColor: '#FFF',

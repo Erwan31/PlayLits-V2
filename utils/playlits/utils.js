@@ -67,19 +67,18 @@ export function computeSlidersValues(list){
     return minAndMax;
 }
 
-export function newSortList(slidersValues, list) {
-    // const sortedIDs = sortedIdsList(slidersValues, list);
-    // const sorted = sortedIDs.map(item => list.filter(track => getTrackID(track.item) === item.id)[0]);
+export function newSortList(slidersValues, previousList, list) {
+
     let sorted = list;
-    console.log(sorted, slidersValues, 'WTFFFFF!');
+
     for (const property in slidersValues) {
-        console.log( slidersValues[property].min, slidersValues[property].max);
-        sorted = sorted.filter(track =>track.audioFeature[property] < slidersValues[property].max)
+        sorted = sorted.filter(track => track.audioFeature[property] < slidersValues[property].max)
                     .filter(track => track.audioFeature[property] > slidersValues[property].min);
-        console.log('sorted', sorted);
     }
 
-    return sorted
+    if (sorted.length < 10) sorted = previousList;
+
+    return sorted;
 }
 
 export function sortList(slidersValues, list) {

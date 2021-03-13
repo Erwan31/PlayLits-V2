@@ -132,7 +132,7 @@ export default function Playlits() {
     // Compute coeff and sort tracks
     useEffect(() => {
         if (sortedTracks.length > 0) {
-            let sorted = newSortList(slidersValues, initStruct);
+            let sorted = newSortList(slidersValues, sortedTracks, initStruct);
 
             //Sorting based on direction
             if (onlySaved) {
