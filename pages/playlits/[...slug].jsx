@@ -80,6 +80,7 @@ export default function Playlits() {
     const [direction, setDirection] = useState('asc');
     const [onlySaved, setOnlySaved] = useState(false);
     const [sortedTracks, setSortedTracks] = useState([]);
+    const [lengthArr, setLengthArr] = useState(0);
     const [genresSelected, setGenresSelected] = useState([]);
     const [hasError, setHasError] = useState(false);
 
@@ -122,13 +123,15 @@ export default function Playlits() {
             allGenres
         }));
         setSortedTracks(init);
-        setSliderValue(current => ({ ...current, tracks: [0, audioFeatures.length] }));
+        setSliderValue(current => ({ ...current, tracks: [0, init.length] }));
+        setLengthArr(init.length);
     }, []);
 
 
     // Compute coeff and sort tracks
     useEffect(() => {
         if (sortedTracks.length > 0) {
+            let length = sortedTracks.length;
             // Sorting by Coeff based on features sliders values
             let sorted = sortList(slidersValues, initStruct);
             // Sorting based on direction
@@ -136,7 +139,7 @@ export default function Playlits() {
                 sorted = reverseOrder(sorted);
             }
 
-            // Sorting based on direction
+            //Sorting based on direction
             if (onlySaved) {
                 sorted = sorted.filter(track => track.isSaved);
             }
@@ -157,8 +160,19 @@ export default function Playlits() {
             // }
 
             setSortedTracks(sorted);
+            // setLengthArr(length);
+            // setSliderValue(current => ({ ...current, tracks: [0, length] }));
         }
-    }, [slidersValues, direction, genresSelected, onlySaved]);
+    }, [slidersValues, direction]);
+
+    useEffect(() => {
+        if (sortedTracks.length > 0) {
+            const sorted = onlySaved ? sortedTracks.filter(track => track.isSaved) : sortList(slidersValues, initStruct);
+            length = sorted.length;
+            setSortedTracks(sorted);
+            setLengthArr(length);
+        }
+    }, [onlySaved]);
 
     return (
         <HeaderFooter backButton={true}>
@@ -199,6 +213,7 @@ export default function Playlits() {
                                     sortedTracks={sortedTracks}
                                     direction={direction}
                                     onlySaved={onlySaved}
+                                    length={lengthArr}
                                 />
                             </Paper>
                             <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>

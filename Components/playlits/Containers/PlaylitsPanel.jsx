@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved }) {
+export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length }) {
 
     const classes = useStyles();
     const lovedArray = sortedTracks.filter(track => track.isSaved === true);
@@ -79,7 +79,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
             <InfoIcon color={'#A452FD'} className={classNames(classes.positionCorner, classes.pointer)} onClick={handleOpen} />
             <Typography gutterBottom align='center' component='h2' variant='h5' classes={{ root: classNames(classes.marginBottom, classes.title) }}>
                 PlayLits Panel
-                 <IconButton className={classes.iconSize}>
+                <IconButton className={classes.iconSize}>
                     <InfoIcon />
                 </IconButton>
             </Typography>
@@ -96,7 +96,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                 {sortedTracks.length > 0 &&
-                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} />}
+                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} length={length} />}
             </PanelCollapse>
             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
                 {sortedTracks.length > 0 &&

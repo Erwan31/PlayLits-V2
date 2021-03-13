@@ -10,13 +10,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SliderDouble({ info, max }) {
+export default function SliderDouble({ info, max, length }) {
 
-    const STEP = 1, MIN = 0, MAX = max;
-
+    const STEP = 1, MIN = 0;
+    const [MAX, setMax] = useState(max);
     const classes = useStyles();
     const [state, setState] = useState({ values: [0, max], final: [0, max] });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
+
+    console.log(length, max);
+
+    useEffect(() => {
+        setMax(current => current = length);
+        setState(current => ({ ...current, values: [0, length], final: [0, length] }))
+    }, [length]);
 
     useEffect(() => {
         setSliderValue(current => ({ ...current, tracks: [state.values[0], state.values[1]] }));
