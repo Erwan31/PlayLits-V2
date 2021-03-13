@@ -103,7 +103,7 @@ export async function createPlayLits({name, tracks}, errorHandler ) {
   
   const id = window.localStorage.getItem("pl_user_id");
   const data = {
-    name: "PlayLits: " + name,
+    name: name, //"PlayLits: " +
     public: false
   };
   const URIs = Array.from(tracks.map(track => getTrackID(track)), element =>
