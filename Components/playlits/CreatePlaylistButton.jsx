@@ -38,6 +38,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 
     useEffect(async () => {
         if (loading) {
+            console.log('ola', loading)
             const response = await createPlayLits({ name, tracks: sortedTracks });
             setColor('#A054FD');
             setContent(
@@ -55,7 +56,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
                     </Box>
                 </Link>
             )
-            setLoading(false);
+            // setLoading(false);
         }
 
         return function cleanup() {
