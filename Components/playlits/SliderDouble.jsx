@@ -14,7 +14,7 @@ function toFixed(value) {
     return Number(parseFloat(value).toFixed(3));
 }
 
-export default function SliderDouble({ info }) {
+export default function SliderDouble({ info, onClick }) {
 
     const classes = useStyles();
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
@@ -40,7 +40,7 @@ export default function SliderDouble({ info }) {
     return (
         <Box align="center" p={'1rem'} css={{ width: 95, boxSizing: 'border-box', color: 'white' }}>
             <Tooltip title={info.tooltip} arrow placement="left">
-                <Typography variant="body2" component="h3">{info.name}</Typography>
+                <Typography variant="body2" component="h3" onClick={onClick(info.feature)}>{info.name}</Typography>
             </Tooltip>
             <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
                 {/* {direction === 'asc' ? info.labelUp : info.labelDown} */}

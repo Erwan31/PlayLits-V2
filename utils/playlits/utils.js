@@ -149,6 +149,14 @@ function computeTrackFeatureCoefficient(track, sliderValues, averages){
     return coeff;
 }
 
+export function sortByAscFeature(list, feature) {
+    const sorted = list.sort((a, b) => {
+        console.log(a.audioFeature[feature] , b.audioFeature[feature])
+        return a.audioFeature[feature] - b.audioFeature[feature];
+    });
+    return sorted;
+}
+
 const sortByAscCoef = (arr) => {
     const sorted = arr.sort( (a, b) =>{
         return a.coeff- b.coeff

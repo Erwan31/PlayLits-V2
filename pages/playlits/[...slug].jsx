@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil';
 import { mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
-import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder, computeSlidersValues, newSortList } from '../../utils/playlits/utils';
+import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder, computeSlidersValues, newSortList, sortByAscFeature } from '../../utils/playlits/utils';
 import { getArrayOfGenres } from '../../utils/getters';
 import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
 import PlaylitsPanel from '../../Components/playlits/Containers/PlaylitsPanel';
@@ -82,6 +82,7 @@ export default function Playlits() {
     const [lengthArr, setLengthArr] = useState(0);
     const [genresSelected, setGenresSelected] = useState([]);
     const [hasError, setHasError] = useState(false);
+    const [featureSorting, setFeatureSorting] = useState(null);
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -97,6 +98,15 @@ export default function Playlits() {
 
     const handleError = () => {
         setHasError(true);
+    }
+
+    const handleFeatureSortingClick = (feature) => () => {
+        console.log(feature);
+        if (sortedTracks.length > 0) {
+            const sorted = sortByAscFeature(sortedTracks, featureSorting);
+            setSortedTracks(current => [...sorted]);
+        }
+        setFeatureSorting(feature);
     }
 
     // API call -> to externalize into a reducer
@@ -152,6 +162,13 @@ export default function Playlits() {
         }
     }, [onlySaved]);
 
+    // useEffect(() => {
+    //     if (sortedTracks.length > 0) {
+    //         const sorted = sortByAscFeature(sortedTracks, featureSorting);
+    //         setSortedTracks(sorted);
+    //     }
+    // }, [featureSorting]);
+
     return (
         <HeaderFooter backButton={true}>
             <ScrollBarsCustom
@@ -192,6 +209,7 @@ export default function Playlits() {
                                     direction={direction}
                                     onlySaved={onlySaved}
                                     length={lengthArr}
+                                    onClick={handleFeatureSortingClick}
                                 />
                             </Paper>
                             <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>
