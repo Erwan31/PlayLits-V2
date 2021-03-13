@@ -8,7 +8,7 @@ import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 
 // }))
 
-export default function OnlySavedButton({ onlySaved, onClick }) {
+export default function OnlySavedButton({ onlySaved, onClick, disabled }) {
 
     // const classes = useStyles();
 
@@ -17,7 +17,7 @@ export default function OnlySavedButton({ onlySaved, onClick }) {
     };
 
     return (
-        <CustomButton onClick={onClick} color={onlySaved ? '#7CCC6C' : '#D62598'}>
+        <CustomButton onClick={onClick} color={onlySaved ? '#7CCC6C' : '#D62598'} disabled={disabled}>
             <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
                 {onlySaved ? 'All Onboard' : 'Only the Loved ones'}
             </Typography>

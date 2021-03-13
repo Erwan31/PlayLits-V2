@@ -61,6 +61,8 @@ const useStyles = makeStyles(theme => ({
 export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved }) {
 
     const classes = useStyles();
+    const lovedArray = sortedTracks.filter(track => track.isSaved === true);
+    const hasLovedSong = lovedArray.length > 0;
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -70,6 +72,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
     const handleClose = () => {
         setOpen(false);
     };
+
 
     return (
         <div className={classes.relative}>
@@ -88,7 +91,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
             >
                 <DirectionButton direction={direction} onClick={handleDirection} />
                 <div className={classes.centerContentButton}>
-                    <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} />
+                    <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} disabled={!hasLovedSong} />
                 </div>
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
