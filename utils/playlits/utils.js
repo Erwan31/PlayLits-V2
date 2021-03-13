@@ -75,10 +75,10 @@ export function newSortList(slidersValues, previousList, list) {
 
     for (const property in slidersValues) {
         sorted = sorted.filter(track =>
-            track.audioFeature[property] < (slidersValues[property].max + 0.001)
+            track.audioFeature[property] < (slidersValues[property].max + 0.00001)
         )
         .filter(track =>
-            track.audioFeature[property] > (slidersValues[property].min - 0.001)
+            track.audioFeature[property] > (slidersValues[property].min - 0.00001)
         );
     }
 

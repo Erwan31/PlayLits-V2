@@ -13,6 +13,7 @@ import WelcomeCarousel from '../../index/WelcomeCarousel'
 import DirectionButton from '../DirectionButton'
 import PanelCollapse from '../PanelCollapse'
 import { slidersSimple, slidersDouble } from '../../../utils/playlits/slidersData'
+import TracksNumber from '../TracksNumber'
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -89,10 +90,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
                 flexWrap="wrap"
                 className={classes.marginBottom}
             >
-                <Typography gutterBottom align='center' component='h3' variant='h6' classes={{ root: classNames(classes.marginBottom) }}>
-                    {length} Tracks
-                    </Typography>
-                {/* <DirectionButton direction={direction} onClick={handleDirection} /> */}
+                <TracksNumber number={length} />
                 <div className={classes.centerContentButton}>
                     <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} disabled={!hasLovedSong} />
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
@@ -11,26 +11,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function toFixed(value) {
-    return Number.parseFloat(value).toFixed(2);
+    return Number(parseFloat(value).toFixed(3));
 }
 
 export default function SliderDouble({ info }) {
 
     const classes = useStyles();
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-    console.log(slidersValues);
+    // let MIN = toFixed(slidersValues[info.feature].min) - 0.001;
+    // let MAX = toFixed(slidersValues[info.feature].max) + 0.001;
+    let STEP = 0.0001;
     let MIN = 0;
     let MAX = 1;
-    let STEP = (MAX - MIN) / 100000;
-    const [state, setState] = useState({ values: [0, 1], final: [0, 1] });
+    const [state, setState] = useState({ values: [MIN, MAX], final: [MIN, MAX] });
 
-    // useEffect(() => {
-    //     MIN = toFixed(slidersValues[info.feature].min);
-    //     MAX = toFixed(slidersValues[info.feature].max);
-    //     STEP = (MAX - MIN) / 100000;
-    // }, []);
-
-    console.log(MAX, MIN, STEP, slidersValues[info.feature]);
+    console.log(MAX, MIN, STEP);
 
     const handleChange = (values) => {
         console.log(values);
