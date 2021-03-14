@@ -20,12 +20,10 @@ export default function SliderDouble({ info, onClick }) {
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     // let MIN = toFixed(slidersValues[info.feature].min) - 0.001;
     // let MAX = toFixed(slidersValues[info.feature].max) + 0.001;
-    let STEP = 0.0001;
+    let STEP = 0.01;
     let MIN = 0;
     let MAX = 1;
     const [state, setState] = useState({ values: [MIN, MAX], final: [MIN, MAX] });
-
-    console.log(MAX, MIN, STEP);
 
     const handleChange = (values) => {
         console.log(values);

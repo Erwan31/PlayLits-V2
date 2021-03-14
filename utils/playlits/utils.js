@@ -71,8 +71,6 @@ export function newSortList(slidersValues, previousList, list) {
 
     let sorted = list;
 
-    console.log('before', sorted);
-
     for (const property in slidersValues) {
         sorted = sorted.filter(track =>
             track.audioFeature[property] < (slidersValues[property].max + 0.00001)
@@ -83,8 +81,6 @@ export function newSortList(slidersValues, previousList, list) {
     }
 
     if (sorted.length < 10) sorted = previousList;
-
-    console.log('after', sorted);
 
     return sorted;
 }
@@ -151,7 +147,7 @@ function computeTrackFeatureCoefficient(track, sliderValues, averages){
 
 export function sortByAscFeature(list, feature) {
     const sorted = list.sort((a, b) => {
-        console.log(a.audioFeature[feature] , b.audioFeature[feature])
+        // console.log(a.audioFeature[feature] , b.audioFeature[feature])
         return a.audioFeature[feature] - b.audioFeature[feature];
     });
     return sorted;

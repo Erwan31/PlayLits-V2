@@ -82,7 +82,7 @@ export default function Playlits() {
     const [lengthArr, setLengthArr] = useState(0);
     const [genresSelected, setGenresSelected] = useState([]);
     const [hasError, setHasError] = useState(false);
-    const [featureSorting, setFeatureSorting] = useState(null);
+    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none' });
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -99,15 +99,11 @@ export default function Playlits() {
     const handleError = () => {
         setHasError(true);
     }
-
-    const handleFeatureSortingClick = (feature) => () => {
-        console.log(feature);
-        if (sortedTracks.length > 0) {
-            const sorted = sortByAscFeature(sortedTracks, featureSorting);
-            setSortedTracks(current => [...sorted]);
-        }
-        setFeatureSorting(feature);
+    const handleFeatureSortingClick = (clickedFeature) => () => {
+        sortByFeature(clickedFeature);
+        // setFeatureSorting(current => ({ ...current, feature }));
     }
+
 
     // API call -> to externalize into a reducer
     useEffect(async () => {
@@ -148,6 +144,7 @@ export default function Playlits() {
             if (onlySaved) {
                 sorted = sorted.filter(track => track.isSaved);
             }
+
             setLengthArr(sorted.length);
             setSortedTracks(sorted);
         }
@@ -162,12 +159,40 @@ export default function Playlits() {
         }
     }, [onlySaved]);
 
-    // useEffect(() => {
-    //     if (sortedTracks.length > 0) {
-    //         const sorted = sortByAscFeature(sortedTracks, featureSorting);
-    //         setSortedTracks(sorted);
-    //     }
-    // }, [featureSorting]);
+    const sortByFeature = (newFeature) => {
+        if (sortedTracks.length > 0) {
+            let { feature, prevFeature, direction } = featureSorting;
+            let sorted = sortedTracks;
+
+            console.log()
+
+            if (prevFeature === newFeature) {
+                switch (direction) {
+                    case 'none':
+                        direction = 'asc'
+                        sorted = sortByAscFeature(sortedTracks, newFeature);
+                        break;
+
+                    case 'asc':
+                        direction = 'desc'
+                        sorted = reverseOrder(sorted);
+                        break;
+
+                    case 'desc':
+                        direction = 'none'
+                        sorted = newSortList(slidersValues, sorted, initStruct);
+                        break;
+                }
+            }
+            else {
+                direction = 'asc'
+                sorted = sortByAscFeature(sorted, newFeature);
+            }
+            console.log(newFeature, prevFeature, direction);
+            setFeatureSorting(current => ({ ...current, feature: newFeature, prevFeature: feature, direction }));
+            setSortedTracks(current => [...sorted]);
+        }
+    };
 
     return (
         <HeaderFooter backButton={true}>
