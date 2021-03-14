@@ -41,15 +41,12 @@ export default function SliderDouble({ info, onClick, sorting }) {
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 95, boxSizing: 'border-box', color: 'white' }}>
-            <Tooltip title={info.tooltip} arrow placement="left">
-                <Typography variant="body2" component="h3" onClick={onClick(info.feature)}>
-                    {info.name}
-                    <div>{sorting.feature === info.feature && sorting.icon}</div>
-                </Typography>
-            </Tooltip>
-            <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
-                {/* {direction === 'asc' ? info.labelUp : info.labelDown} */}
+            {/* <Tooltip title={info.tooltip} arrow placement="left"> */}
+            <Typography variant="body2" component="h3" onClick={onClick(info.feature)} style={{ position: 'relative', cursor: 'pointer' }}>
+                {info.name}
+                <div style={{ position: 'absolute', transform: 'scale(0.7)', top: 0, right: -18 }}>{sorting.feature === info.feature && sorting.icon}</div>
             </Typography>
+            {/* </Tooltip> */}
             <Range
                 className='sliderRange'
                 direction={Direction.Up}
