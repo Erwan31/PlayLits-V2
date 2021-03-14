@@ -13,6 +13,7 @@ import WelcomeCarousel from '../../index/WelcomeCarousel'
 import DirectionButton from '../DirectionButton'
 import PanelCollapse from '../PanelCollapse'
 import { slidersSimple, slidersDouble } from '../../../utils/playlits/slidersData'
+import TracksNumber from '../TracksNumber'
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -58,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length }) {
+export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length, onClick, sorting }) {
 
     const classes = useStyles();
     const lovedArray = sortedTracks.filter(track => track.isSaved === true);
@@ -89,14 +90,14 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
                 flexWrap="wrap"
                 className={classes.marginBottom}
             >
-                <DirectionButton direction={direction} onClick={handleDirection} />
+                <TracksNumber number={length} />
                 <div className={classes.centerContentButton}>
                     <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} disabled={!hasLovedSong} />
                 </div>
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                 {sortedTracks.length > 0 &&
-                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} length={length} />}
+                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} length={length} onClick={onClick} sorting={sorting} />}
             </PanelCollapse>
             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
                 {sortedTracks.length > 0 &&

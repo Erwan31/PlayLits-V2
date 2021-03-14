@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil';
 import { mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
-import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder } from '../../utils/playlits/utils';
+import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder, computeSlidersValues, newSortList, sortByAscFeature } from '../../utils/playlits/utils';
 import { getArrayOfGenres } from '../../utils/getters';
 import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
 import PlaylitsPanel from '../../Components/playlits/Containers/PlaylitsPanel';
@@ -20,7 +20,8 @@ import {
 } from '../../api/spotifyAPICall';
 import { useErrorHandler } from 'react-error-boundary';
 import ThrowError from '../../Components/Errors/ThrowError';
-
+import IncreaseIcon from '../../Components/IconsJSX/IncreaseIcon';
+import DecreaseIcon from '../../Components/IconsJSX/DecreaseIcon';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -83,6 +84,7 @@ export default function Playlits() {
     const [lengthArr, setLengthArr] = useState(0);
     const [genresSelected, setGenresSelected] = useState([]);
     const [hasError, setHasError] = useState(false);
+    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none', icon: <div></div> });
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -99,6 +101,10 @@ export default function Playlits() {
     const handleError = () => {
         setHasError(true);
     }
+    const handleFeatureSortingClick = (clickedFeature) => () => {
+        sortByFeature(clickedFeature);
+    }
+
 
     // API call -> to externalize into a reducer
     useEffect(async () => {
@@ -113,6 +119,8 @@ export default function Playlits() {
         // Initial Structure
         const init = dataStructureTracks(data, audioFeatures, genres, areSaved);
 
+        const getSlidersValues = computeSlidersValues(init);
+
         setInitStruct(init);
         setPlaylistTracks(current => ({
             ...current,
@@ -123,7 +131,7 @@ export default function Playlits() {
             allGenres
         }));
         setSortedTracks(init);
-        setSliderValue(current => ({ ...current, tracks: [0, init.length] }));
+        setSliderValue(current => ({ ...current, ...getSlidersValues }));
         setLengthArr(init.length);
     }, []);
 
@@ -131,39 +139,17 @@ export default function Playlits() {
     // Compute coeff and sort tracks
     useEffect(() => {
         if (sortedTracks.length > 0) {
-            let length = sortedTracks.length;
-            // Sorting by Coeff based on features sliders values
-            let sorted = sortList(slidersValues, initStruct);
-            // Sorting based on direction
-            if (direction !== 'asc') {
-                sorted = reverseOrder(sorted);
-            }
+            let sorted = newSortList(slidersValues, sortedTracks, initStruct);
 
             //Sorting based on direction
             if (onlySaved) {
                 sorted = sorted.filter(track => track.isSaved);
             }
 
-            // Sorting based on tracks slider -> placed here so that its retrieving the right part of the list
-            sorted = changeTracksNumber(sorted, slidersValues.tracks);
-
-            // Sorting by genres 
-            // console.log(genresSelected, 'GS')
-            // if (genresSelected !== []) {
-            //     sorted = sorted.filter(track => {
-            //         let bool = true;
-            //         track.genres.forEach(genre => {
-            //             bool = bool && (genresSelected.find(el => el.genre === genre) !== undefined)
-            //         });
-            //         return bool;
-            //     });
-            // }
-
+            setLengthArr(sorted.length);
             setSortedTracks(sorted);
-            // setLengthArr(length);
-            // setSliderValue(current => ({ ...current, tracks: [0, length] }));
         }
-    }, [slidersValues, direction]);
+    }, [slidersValues]);
 
     useEffect(() => {
         if (sortedTracks.length > 0) {
@@ -173,6 +159,46 @@ export default function Playlits() {
             setLengthArr(length);
         }
     }, [onlySaved]);
+
+    const sortByFeature = (newFeature) => {
+        if (sortedTracks.length > 0) {
+            let { feature, prevFeature, direction, icon } = featureSorting;
+            let sorted = sortedTracks;
+
+            if (prevFeature === newFeature) {
+                switch (direction) {
+                    case 'none':
+                        direction = 'asc'
+                        sorted = sortByAscFeature(sortedTracks, newFeature);
+                        icon = <IncreaseIcon />
+                        break;
+
+                    case 'asc':
+                        direction = 'desc'
+                        sorted = reverseOrder(sorted);
+                        icon = <DecreaseIcon />
+                        break;
+
+                    case 'desc':
+                        direction = 'none'
+                        sorted = newSortList(slidersValues, sorted, initStruct);
+                        //Sorting based on direction
+                        if (onlySaved) {
+                            sorted = sorted.filter(track => track.isSaved);
+                        }
+                        icon = <div></div>
+                        break;
+                }
+            }
+            else {
+                direction = 'asc'
+                sorted = sortByAscFeature(sorted, newFeature);
+                icon = <IncreaseIcon />
+            }
+            setFeatureSorting(current => ({ ...current, feature: newFeature, prevFeature: feature, direction, icon }));
+            setSortedTracks(current => [...sorted]);
+        }
+    };
 
     return (
         <HeaderFooter backButton={true}>
@@ -214,6 +240,8 @@ export default function Playlits() {
                                     direction={direction}
                                     onlySaved={onlySaved}
                                     length={lengthArr}
+                                    onClick={handleFeatureSortingClick}
+                                    sorting={featureSorting}
                                 />
                             </Paper>
                             <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>

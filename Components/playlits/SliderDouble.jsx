@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
 import { slidersState } from '../../utils/States/states';
+import DecreaseIcon from '../IconsJSX/DecreaseIcon'
+import IncreaseIcon from '../IconsJSX/IncreaseIcon'
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -10,24 +12,30 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SliderDouble({ info, max, length }) {
+function toFixed(value) {
+    const temp = Math.round(value * 10);
+    // console.log(temp)
+    return Number(parseFloat(temp / 10).toFixed(1));
+}
 
-    const STEP = 1, MIN = 0;
-    const [MAX, setMax] = useState(max);
+export default function SliderDouble({ info, onClick, sorting }) {
+
     const classes = useStyles();
-    const [state, setState] = useState({ values: [0, max], final: [0, max] });
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
+    // let MIN; //toFixed(slidersValues[info.feature].min - 0.05) >= 0 ? toFixed(slidersValues[info.feature].min - 0.05) : 0;
+    // let MAX; // toFixed(slidersValues[info.feature].max + 0.05) <= 1 ? toFixed(slidersValues[info.feature].max + 0.05) : 1;
+    const STEP = 0.01;
+    // let MIN = 0;
+    // let MAX = 1;
+    const [state, setState] = useState({ values: [0, 1], final: [0, 1], MIN: 0, MAX: 1 });
 
-    console.log(length, max);
-
-    useEffect(() => {
-        setMax(current => current = length);
-        setState(current => ({ ...current, values: [0, length], final: [0, length] }))
-    }, [length]);
-
-    useEffect(() => {
-        setSliderValue(current => ({ ...current, tracks: [state.values[0], state.values[1]] }));
+    useLayoutEffect(() => {
+        const min = toFixed(slidersValues[info.feature].min - 0.05) >= 0 ? toFixed(slidersValues[info.feature].min - 0.05) : 0;
+        const max = toFixed(slidersValues[info.feature].max + 0.05) <= 1 ? toFixed(slidersValues[info.feature].max + 0.05) : 1;
+        setState(current => ({ ...current, values: [min, max], final: [min, max], MIN: min, MAX: max }));
     }, [])
+
+    // console.log(MIN, MAX);
 
     const handleChange = (values) => {
         setState(current => ({ ...current, values: values }));
@@ -35,28 +43,26 @@ export default function SliderDouble({ info, max, length }) {
 
     const handleFinalChange = (values) => {
         setState(current => ({ ...current, values: values, final: values }));
-        setSliderValue(current => ({ ...current, tracks: [values[0], values[1]] }));
-    }
-
-    const diff = () => {
-        return state.values[1] - state.values[0] > 10 ? state.values[1] - state.values[0] : 10;
+        setSliderValue(current => ({ ...current, [info.feature]: { min: values[0], max: values[1] } }));
     }
 
     return (
-        <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
-            <Tooltip title={info.tooltip} arrow placement="left">
-                <Typography variant="body1" component="h3">{info.name}</Typography>
-            </Tooltip>
-            <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
-                {diff()}
+        <Box align="center" p={'1rem'} css={{ width: 95, boxSizing: 'border-box', color: 'white' }}>
+            {/* <Tooltip title={info.tooltip} arrow placement="left"> */}
+            <Typography variant="body2" component="h3" onClick={onClick(info.feature)} style={{ position: 'relative', cursor: 'pointer' }}>
+                {info.name}
+                <div style={{ position: 'absolute', transform: 'scale(0.7)', top: -3, right: -18, fill: info.color }}>
+                    {sorting.feature === info.feature && sorting.icon}
+                </div>
             </Typography>
+            {/* </Tooltip> */}
             <Range
                 className='sliderRange'
                 direction={Direction.Up}
                 values={state.values}
                 step={STEP}
-                min={MIN}
-                max={MAX}
+                min={state.MIN}
+                max={state.MAX}
                 onChange={handleChange}
                 onFinalChange={handleFinalChange}
                 renderTrack={({ props, children }) => (
@@ -69,7 +75,7 @@ export default function SliderDouble({ info, max, length }) {
                             width: '24px',
                             display: 'flex',
                             alignSelf: 'center',
-                            height: '95%',
+                            height: '150%',
                             margin: '1rem auto 1rem auto'
                         }}
                     >
@@ -83,8 +89,8 @@ export default function SliderDouble({ info, max, length }) {
                                 background: getTrackBackground({
                                     values: state.values,
                                     colors: ['#ccc', info.color, '#ccc'],
-                                    min: MIN,
-                                    max: MAX,
+                                    min: state.MIN,
+                                    max: state.MAX,
                                     direction: Direction.Up
                                 }),
                                 alignSelf: 'center',
@@ -101,7 +107,7 @@ export default function SliderDouble({ info, max, length }) {
                             {...props}
                             style={{
                                 ...props.style,
-                                height: '20px',
+                                height: '14px',
                                 width: '24px',
                                 borderRadius: '4px',
                                 backgroundColor: '#FFF',

@@ -43,6 +43,60 @@ export function changeTracksNumber(list, limits) {
     return list;
 }
 
+export function computeSlidersValues(list){
+    //Compute average on the list of each feature and store them
+    const minAndMax = {
+        acousticness: { min: null, max: null },
+        danceability: { min: null, max: null },
+        energy: { min: null, max: null },
+        instrumentalness: { min: null, max: null },
+        liveness: { min: null, max: null },
+        valence: { min: null, max: null },
+        speechiness: { min: null, max: null }
+    };
+
+    console.log(Math.min(...getArrayOfAudioFeature(list, 'acousticness')))
+    for (const property in minAndMax) {
+        minAndMax[property] = {
+            min: Math.min(...getArrayOfAudioFeature(list, property)),
+            max: Math.max(...getArrayOfAudioFeature(list, property)),
+        };
+    }
+    
+    console.log(minAndMax, 'M&M');
+    return minAndMax;
+}
+
+export function newSortList(slidersValues, previousList, list) {
+
+    let sorted = list;
+
+    for (const property in slidersValues) {
+        sorted = sorted.filter(track =>
+            track.audioFeature[property] < (slidersValues[property].max + 0.00001)
+        )
+        .filter(track =>
+            track.audioFeature[property] > (slidersValues[property].min - 0.00001)
+        );
+    }
+
+    if (sorted.length < 10) sorted = previousList;
+
+    return sorted;
+}
+
+export function newSortListBySliderMove(slidersValues, previousList, list, sliderModified) {
+
+    let sorted = list;
+
+    sorted = sorted.filter(track => track.audioFeature[sliderModified] < slidersValues[sliderModified].max)
+                .filter(track => track.audioFeature[sliderModified] > slidersValues[sliderModified].min);
+
+    if (sorted.length < 10) sorted = previousList;
+
+    return sorted;
+}
+
 export function sortList(slidersValues, list) {
     const sortedIDs = sortedIdsList(slidersValues, list);
     const sorted = sortedIDs.map(item => list.filter(track => getTrackID(track.item) === item.id)[0]);
@@ -89,6 +143,14 @@ function computeTrackFeatureCoefficient(track, sliderValues, averages){
     }
 
     return coeff;
+}
+
+export function sortByAscFeature(list, feature) {
+    const sorted = list.sort((a, b) => {
+        // console.log(a.audioFeature[feature] , b.audioFeature[feature])
+        return a.audioFeature[feature] - b.audioFeature[feature];
+    });
+    return sorted;
 }
 
 const sortByAscCoef = (arr) => {
