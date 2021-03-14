@@ -13,22 +13,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function toFixed(value) {
-    return Number(parseFloat(value).toFixed(3));
+    const temp = Math.round(value * 10);
+    // console.log(temp)
+    return Number(parseFloat(temp / 10).toFixed(1));
 }
 
 export default function SliderDouble({ info, onClick, sorting }) {
 
     const classes = useStyles();
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-    // let MIN = toFixed(slidersValues[info.feature].min) - 0.001;
-    // let MAX = toFixed(slidersValues[info.feature].max) + 0.001;
-    let STEP = 0.01;
-    let MIN = 0;
-    let MAX = 1;
-    const [state, setState] = useState({ values: [MIN, MAX], final: [MIN, MAX] });
+    // let MIN; //toFixed(slidersValues[info.feature].min - 0.05) >= 0 ? toFixed(slidersValues[info.feature].min - 0.05) : 0;
+    // let MAX; // toFixed(slidersValues[info.feature].max + 0.05) <= 1 ? toFixed(slidersValues[info.feature].max + 0.05) : 1;
+    const STEP = 0.01;
+    // let MIN = 0;
+    // let MAX = 1;
+    const [state, setState] = useState({ values: [0, 1], final: [0, 1], MIN: 0, MAX: 1 });
+
+    useLayoutEffect(() => {
+        const min = toFixed(slidersValues[info.feature].min - 0.05) >= 0 ? toFixed(slidersValues[info.feature].min - 0.05) : 0;
+        const max = toFixed(slidersValues[info.feature].max + 0.05) <= 1 ? toFixed(slidersValues[info.feature].max + 0.05) : 1;
+        setState(current => ({ ...current, values: [min, max], final: [min, max], MIN: min, MAX: max }));
+    }, [])
+
+    // console.log(MIN, MAX);
 
     const handleChange = (values) => {
-        console.log(values);
         setState(current => ({ ...current, values: values }));
     }
 
@@ -36,8 +45,6 @@ export default function SliderDouble({ info, onClick, sorting }) {
         setState(current => ({ ...current, values: values, final: values }));
         setSliderValue(current => ({ ...current, [info.feature]: { min: values[0], max: values[1] } }));
     }
-
-    console.log(sorting);
 
     return (
         <Box align="center" p={'1rem'} css={{ width: 95, boxSizing: 'border-box', color: 'white' }}>
@@ -54,8 +61,8 @@ export default function SliderDouble({ info, onClick, sorting }) {
                 direction={Direction.Up}
                 values={state.values}
                 step={STEP}
-                min={MIN}
-                max={MAX}
+                min={state.MIN}
+                max={state.MAX}
                 onChange={handleChange}
                 onFinalChange={handleFinalChange}
                 renderTrack={({ props, children }) => (
@@ -82,8 +89,8 @@ export default function SliderDouble({ info, onClick, sorting }) {
                                 background: getTrackBackground({
                                     values: state.values,
                                     colors: ['#ccc', info.color, '#ccc'],
-                                    min: MIN,
-                                    max: MAX,
+                                    min: state.MIN,
+                                    max: state.MAX,
                                     direction: Direction.Up
                                 }),
                                 alignSelf: 'center',
