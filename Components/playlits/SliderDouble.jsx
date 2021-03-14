@@ -3,6 +3,8 @@ import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
 import { slidersState } from '../../utils/States/states';
+import DecreaseIcon from '../IconsJSX/DecreaseIcon'
+import IncreaseIcon from '../IconsJSX/IncreaseIcon'
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -14,7 +16,7 @@ function toFixed(value) {
     return Number(parseFloat(value).toFixed(3));
 }
 
-export default function SliderDouble({ info, onClick }) {
+export default function SliderDouble({ info, onClick, sorting }) {
 
     const classes = useStyles();
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
@@ -35,10 +37,15 @@ export default function SliderDouble({ info, onClick }) {
         setSliderValue(current => ({ ...current, [info.feature]: { min: values[0], max: values[1] } }));
     }
 
+    console.log(sorting);
+
     return (
         <Box align="center" p={'1rem'} css={{ width: 95, boxSizing: 'border-box', color: 'white' }}>
             <Tooltip title={info.tooltip} arrow placement="left">
-                <Typography variant="body2" component="h3" onClick={onClick(info.feature)}>{info.name}</Typography>
+                <Typography variant="body2" component="h3" onClick={onClick(info.feature)}>
+                    {info.name}
+                    <div>{sorting.feature === info.feature && sorting.icon}</div>
+                </Typography>
             </Tooltip>
             <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
                 {/* {direction === 'asc' ? info.labelUp : info.labelDown} */}

@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length, onClick }) {
+export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length, onClick, sorting }) {
 
     const classes = useStyles();
     const lovedArray = sortedTracks.filter(track => track.isSaved === true);
@@ -97,7 +97,7 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                 {sortedTracks.length > 0 &&
-                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} length={length} onClick={onClick} />}
+                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} length={length} onClick={onClick} sorting={sorting} />}
             </PanelCollapse>
             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
                 {sortedTracks.length > 0 &&

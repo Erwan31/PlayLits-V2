@@ -20,6 +20,8 @@ import {
 } from '../../api/spotifyAPICall';
 import { useErrorHandler } from 'react-error-boundary';
 import ThrowError from '../../Components/Errors/ThrowError';
+import IncreaseIcon from '../../Components/IconsJSX/IncreaseIcon';
+import DecreaseIcon from '../../Components/IconsJSX/DecreaseIcon';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -82,7 +84,7 @@ export default function Playlits() {
     const [lengthArr, setLengthArr] = useState(0);
     const [genresSelected, setGenresSelected] = useState([]);
     const [hasError, setHasError] = useState(false);
-    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none' });
+    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none', icon: <div></div> });
 
     const handleDirection = () => {
         direction === 'asc' ? setDirection('desc') : setDirection('asc');
@@ -101,7 +103,6 @@ export default function Playlits() {
     }
     const handleFeatureSortingClick = (clickedFeature) => () => {
         sortByFeature(clickedFeature);
-        // setFeatureSorting(current => ({ ...current, feature }));
     }
 
 
@@ -161,35 +162,36 @@ export default function Playlits() {
 
     const sortByFeature = (newFeature) => {
         if (sortedTracks.length > 0) {
-            let { feature, prevFeature, direction } = featureSorting;
+            let { feature, prevFeature, direction, icon } = featureSorting;
             let sorted = sortedTracks;
-
-            console.log()
 
             if (prevFeature === newFeature) {
                 switch (direction) {
                     case 'none':
                         direction = 'asc'
                         sorted = sortByAscFeature(sortedTracks, newFeature);
+                        icon = <IncreaseIcon />
                         break;
 
                     case 'asc':
                         direction = 'desc'
                         sorted = reverseOrder(sorted);
+                        icon = <DecreaseIcon />
                         break;
 
                     case 'desc':
                         direction = 'none'
                         sorted = newSortList(slidersValues, sorted, initStruct);
+                        icon = <div></div>
                         break;
                 }
             }
             else {
                 direction = 'asc'
                 sorted = sortByAscFeature(sorted, newFeature);
+                icon = <IncreaseIcon />
             }
-            console.log(newFeature, prevFeature, direction);
-            setFeatureSorting(current => ({ ...current, feature: newFeature, prevFeature: feature, direction }));
+            setFeatureSorting(current => ({ ...current, feature: newFeature, prevFeature: feature, direction, icon }));
             setSortedTracks(current => [...sorted]);
         }
     };
@@ -235,6 +237,7 @@ export default function Playlits() {
                                     onlySaved={onlySaved}
                                     length={lengthArr}
                                     onClick={handleFeatureSortingClick}
+                                    sorting={featureSorting}
                                 />
                             </Paper>
                             <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>
