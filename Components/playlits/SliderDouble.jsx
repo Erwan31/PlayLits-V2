@@ -44,7 +44,9 @@ export default function SliderDouble({ info, onClick, sorting }) {
             {/* <Tooltip title={info.tooltip} arrow placement="left"> */}
             <Typography variant="body2" component="h3" onClick={onClick(info.feature)} style={{ position: 'relative', cursor: 'pointer' }}>
                 {info.name}
-                <div style={{ position: 'absolute', transform: 'scale(0.7)', top: 0, right: -18 }}>{sorting.feature === info.feature && sorting.icon}</div>
+                <div style={{ position: 'absolute', transform: 'scale(0.7)', top: -3, right: -18, fill: info.color }}>
+                    {sorting.feature === info.feature && sorting.icon}
+                </div>
             </Typography>
             {/* </Tooltip> */}
             <Range

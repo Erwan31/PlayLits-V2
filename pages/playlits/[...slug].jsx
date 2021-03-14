@@ -182,6 +182,10 @@ export default function Playlits() {
                     case 'desc':
                         direction = 'none'
                         sorted = newSortList(slidersValues, sorted, initStruct);
+                        //Sorting based on direction
+                        if (onlySaved) {
+                            sorted = sorted.filter(track => track.isSaved);
+                        }
                         icon = <div></div>
                         break;
                 }
