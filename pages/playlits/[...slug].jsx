@@ -146,6 +146,8 @@ export default function Playlits() {
                 sorted = sorted.filter(track => track.isSaved);
             }
 
+            sorted = sortOnDirection(sorted);
+
             setLengthArr(sorted.length);
             setSortedTracks(sorted);
         }
@@ -160,6 +162,24 @@ export default function Playlits() {
         }
     }, [onlySaved]);
 
+    const sortOnDirection = (list) => {
+        const { direction } = featureSorting;
+        let sorted = list;
+
+        switch (direction) {
+            case 'asc':
+                sorted = sortByAscFeature(sorted, featureSorting.feature);
+                break;
+
+            case 'desc':
+                sorted = sortByAscFeature(sorted, featureSorting.feature);
+                sorted = reverseOrder(sorted);
+                break;
+        }
+
+        return sorted;
+    }
+
     const sortByFeature = (newFeature) => {
         if (sortedTracks.length > 0) {
             let { feature, prevFeature, direction, icon } = featureSorting;
@@ -169,7 +189,7 @@ export default function Playlits() {
                 switch (direction) {
                     case 'none':
                         direction = 'asc'
-                        sorted = sortByAscFeature(sortedTracks, newFeature);
+                        sorted = sortByAscFeature(sorted, newFeature);
                         icon = <IncreaseIcon />
                         break;
 
