@@ -1,3 +1,5 @@
+import DecreaseIcon from "../../Components/IconsJSX/DecreaseIcon";
+import IncreaseIcon from "../../Components/IconsJSX/IncreaseIcon";
 import { getArrayOfAudioFeature, getTrackID } from "../getters";
 
 export function audioFeaturesIdsString(tracks) {
@@ -177,3 +179,68 @@ export function dataStructureTracks(playlist, audioFeatures, genres, areSaved) {
 
     return struct;
 }
+
+
+// New Sorting List with Double Slide System
+
+export const sortOnDirection = (list, featureSorting) => {
+    const { direction } = featureSorting;
+    let sorted = list;
+
+    switch (direction) {
+        case 'asc':
+            sorted = sortByAscFeature(sorted, featureSorting.feature);
+            break;
+
+        case 'desc':
+            sorted = sortByAscFeature(sorted, featureSorting.feature);
+            sorted = reverseOrder(sorted);
+            break;
+    }
+
+    return sorted;
+}
+
+export const sortByFeature = (newFeature, featureSorting, sortedTracks, slidersValues, initStruct, onlySaved) => {
+    if (sortedTracks.length > 0) {
+
+        let { feature, prevFeature, direction, icon } = featureSorting;
+        let sorted = sortedTracks;
+
+        if (prevFeature === newFeature) {
+            switch (direction) {
+                case 'none':
+                    direction = 'asc'
+                    sorted = sortByAscFeature(sorted, newFeature);
+                    icon = <IncreaseIcon />
+                    break;
+
+                case 'asc':
+                    direction = 'desc'
+                    sorted = reverseOrder(sorted);
+                    icon = <DecreaseIcon />
+                    break;
+
+                case 'desc':
+                    direction = 'none'
+                    sorted = newSortList(slidersValues, sorted, initStruct);
+                    //Sorting based on direction
+                    if (onlySaved) {
+                        sorted = sorted.filter(track => track.isSaved);
+                    }
+                    icon = <div></div>
+                    break;
+            }
+        }
+        else {
+            direction = 'asc'
+            sorted = sortByAscFeature(sorted, newFeature);
+            icon = <IncreaseIcon />
+        }
+
+        return {
+            feature: { feature: newFeature, prevFeature: feature, direction, icon},
+            sorted
+        }
+    }
+};

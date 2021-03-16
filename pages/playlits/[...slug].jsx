@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil';
 import { mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
-import { sortList, changeTracksNumber, dataStructureTracks, reverseOrder, computeSlidersValues, newSortList, sortByAscFeature } from '../../utils/playlits/utils';
+import { sortList, dataStructureTracks, computeSlidersValues, newSortList, sortByFeature, sortOnDirection } from '../../utils/playlits/utils';
 import { getArrayOfGenres } from '../../utils/getters';
 import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
 import PlaylitsPanel from '../../Components/playlits/Containers/PlaylitsPanel';
@@ -20,8 +20,6 @@ import {
 } from '../../api/spotifyAPICall';
 import { useErrorHandler } from 'react-error-boundary';
 import ThrowError from '../../Components/Errors/ThrowError';
-import IncreaseIcon from '../../Components/IconsJSX/IncreaseIcon';
-import DecreaseIcon from '../../Components/IconsJSX/DecreaseIcon';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -101,10 +99,11 @@ export default function Playlits() {
     const handleError = () => {
         setHasError(true);
     }
-    const handleFeatureSortingClick = (clickedFeature) => () => {
-        sortByFeature(clickedFeature);
+    const handleFeatureSortingClick = (newFeature) => () => {
+        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks, slidersValues, initStruct, onlySaved);
+        setFeatureSorting(current => ({ ...current, ...feature }));
+        setSortedTracks(current => [...sorted]);
     }
-
 
     // API call -> to externalize into a reducer
     useEffect(async () => {
@@ -118,7 +117,6 @@ export default function Playlits() {
         const genres = artistsData.artists.map(artist => artist.genres);
         // Initial Structure
         const init = dataStructureTracks(data, audioFeatures, genres, areSaved);
-
         const getSlidersValues = computeSlidersValues(init);
 
         setInitStruct(init);
@@ -146,7 +144,7 @@ export default function Playlits() {
                 sorted = sorted.filter(track => track.isSaved);
             }
 
-            sorted = sortOnDirection(sorted);
+            sorted = sortOnDirection(sorted, featureSorting);
 
             setLengthArr(sorted.length);
             setSortedTracks(sorted);
@@ -161,64 +159,6 @@ export default function Playlits() {
             setLengthArr(length);
         }
     }, [onlySaved]);
-
-    const sortOnDirection = (list) => {
-        const { direction } = featureSorting;
-        let sorted = list;
-
-        switch (direction) {
-            case 'asc':
-                sorted = sortByAscFeature(sorted, featureSorting.feature);
-                break;
-
-            case 'desc':
-                sorted = sortByAscFeature(sorted, featureSorting.feature);
-                sorted = reverseOrder(sorted);
-                break;
-        }
-
-        return sorted;
-    }
-
-    const sortByFeature = (newFeature) => {
-        if (sortedTracks.length > 0) {
-            let { feature, prevFeature, direction, icon } = featureSorting;
-            let sorted = sortedTracks;
-
-            if (prevFeature === newFeature) {
-                switch (direction) {
-                    case 'none':
-                        direction = 'asc'
-                        sorted = sortByAscFeature(sorted, newFeature);
-                        icon = <IncreaseIcon />
-                        break;
-
-                    case 'asc':
-                        direction = 'desc'
-                        sorted = reverseOrder(sorted);
-                        icon = <DecreaseIcon />
-                        break;
-
-                    case 'desc':
-                        direction = 'none'
-                        sorted = newSortList(slidersValues, sorted, initStruct);
-                        //Sorting based on direction
-                        if (onlySaved) {
-                            sorted = sorted.filter(track => track.isSaved);
-                        }
-                        icon = <div></div>
-                        break;
-                }
-            }
-            else {
-                direction = 'asc'
-                sorted = sortByAscFeature(sorted, newFeature);
-                icon = <IncreaseIcon />
-            }
-            setFeatureSorting(current => ({ ...current, feature: newFeature, prevFeature: feature, direction, icon }));
-            setSortedTracks(current => [...sorted]);
-        }
-    };
 
     return (
         <HeaderFooter backButton={true}>
@@ -286,4 +226,3 @@ export default function Playlits() {
         </HeaderFooter>
     )
 }
-
