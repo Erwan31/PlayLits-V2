@@ -16,11 +16,7 @@ const useStyles = makeStyles((theme) => ({
     card: {
         display: 'flex',
         flexDirection: 'column',
-        // background: 'rgba(44, 48, 73, 0.2)',
         background: 'rgba( 255, 255, 255, 0.1)',
-        // transform: 'opacity(0.1)',
-        // opacity: 0.1,
-        // backDropFilter: 'blur(1rem)',
         width: '100%',
     },
     details: {

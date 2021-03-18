@@ -8,26 +8,19 @@ import { useRecoilState } from 'recoil';
 import { errorState } from '../../utils/States/states'
 import WelcomeCarousel from '../index/WelcomeCarousel'
 import ErrorBoundary from '../Errors/ErrorBoundary'
-import ErrorFallback from '../Errors/ErrorFallBack'
+import ErrorFallback from '../Errors/ErrorFallBackHome'
 
 
 export default function HeaderFooter({ children, backButton }) {
 
-    try {
-        return (
-            <main className={styles.container}>
-                <Header backButton={backButton} />
-                <ErrorBoundary>
-                    {children}
-                </ErrorBoundary>
-                <Footer />
-                {/* <ErrorFallBack open={open} /> */}
-            </main>
-        )
-    }
-    catch (e) {
-        console.log('youpii', e)
-        return <ErrorFallback />
-    }
+    return (
+        <main className={styles.container}>
+            <Header backButton={backButton} />
+            <ErrorBoundary>
+                {children}
+            </ErrorBoundary>
+            <Footer />
+        </main>
+    )
 }
 

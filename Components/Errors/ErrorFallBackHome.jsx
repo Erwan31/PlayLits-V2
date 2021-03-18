@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function ErrorFallback({ error }) {
+export default function ErrorFallbackHome({ error }) {
 
     const classes = useStyles();
 

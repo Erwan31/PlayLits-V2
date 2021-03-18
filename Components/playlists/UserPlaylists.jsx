@@ -10,7 +10,6 @@ import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
 import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
-import ThrowError from '../Errors/ThrowError';
 
 const useStyles = makeStyles((theme) => ({
     root: {

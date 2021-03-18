@@ -5,17 +5,23 @@ import { motion } from 'framer-motion';
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil';
 import { errorState, mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
-import { sortList, dataStructureTracks, computeSlidersValues, newSortList, sortByFeature, sortOnDirection } from '../../utils/playlits/utils';
-import { getArrayOfGenres } from '../../utils/getters';
+import { sortList, computeSlidersValues, newSortList, sortByFeature, sortOnDirection } from '../../utils/playlits/utils';
 import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
 import PlaylitsPanel from '../../Components/playlits/Containers/PlaylitsPanel';
 import TrackList from '../../Components/playlits/Containers/TrackList'
 import HeaderFooter from '../../Components/HeaderFooter/HeaderFooter';
 import ScrollBarsCustom from '../../Components/ScrollBarsCustom';
 import LoadingRings from '../../Components/LoadingRings'
-// To Out
-import ThrowError from '../../Components/Errors/ThrowError';
 import { getPlaylistData } from '../../hooks/getPlaylistData';
+import useError from '../../hooks/useError';
+import to from 'await-to-js';
+// Basically what await-to-js is doing
+// https://dev.to/sobiodarlington/better-error-handling-with-async-await-2e5m
+// const handle = (promise) => {
+//     return promise
+//         .then(data => ([data, undefined]))
+//         .catch(error => Promise.resolve([undefined, error]));
+// }
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -82,7 +88,9 @@ export default function Playlits() {
     const [state, setState] = useRecoilState(mainState);
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-    const [error, setError] = useRecoilState(errorState);
+
+    //Personnal hook
+    const { error, handleError, ThrowError } = useError();
 
     const [onlySaved, setOnlySaved] = useState(false);
     const [sortedTracks, setSortedTracks] = useState({ actual: [], initial: [] });
@@ -97,11 +105,6 @@ export default function Playlits() {
         setGenresSelected(selection);
     }
 
-    const handleError = (error) => {
-        console.log('on arrive là??', error)
-        setError(current => ({ ...current, hasError: true, response: error }));
-    }
-
     const handleFeatureSortingClick = (newFeature) => () => {
         console.log(newFeature, featureSorting, sortedTracks, slidersValues, sortedTracks.init, onlySaved)
         const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks.actual, slidersValues, sortedTracks.initial, onlySaved);
@@ -111,28 +114,11 @@ export default function Playlits() {
 
     useEffect(() => {
         async function initData() {
-
-            const handle = (promise) => {
-                return promise
-                    .then(data => ([data, undefined]))
-                    .catch(error => Promise.resolve([undefined, error]));
-            }
-
-            const [{
-                data,
-                audioFeatures,
-                areSaved,
-                artistsData,
-                allGenres,
-                genres,
-                init
-            },
-                err] = await handle(getPlaylistData(state, handleError));
+            const [err, playlistData] = await to(getPlaylistData(state));
             if (err) { handleError(err) };
 
+            const { data, audioFeatures, allGenres, genres, init } = playlistData;
             const getSlidersValues = computeSlidersValues(init);
-
-            console.log(init)
 
             setPlaylistTracks(current => ({
                 ...current,
@@ -147,7 +133,6 @@ export default function Playlits() {
             setLengthArr(init.length);
         }
 
-        // throw new Error('B');
         initData();
     }, []);
 
@@ -179,6 +164,7 @@ export default function Playlits() {
 
     return (
         <HeaderFooter backButton={true}>
+            {error.hasError && <ThrowError />}
             <ScrollBarsCustom
                 height={'100vh'}
                 width={'100%'}
@@ -239,7 +225,6 @@ export default function Playlits() {
                         </Box>
                     </motion.div>}
             </ScrollBarsCustom>
-            {error.hasError && <ThrowError response={error.response} />}
         </HeaderFooter>
     )
 }

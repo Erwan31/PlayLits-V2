@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function asyncGetCall({ endPoint = null, params = null, offset = 0, limit = 25, errorHandler} ) {
+export async function asyncGetCall({ endPoint = null, params = null, offset = 0, limit = 25} ) {
     
     if (endPoint === null) {
         throw new Error('Endpoint expected');
@@ -27,15 +27,14 @@ export async function asyncGetCall({ endPoint = null, params = null, offset = 0,
         });
     }
     catch (e) {
-        // console.error('Error GET', e, e.response, e.response.status, e.response.headers);
-        errorHandler(e);
-        throw new Error(e);
+        console.log('GET ERROR', e, e.response)
+        throw e.response;
     }
 
     return response.data;
 }
 
-export async function asyncLoopGetWithIds({ endPoint = null, params = null, offset = 0, limit = 50, errorHandler}) {
+export async function asyncLoopGetWithIds({ endPoint = null, params = null, offset = 0, limit = 50}) {
 
     if (endPoint === null || params === null) {
         throw new Error('Expected endpoint or params for get call');
@@ -67,15 +66,13 @@ export async function asyncLoopGetWithIds({ endPoint = null, params = null, offs
         }
         catch (e) {
             console.error('Loop GET Error', e);
-            // handleError();
-            errorHandler(e);
-            throw new Error(e);
+            throw new Error(e.response);
         }
     } while (maxIteration > iteration);
     return result;
 }
 
-export async function asyncPostCall({ endPoint = null, data = {}, offset = 0, limit = 25, errorHandler } ) {
+export async function asyncPostCall({ endPoint = null, data = {}, offset = 0, limit = 25 } ) {
     
     if (endPoint === null) {
         throw new Error('Endpoint expected');
@@ -103,15 +100,13 @@ export async function asyncPostCall({ endPoint = null, data = {}, offset = 0, li
     }
     catch (e) {
         console.error('Error POST', e);
-        // handleError();
-        errorHandler(e);
-        throw new Error(e);
+        throw e.response;
     }
 
     return response.data;
 }
 
-export async function asyncLoopPostWithIds({ endPoint = null, params = null, offset = 0, limit = 50, errorHandler} ) {
+export async function asyncLoopPostWithIds({ endPoint = null, params = null, offset = 0, limit = 50} ) {
 
     if (endPoint === null || params === null) {
         throw new Error('Expected endpoint or params for post call');
@@ -141,9 +136,7 @@ export async function asyncLoopPostWithIds({ endPoint = null, params = null, off
         }
         catch (e) {
             console.error('Loop POST Error', e);
-            // handleError();
-            errorHandler(e);
-            throw new Error(e);
+            throw e.response;
         }
     } while (maxIteration > iteration);
 

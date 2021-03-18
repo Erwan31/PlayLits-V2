@@ -95,14 +95,6 @@ export const slidersState = atom({
   // genres: {},
 });
 
-export const errorState = atom({
-  key: 'error',
-  default: {
-    hasError: false,
-    response: {},
-  }
-});
-
 export const SLIDERSINIT = {
   danceability: 0,
   energy: 0,
