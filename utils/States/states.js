@@ -7,13 +7,6 @@ import {
   useRecoilValue,
 } from 'recoil';
 
-export const errorState = atom({
-  key: 'errorState',
-  default: {
-    type: null,
-  }
-});
-
 export const mainState = atom({
   key: 'mainState',
   default: {
@@ -67,7 +60,13 @@ export const selectedPlaylist = atom({
     audioFeatures: [],
     genres: [],
     allGenres: []
-  }
+  },
+  init: [{
+    item: null,
+    audioFeature: null,
+    genres: null,
+    isSaved: null
+  }],
 });
 
 export const slidersState = atom({
@@ -94,6 +93,14 @@ export const slidersState = atom({
   //   reverse: null,
   },
   // genres: {},
+});
+
+export const errorState = atom({
+  key: 'error',
+  default: {
+    hasError: false,
+    info: {},
+  }
 });
 
 export const SLIDERSINIT = {

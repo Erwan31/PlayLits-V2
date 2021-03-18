@@ -2,10 +2,10 @@
 import { getArrayOfArtistsIDs, getTrackID} from '../utils/getters';
 import { asyncGetCall, asyncLoopGetWithIds, asyncPostCall, asyncLoopPostWithIds } from './apiCall';
 
-export async function getUserPlaylistTracks(playlist, errorHandler) {
+export async function getUserPlaylistTracks(playlist) {
 
   if (playlist === undefined) {
-    errorHandler()
+    // errorHandler()
     // throw new Error('No tracks href');
   }
 
@@ -20,7 +20,7 @@ export async function getUserPlaylistTracks(playlist, errorHandler) {
   };
 
   do {
-      const respObj = await asyncGetCall({ endPoint: result.info.next}, errorHandler);
+      const respObj = await asyncGetCall({ endPoint: result.info.next});
 
       result.info = {
         href: respObj.href,
@@ -36,21 +36,21 @@ export async function getUserPlaylistTracks(playlist, errorHandler) {
 }
 
 export async function getUserInfo(errorHandler) {
-  return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' }, errorHandler);  
+  return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
 }
 
-export async function getUserPlaylists(next = null, errorHandler) {
+export async function getUserPlaylists(next = null) {
 
   const id = window.localStorage.getItem("pl_user_id");
   let url = `https://api.spotify.com/v1/users/${id}/playlists`;
 
   if (next !== null) url = next;
 
-  return await asyncGetCall({ endPoint: url, errorHandler });  
+  return await asyncGetCall({ endPoint: url });  
 }
 
 // Looped 50
-export async function areTracksSavedByUser(playlist, errorHandler) {
+export async function areTracksSavedByUser(playlist) {
 
   const ids = playlist.items.map(track => getTrackID(track));
   const params = {
@@ -59,12 +59,11 @@ export async function areTracksSavedByUser(playlist, errorHandler) {
   return await asyncLoopGetWithIds({
     endPoint: `https://api.spotify.com/v1/me/tracks/contains`,
     params
-    , errorHandler
   });
 }
 
 
-export async function getTracksAudioFeatures(playlist, errorHandler) {
+export async function getTracksAudioFeatures(playlist) {
   
   let result = [];
   const ids = playlist.items.map(track => getTrackID(track));
@@ -74,8 +73,7 @@ export async function getTracksAudioFeatures(playlist, errorHandler) {
   
   let afArray = await asyncLoopGetWithIds({
     endPoint: `https://api.spotify.com/v1/audio-features`,
-    params,
-    errorHandler
+    params
   });
 
   afArray.forEach(el =>
@@ -86,12 +84,12 @@ export async function getTracksAudioFeatures(playlist, errorHandler) {
 }
 
 // Looped 50
-export async function getArtistsGenres(data, errorHandler) {
+export async function getArtistsGenres(data) {
   
   const ids = getArrayOfArtistsIDs(data.items);
   let genres = { artists: [] };
   const artists = [];
-  let respArray = await asyncLoopGetWithIds({ endPoint: `https://api.spotify.com/v1/artists`, params: ids}, errorHandler);
+  let respArray = await asyncLoopGetWithIds({ endPoint: `https://api.spotify.com/v1/artists`, params: ids});
 
   respArray.map(arr => artists.push(...arr.artists));
   genres.artists = artists;
@@ -99,7 +97,7 @@ export async function getArtistsGenres(data, errorHandler) {
   return genres;
 }
 
-export async function createPlayLits({name, tracks}, errorHandler ) {
+export async function createPlayLits({name, tracks} ) {
   
   const id = window.localStorage.getItem("pl_user_id");
   const data = {
@@ -115,7 +113,7 @@ export async function createPlayLits({name, tracks}, errorHandler ) {
   allResponses.playlistCreated = await asyncPostCall({
     endPoint: `https://api.spotify.com/v1/users/${id}/playlists`, data
   }
-    , errorHandler);
+    );
 
   allResponses.tracksAdded = await asyncLoopPostWithIds({
     endPoint: `https://api.spotify.com/v1/playlists/${allResponses.playlistCreated.id}/tracks`,

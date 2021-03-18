@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length, onClick, sorting }) {
+export default function PlaylitsPanel({ genres, sortedTracks, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length, onClick, sorting }) {
 
     const classes = useStyles();
     const lovedArray = sortedTracks.filter(track => track.isSaved === true);
@@ -97,16 +97,16 @@ export default function PlaylitsPanel({ genres, sortedTracks, direction, onlySav
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                 {sortedTracks.length > 0 &&
-                    <SliderPanel list={sortedTracks} slidersSimple={slidersSimple} slidersDouble={slidersDouble} direction={direction} length={length} onClick={onClick} sorting={sorting} />}
+                    <SliderPanel list={sortedTracks} length={length} onClick={onClick} sorting={sorting} />}
             </PanelCollapse>
             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
                 {sortedTracks.length > 0 &&
                     <Charts sliders={slidersSimple} list={sortedTracks} />}
             </PanelCollapse>
-            <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
+            {/* <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
                 {sortedTracks.length > 0 &&
                     <GenresPanel genres={genres} onSelect={handleGenresSelect} />}
-            </PanelCollapse>
+            </PanelCollapse> */}
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

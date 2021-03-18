@@ -73,6 +73,8 @@ export function newSortList(slidersValues, previousList, list) {
 
     let sorted = list;
 
+    console.log(slidersValues, previousList, list)
+
     for (const property in slidersValues) {
         sorted = sorted.filter(track =>
             track.audioFeature[property] < (slidersValues[property].max + 0.00001)

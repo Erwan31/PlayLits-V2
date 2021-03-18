@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil';
-import { mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
+import { errorState, mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
 import { sortList, dataStructureTracks, computeSlidersValues, newSortList, sortByFeature, sortOnDirection } from '../../utils/playlits/utils';
 import { getArrayOfGenres } from '../../utils/getters';
 import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
@@ -14,12 +14,8 @@ import HeaderFooter from '../../Components/HeaderFooter/HeaderFooter';
 import ScrollBarsCustom from '../../Components/ScrollBarsCustom';
 import LoadingRings from '../../Components/LoadingRings'
 // To Out
-import {
-    areTracksSavedByUser, getArtistsGenres, getTracksAudioFeatures,
-    getUserPlaylistTracks
-} from '../../api/spotifyAPICall';
-import { useErrorHandler } from 'react-error-boundary';
 import ThrowError from '../../Components/Errors/ThrowError';
+import { getPlaylistData } from '../../hooks/getPlaylistData';
 
 const useStyles = makeStyles(theme => ({
     playlitsPanel: {
@@ -67,26 +63,31 @@ const container = {
     }
 };
 
+const initialState = {
+    initStruct: [],
+    onlySaved: false,
+    sortedTracks: [],
+    featureSorting: {
+        feature: null,
+        prevFeature: null,
+        direction: 'none'
+    }
+}
+
 export default function Playlits() {
 
+    // API call -> to externalize into a reducer
     const classes = useStyles();
     // Recoil
     const [state, setState] = useRecoilState(mainState);
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-    // Local
-    const [initStruct, setInitStruct] = useState([]);
-    const [direction, setDirection] = useState('asc');
-    const [onlySaved, setOnlySaved] = useState(false);
-    const [sortedTracks, setSortedTracks] = useState([]);
-    const [lengthArr, setLengthArr] = useState(0);
-    const [genresSelected, setGenresSelected] = useState([]);
-    const [hasError, setHasError] = useState(false);
-    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none', icon: <div></div> });
+    const [error, setError] = useRecoilState(errorState);
 
-    const handleDirection = () => {
-        direction === 'asc' ? setDirection('desc') : setDirection('asc');
-    }
+    const [onlySaved, setOnlySaved] = useState(false);
+    const [sortedTracks, setSortedTracks] = useState({ actual: [], initial: [] });
+    const [lengthArr, setLengthArr] = useState(0);
+    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none', icon: <div></div> });
 
     const handleOnlySaved = () => {
         setOnlySaved(current => !current);
@@ -97,29 +98,19 @@ export default function Playlits() {
     }
 
     const handleError = () => {
-        setHasError(true);
-    }
-    const handleFeatureSortingClick = (newFeature) => () => {
-        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks, slidersValues, initStruct, onlySaved);
-        setFeatureSorting(current => ({ ...current, ...feature }));
-        setSortedTracks(current => [...sorted]);
+        setError(current => ({ ...current, hasError: true }));
     }
 
-    // API call -> to externalize into a reducer
+    const handleFeatureSortingClick = (newFeature) => () => {
+        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks, slidersValues, playlistTracks.init, onlySaved);
+        setFeatureSorting(current => ({ ...current, ...feature }));
+        setSortedTracks(current => ({ ...current, actual: [...sorted] }));
+    }
+
     useEffect(async () => {
-        const data = await getUserPlaylistTracks(state.selectedPlaylist.info, handleError);
-        let audioFeatures = await getTracksAudioFeatures(data, handleError);
-        // PB with get result loop -> should always return an array, period.
-        const areSaved = await areTracksSavedByUser(data, handleError);
-        //get tracks albums genres
-        const artistsData = await getArtistsGenres(data, handleError);
-        const allGenres = getArrayOfGenres(artistsData.artists);
-        const genres = artistsData.artists.map(artist => artist.genres);
-        // Initial Structure
-        const init = dataStructureTracks(data, audioFeatures, genres, areSaved);
+        const { data, audioFeatures, areSaved, artistsData, allGenres, genres, init } = await getPlaylistData(state);
         const getSlidersValues = computeSlidersValues(init);
 
-        setInitStruct(init);
         setPlaylistTracks(current => ({
             ...current,
             info: data.info,
@@ -128,16 +119,15 @@ export default function Playlits() {
             genres,
             allGenres
         }));
-        setSortedTracks(init);
+        setSortedTracks(current => ({ ...current, actual: init, initial: init }));
         setSliderValue(current => ({ ...current, ...getSlidersValues }));
         setLengthArr(init.length);
     }, []);
 
-
     // Compute coeff and sort tracks
     useEffect(() => {
-        if (sortedTracks.length > 0) {
-            let sorted = newSortList(slidersValues, sortedTracks, initStruct);
+        if (sortedTracks.actual.length > 0) {
+            let sorted = newSortList(slidersValues, sortedTracks.actual, sortedTracks.initial);
 
             //Sorting based on direction
             if (onlySaved) {
@@ -147,15 +137,15 @@ export default function Playlits() {
             sorted = sortOnDirection(sorted, featureSorting);
 
             setLengthArr(sorted.length);
-            setSortedTracks(sorted);
+            setSortedTracks(current => ({ ...current, actual: sorted }));
         }
     }, [slidersValues]);
 
     useEffect(() => {
-        if (sortedTracks.length > 0) {
-            const sorted = onlySaved ? sortedTracks.filter(track => track.isSaved) : sortList(slidersValues, initStruct);
+        if (sortedTracks.actual.length > 0) {
+            const sorted = onlySaved ? sortedTracks.current.filter(track => track.isSaved) : sortList(slidersValues, sortedTracks.initial);
             length = sorted.length;
-            setSortedTracks(sorted);
+            setSortedTracks(current => ({ ...current, actual: sorted }));
             setLengthArr(length);
         }
     }, [onlySaved]);
@@ -170,7 +160,7 @@ export default function Playlits() {
                 autoHideDuration={200}
                 universal={true}
             >
-                {sortedTracks.length === 0 ?
+                {sortedTracks.actual.length === 0 ?
                     <LoadingRings />
                     :
                     <motion.div
@@ -193,11 +183,11 @@ export default function Playlits() {
                             <Paper elevation={15} className={classes.playlitsPanel}>
                                 <PlaylitsPanel
                                     genres={playlistTracks.allGenres}
-                                    handleDirection={handleDirection}
+                                    handleDirection={null}
                                     handleGenresSelect={handleGenresSelect}
                                     handleOnlySaved={handleOnlySaved}
-                                    sortedTracks={sortedTracks}
-                                    direction={direction}
+                                    sortedTracks={sortedTracks.actual}
+                                    // direction={direction}
                                     onlySaved={onlySaved}
                                     length={lengthArr}
                                     onClick={handleFeatureSortingClick}
@@ -205,7 +195,7 @@ export default function Playlits() {
                                 />
                             </Paper>
                             <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>
-                                <CreatePlaylistPanel sortedTracks={sortedTracks} />
+                                <CreatePlaylistPanel sortedTracks={sortedTracks.actual} />
                             </Paper>
                         </Box>
                         <Box
@@ -218,11 +208,11 @@ export default function Playlits() {
                                 width: '100%'
                             }}
                         >
-                            <TrackList list={sortedTracks} />
+                            <TrackList list={sortedTracks.actual} />
                         </Box>
                     </motion.div>}
             </ScrollBarsCustom>
-            {hasError && <ThrowError />}
+            {error.hasError && <ThrowError />}
         </HeaderFooter>
     )
 }

@@ -5,9 +5,10 @@ import { mainState, selectedPlaylist, slidersState } from '../../../utils/States
 import { useRecoilState } from 'recoil';
 import ScrollBarsCustom from '../../ScrollBarsCustom'
 import SliderDouble from '../SliderDouble'
+import { slidersDouble } from '../../../utils/playlits/slidersData';
 
 
-export default function SliderPanel({ list, slidersSimple, slidersDouble, direction, length, onClick, sorting }) {
+export default function SliderPanel({ list, length, onClick, sorting }) {
 
     const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
@@ -23,7 +24,7 @@ export default function SliderPanel({ list, slidersSimple, slidersDouble, direct
                 m='0 1rem 0 1rem'
             >
                 {/* {playlistTracks.audioFeatures.length > 10 && <SliderDouble info={slidersDouble[0]} max={slidersValues.tracks[1]} length={length} />} */}
-                {slidersDouble.map((item, index) => <SliderDouble key={index} info={item} direction={direction} onClick={onClick} sorting={sorting} />)}
+                {slidersDouble.map((item, index) => <SliderDouble key={index} info={item} onClick={onClick} sorting={sorting} />)}
             </Box >
         </ScrollBarsCustom>
     )
