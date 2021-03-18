@@ -1,13 +1,10 @@
 import { useRecoilState } from "recoil";
 import { errorState } from "../../utils/States/states";
+import ThrowError from "./ThrowError";
 
-export default function handleError(info = {}) {
-    // const [error, setError] = useRecoilState(errorState);
-    
-    // setError(current => ({ ...current, hasError: true, info }));
-    
+export default function handleError(response) {
     return (
-        <>Error</>
+        <ThrowError response={response} />
     )
 }
 

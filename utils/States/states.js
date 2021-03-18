@@ -99,7 +99,7 @@ export const errorState = atom({
   key: 'error',
   default: {
     hasError: false,
-    info: {},
+    response: {},
   }
 });
 

@@ -97,31 +97,58 @@ export default function Playlits() {
         setGenresSelected(selection);
     }
 
-    const handleError = () => {
-        setError(current => ({ ...current, hasError: true }));
+    const handleError = (error) => {
+        console.log('on arrive là??', error)
+        setError(current => ({ ...current, hasError: true, response: error }));
     }
 
     const handleFeatureSortingClick = (newFeature) => () => {
-        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks, slidersValues, playlistTracks.init, onlySaved);
+        console.log(newFeature, featureSorting, sortedTracks, slidersValues, sortedTracks.init, onlySaved)
+        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks.actual, slidersValues, sortedTracks.initial, onlySaved);
         setFeatureSorting(current => ({ ...current, ...feature }));
         setSortedTracks(current => ({ ...current, actual: [...sorted] }));
     }
 
-    useEffect(async () => {
-        const { data, audioFeatures, areSaved, artistsData, allGenres, genres, init } = await getPlaylistData(state);
-        const getSlidersValues = computeSlidersValues(init);
+    useEffect(() => {
+        async function initData() {
 
-        setPlaylistTracks(current => ({
-            ...current,
-            info: data.info,
-            items: data.items,
-            audioFeatures,
-            genres,
-            allGenres
-        }));
-        setSortedTracks(current => ({ ...current, actual: init, initial: init }));
-        setSliderValue(current => ({ ...current, ...getSlidersValues }));
-        setLengthArr(init.length);
+            const handle = (promise) => {
+                return promise
+                    .then(data => ([data, undefined]))
+                    .catch(error => Promise.resolve([undefined, error]));
+            }
+
+            const [{
+                data,
+                audioFeatures,
+                areSaved,
+                artistsData,
+                allGenres,
+                genres,
+                init
+            },
+                err] = await handle(getPlaylistData(state, handleError));
+            if (err) { handleError(err) };
+
+            const getSlidersValues = computeSlidersValues(init);
+
+            console.log(init)
+
+            setPlaylistTracks(current => ({
+                ...current,
+                info: data.info,
+                items: data.items,
+                audioFeatures,
+                genres,
+                allGenres
+            }));
+            setSortedTracks(current => ({ ...current, actual: init, initial: init }));
+            setSliderValue(current => ({ ...current, ...getSlidersValues }));
+            setLengthArr(init.length);
+        }
+
+        // throw new Error('B');
+        initData();
     }, []);
 
     // Compute coeff and sort tracks
@@ -212,7 +239,7 @@ export default function Playlits() {
                         </Box>
                     </motion.div>}
             </ScrollBarsCustom>
-            {error.hasError && <ThrowError />}
+            {error.hasError && <ThrowError response={error.response} />}
         </HeaderFooter>
     )
 }

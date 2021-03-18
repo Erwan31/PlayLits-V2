@@ -5,14 +5,14 @@ import {
 import { getArrayOfGenres } from "../utils/getters";
 import { dataStructureTracks } from "../utils/playlits/utils";
 
-export async function getPlaylistData(state) {
+export async function getPlaylistData(state, handleError) {
 
-    const data = await getUserPlaylistTracks(state.selectedPlaylist.info);
-    const audioFeatures = await getTracksAudioFeatures(data);
+    const data = await getUserPlaylistTracks(state.selectedPlaylist.info, handleError);
+    const audioFeatures = await getTracksAudioFeatures(data, handleError);
     // PB with get result loop -> should always return an array, period.
-    const areSaved = await areTracksSavedByUser(data);
+    const areSaved = await areTracksSavedByUser(data, handleError);
     //get tracks albums genres
-    const artistsData = await getArtistsGenres(data);
+    const artistsData = await getArtistsGenres(data, handleError);
     const allGenres = getArrayOfGenres(artistsData.artists);
     const genres = artistsData.artists.map(artist => artist.genres);
     // Initial Structure

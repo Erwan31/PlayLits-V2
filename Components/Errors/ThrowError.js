@@ -1,3 +1,4 @@
-export default function ThrowError(name = '') {
-    throw new Error(name);
+export default function ThrowError(response = '') {
+    console.log('response', response)
+    throw new Error(response);
 }
