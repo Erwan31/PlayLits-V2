@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 import { Box, makeStyles, Typography, IconButton, Modal, Backdrop } from '@material-ui/core'
 import ChartsIcon from '../../IconsJSX/ChartsIcon'
@@ -64,10 +64,17 @@ export default function PlaylitsPanel() {
         handleOnlySaved,
         sortedTracks,
         onlySaved,
+        resetSortState
     } = useSortState();
     const lovedArray = sortedTracks.actual.filter(track => track.isSaved === true);
     const hasLovedSong = lovedArray.length > 0;
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        return () => {
+            resetSortState()
+        }
+    }, [])
 
 
     const handleOpen = () => {
@@ -77,7 +84,6 @@ export default function PlaylitsPanel() {
     const handleClose = () => {
         setOpen(false);
     };
-
 
     return (
         <div className={classes.relative}>

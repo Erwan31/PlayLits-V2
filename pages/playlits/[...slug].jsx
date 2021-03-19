@@ -70,7 +70,6 @@ const container = {
 };
 
 export default function Playlits() {
-
     const classes = useStyles();
     const { error, handleError, ThrowError } = useError();
     const { state } = useMainState();

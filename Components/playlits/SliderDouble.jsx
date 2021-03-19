@@ -55,8 +55,9 @@ export default function SliderDouble({ info, onClick, sorting }) {
                 max={state.MAX}
                 onChange={handleChange}
                 onFinalChange={handleFinalChange}
-                renderTrack={({ props, children }) => (
+                renderTrack={({ props, children, index }) => (
                     <div
+                        key={index}
                         onMouseDown={props.onMouseDown}
                         onTouchStart={props.onTouchStart}
                         style={{

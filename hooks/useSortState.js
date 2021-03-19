@@ -19,21 +19,36 @@ export const slidersState = atom({
   },
 });
 
-export const sortedState = atom({
+const sortedState = atom({
     key: 'sortedState',
     default: {
         actual: [],
         initial: [],
         length: 0
     }
-})
+});
+
+const featureSortingState = atom({
+    key: 'featureSortingState',
+    default: {
+        feature: null,
+        prevFeature: null,
+        direction: 'none',
+        icon: <div></div>
+    }
+});
+
+const onlySavedState = atom({
+    key: 'onlySavedState',
+    default: false
+});
 
 export default function useSortState() {
 
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     const [sortedTracks, setSortedTracks] = useRecoilState(sortedState);
-    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none', icon: <div></div> });
-    const [onlySaved, setOnlySaved] = useState(false);
+    const [featureSorting, setFeatureSorting] = useRecoilState(featureSortingState);
+    const [onlySaved, setOnlySaved] = useRecoilState(onlySavedState);
 
     const handleOnlySaved = () => {
         setOnlySaved(current => !current);
@@ -68,9 +83,24 @@ export default function useSortState() {
     }, [slidersValues]);
 
     const initSortState = (init) => {
+        console.log('eleo')
         const getSlidersValues = computeSlidersValues(init);
+        setOnlySaved(current => false);
+        setFeatureSorting(current => ({...current, ...featureSortingState}));
         setSortedTracks(current => ({ ...current, actual: init, initial: init, length: init.length }));
         setSliderValue(current => ({ ...current, ...getSlidersValues }));
+    }
+
+    const resetSortState = () => {
+        console.log
+        setOnlySaved(false);
+        setFeatureSorting(current => ({
+            ...current,
+            feature: null,
+            prevFeature: null,
+            direction: 'none',
+            icon: <div></div>
+        }));
     }
     
     return {
@@ -79,6 +109,7 @@ export default function useSortState() {
         initSortState,
         sortedTracks,
         onlySaved,
-        featureSorting
+        featureSorting,
+        resetSortState,
     }
 }

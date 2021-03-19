@@ -45,7 +45,7 @@ export function sortList(slidersValues, list) {
 }
 
 export function sortByAscFeature(list, feature) {
-    console.log(list, feature);
+    // console.log(list, feature);
     let arr = [...list];
     let sorted = arr.sort((a, b) => {
         return a.audioFeature[feature] - b.audioFeature[feature];
