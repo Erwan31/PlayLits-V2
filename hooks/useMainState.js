@@ -1,4 +1,9 @@
+import to from "await-to-js";
+import { useEffect } from "react";
 import { atom, useRecoilState } from "recoil";
+import { cleanHash } from "../api/hash";
+import { getUserInfo, getUserPlaylists } from "../api/spotifyAPICall";
+import useError from "./useError";
 
 export const mainState = atom({
   key: 'mainState',
@@ -40,7 +45,8 @@ export const mainState = atom({
 
 export default function useMainState() {
 
-    const [state, setState] = useRecoilState(mainState);
+  const [state, setState] = useRecoilState(mainState);
+  const { error, handleError } = useError();
 
     const setToken = (token) => {
         setState(current => ({...current, token}));
@@ -58,14 +64,34 @@ export default function useMainState() {
 
     const getToken = () => {
         return state.token;
-    }
+  }
 
-    return {
-        state,
-        setToken,
-        getToken,
-        addNewPlaylistItems,
+  // Get playlist data then
+  useEffect(async () => {
+    const { token, infoLoaded } = state;
+
+    if (token.access_token !== null && !infoLoaded) {
+        // let userInfo = window.localStorage.getItem("pl_user_id");
+        cleanHash();
+
+        const [err0, userInfo] = await to(getUserInfo());
+        if (err0) { handleError(err0) };
+
+        window.localStorage.setItem("pl_user_id", userInfo.id);
+
+        const [err1, userPlaylists] = await to(getUserPlaylists(null));
+        if (err1) { handleError(err1) };
+
+        setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
     }
+  }, [state.token]);
+
+  return {
+    state,
+    setToken,
+    getToken,
+    addNewPlaylistItems,
+  }
 }
 
 

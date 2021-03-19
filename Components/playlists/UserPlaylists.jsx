@@ -14,17 +14,9 @@ import useError from '../../hooks/useError';
 import useMainState, { mainState } from '../../hooks/useMainState';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        // flexGrow: 1,
-        // width: '100vw',
-        // height: '100vh',
-        // padding: '5rem',
-        // overflow: 'scroll',
-    },
     playlistCardSize: {
         minWidth: 170,
         width: '25vw',
-        // height: '10vw',
         height: "100%",
         maxWidth: 200,
         margin: theme.spacing(3),
@@ -62,11 +54,10 @@ const item = {
 export default function UserPlaylists() {
 
     const classes = useStyles();
-    // const [state, setState] = useRecoilState(mainState);
     const {
         state,
         setToken,
-        addNewPlaylistItems
+        addNewPlaylistItems,
     } = useMainState();
     const { error, handleError, ThrowError } = useError();
 
@@ -90,26 +81,6 @@ export default function UserPlaylists() {
             setToken(token);
         }
     }, [])
-
-    // Get playlist data then
-    useEffect(async () => {
-        const { token, infoLoaded } = state;
-
-        if (token.access_token !== null && !infoLoaded) {
-            // let userInfo = window.localStorage.getItem("pl_user_id");
-            cleanHash();
-
-            const [err0, userInfo] = await to(getUserInfo());
-            if (err0) { handleError(err0) };
-
-            window.localStorage.setItem("pl_user_id", userInfo.id);
-
-            const [err1, userPlaylists] = await to(getUserPlaylists(null));
-            if (err1) { handleError(err1) };
-
-            setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
-        }
-    }, [state.token]);
 
     return (
         <ScrollBarsCustom
