@@ -83,7 +83,6 @@ export default function useSortState() {
     }, [slidersValues]);
 
     const initSortState = (init) => {
-        console.log('eleo')
         const getSlidersValues = computeSlidersValues(init);
         setOnlySaved(current => false);
         setFeatureSorting(current => ({...current, ...featureSortingState}));
@@ -92,7 +91,6 @@ export default function useSortState() {
     }
 
     const resetSortState = () => {
-        console.log
         setOnlySaved(false);
         setFeatureSorting(current => ({
             ...current,
