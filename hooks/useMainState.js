@@ -44,7 +44,17 @@ export default function useMainState() {
 
     const setToken = (token) => {
         setState(current => ({...current, token}));
-    }
+  }
+  
+  const addNewPlaylistItems = (nextPlaylists) => {
+    setState(current => ({
+        ...current,
+        playlists: {
+            items: [...current.playlists.items, ...nextPlaylists.items],
+            next: nextPlaylists.next,
+        },
+    }));
+  }
 
     const getToken = () => {
         return state.token;
@@ -54,6 +64,7 @@ export default function useMainState() {
         state,
         setToken,
         getToken,
+        addNewPlaylistItems,
     }
 }
 

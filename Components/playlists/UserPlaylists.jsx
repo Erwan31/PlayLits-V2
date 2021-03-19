@@ -11,7 +11,7 @@ import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
 import to from 'await-to-js';
 import useError from '../../hooks/useError';
-import { mainState } from '../../hooks/useMainState';
+import useMainState, { mainState } from '../../hooks/useMainState';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,7 +62,12 @@ const item = {
 export default function UserPlaylists() {
 
     const classes = useStyles();
-    const [state, setState] = useRecoilState(mainState);
+    // const [state, setState] = useRecoilState(mainState);
+    const {
+        state,
+        setToken,
+        addNewPlaylistItems
+    } = useMainState();
     const { error, handleError, ThrowError } = useError();
 
     // Load more playlists
@@ -70,14 +75,7 @@ export default function UserPlaylists() {
         if (state.playlists.next !== null) {
             const { next } = state.playlists;
             const nextPlaylists = await getUserPlaylists(next, handleError);
-
-            setState(current => ({
-                ...current,
-                playlists: {
-                    items: [...current.playlists.items, ...nextPlaylists.items],
-                    next: nextPlaylists.next,
-                },
-            }));
+            addNewPlaylistItems(nextPlaylists);
         }
     }
 
@@ -89,7 +87,7 @@ export default function UserPlaylists() {
             // let tokenURL = window.localStorage.getItem("pl_token");
             // Save in local storage for future page refresh/reload...
             window.localStorage.setItem("pl_token", token.access_token);
-            setState(current => ({ ...current, token }));
+            setToken(token);
         }
     }, [])
 
