@@ -71,19 +71,10 @@ const container = {
 
 export default function Playlits() {
 
-    // API call -> to externalize into a reducer
     const classes = useStyles();
-    // Recoil
     const { error, handleError, ThrowError } = useError();
     const { state } = useMainState();
-    const {
-        handleOnlySaved,
-        handleFeatureSortingClick,
-        initSortState,
-        sortedTracks,
-        onlySaved,
-        featureSorting
-    } = useSortState();
+    const { initSortState, sortedTracks } = useSortState();
 
     useEffect(() => {
         async function initData() {
@@ -128,18 +119,7 @@ export default function Playlits() {
                             }}
                         >
                             <Paper elevation={15} className={classes.playlitsPanel}>
-                                <PlaylitsPanel
-                                    // genres={playlistTracks.allGenres}
-                                    handleDirection={null}
-                                    // handleGenresSelect={handleGenresSelect}
-                                    handleOnlySaved={handleOnlySaved}
-                                    sortedTracks={sortedTracks.actual}
-                                    // direction={direction}
-                                    onlySaved={onlySaved}
-                                    length={sortedTracks.length}
-                                    onClick={handleFeatureSortingClick}
-                                    sorting={featureSorting}
-                                />
+                                <PlaylitsPanel />
                             </Paper>
                             <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>
                                 <CreatePlaylistPanel sortedTracks={sortedTracks.actual} />
