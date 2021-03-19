@@ -1,18 +1,10 @@
-import { Box, makeStyles } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { SliderSimple } from '../SliderSimple'
-import { mainState, selectedPlaylist, slidersState } from '../../../utils/States/states'
-import { useRecoilState } from 'recoil';
+import { Box } from '@material-ui/core'
+import React from 'react'
 import ScrollBarsCustom from '../../ScrollBarsCustom'
 import SliderDouble from '../SliderDouble'
 import { slidersDouble } from '../../../utils/playlits/slidersData';
 
-
-export default function SliderPanel({ list, length, onClick, sorting }) {
-
-    const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
-    const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-
+export default function SliderPanel({ onClick, sorting }) {
     return (
         <ScrollBarsCustom
             height={160}

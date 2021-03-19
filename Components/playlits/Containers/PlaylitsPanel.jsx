@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PlaylitsPanel({ genres, sortedTracks, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length, onClick, sorting }) {
+export default function PlaylitsPanel({ sortedTracks, onlySaved, handleOnlySaved, length, onClick, sorting }) {
 
     const classes = useStyles();
     const lovedArray = sortedTracks.filter(track => track.isSaved === true);

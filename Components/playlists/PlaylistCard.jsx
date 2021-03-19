@@ -1,11 +1,11 @@
 import React from 'react'
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, makeStyles, Box } from '@material-ui/core';
 import Link from 'next/link'
-import { mainState } from '../../utils/States/states'
 import { useRecoilState } from 'recoil';
 // import DefaultThumbnail from '/static/images/default_thumbnail.svg'
 import { motion } from "framer-motion";
 import { getSmallestImage } from '../../utils/getters';
+import { mainState } from '../../hooks/useMainState';
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -8,14 +8,10 @@ export const errorState = atom({
   }
 });
 
-export let errorVar = null;
-
 export default function useError() {
     const [error, setError] = useRecoilState(errorState);
 
     const handleError = (error) => {
-        console.log('useError', error);
-        errorVar = { hasError: true, error: error };
         setError(current => ({ ...current, hasError: true, error: error }));
     }
 

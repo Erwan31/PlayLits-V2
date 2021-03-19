@@ -1,5 +1,4 @@
 import React from 'react'
-import { errorVar } from '../../hooks/useError';
 import ErrorFallbackHome from './ErrorFallBackHome';
 import ErrorFallbackPlaylists from './ErrorFallBackPlaylists';
 
@@ -13,7 +12,6 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {    // You can also log the error to an error reporting service  
-    console.log(errorVar);
     this.setState({
       error: error,
       errorInfo: errorInfo
@@ -23,10 +21,9 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.error) {  // You can render any custom fallback UI
-
       // Check also local storage?
       if (this.props.route === "/playlits/[...slug]") {
-        switch (errorVar.error.status) {
+        switch (this.props.getError().error.status) {
           case 400:
             return <ErrorFallbackPlaylists />;
 

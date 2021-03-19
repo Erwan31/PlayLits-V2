@@ -22,11 +22,11 @@ export async function getUserPlaylistTracks(playlist) {
   do {
     let respObj;
 
+    // Need the try catch here??
     try {
       respObj = await asyncGetCall({ endPoint: result.info.next});
     }
     catch (e) {
-      console.log('gupt?', e)
       throw e;
     }
       

@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { motion } from 'framer-motion';
 import classNames from 'classnames'
-import { useRecoilState } from 'recoil';
-import { errorState, mainState, selectedPlaylist, slidersState } from '../../utils/States/states';
-import { sortList, computeSlidersValues, newSortList, sortByFeature, sortOnDirection } from '../../utils/playlits/utils';
 import CreatePlaylistPanel from '../../Components/playlits/Containers/CreatePlaylistPanel';
 import PlaylitsPanel from '../../Components/playlits/Containers/PlaylitsPanel';
 import TrackList from '../../Components/playlits/Containers/TrackList'
@@ -15,6 +12,9 @@ import LoadingRings from '../../Components/LoadingRings'
 import { getPlaylistData } from '../../hooks/getPlaylistData';
 import useError from '../../hooks/useError';
 import to from 'await-to-js';
+import useMainState from '../../hooks/useMainState';
+import useSortState from '../../hooks/useSortState';
+
 // Basically what await-to-js is doing
 // https://dev.to/sobiodarlington/better-error-handling-with-async-await-2e5m
 // const handle = (promise) => {
@@ -69,99 +69,32 @@ const container = {
     }
 };
 
-const initialState = {
-    initStruct: [],
-    onlySaved: false,
-    sortedTracks: [],
-    featureSorting: {
-        feature: null,
-        prevFeature: null,
-        direction: 'none'
-    }
-}
-
 export default function Playlits() {
 
     // API call -> to externalize into a reducer
     const classes = useStyles();
     // Recoil
-    const [state, setState] = useRecoilState(mainState);
-    const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
-    const [slidersValues, setSliderValue] = useRecoilState(slidersState);
-
-    //Personnal hook
     const { error, handleError, ThrowError } = useError();
-
-    const [onlySaved, setOnlySaved] = useState(false);
-    const [sortedTracks, setSortedTracks] = useState({ actual: [], initial: [] });
-    const [lengthArr, setLengthArr] = useState(0);
-    const [featureSorting, setFeatureSorting] = useState({ feature: null, prevFeature: null, direction: 'none', icon: <div></div> });
-
-    const handleOnlySaved = () => {
-        setOnlySaved(current => !current);
-    }
-
-    const handleGenresSelect = (selection) => {
-        setGenresSelected(selection);
-    }
-
-    const handleFeatureSortingClick = (newFeature) => () => {
-        console.log(newFeature, featureSorting, sortedTracks, slidersValues, sortedTracks.init, onlySaved)
-        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks.actual, slidersValues, sortedTracks.initial, onlySaved);
-        setFeatureSorting(current => ({ ...current, ...feature }));
-        setSortedTracks(current => ({ ...current, actual: [...sorted] }));
-    }
+    const { state } = useMainState();
+    const {
+        handleOnlySaved,
+        handleFeatureSortingClick,
+        initSortState,
+        sortedTracks,
+        onlySaved,
+        featureSorting
+    } = useSortState();
 
     useEffect(() => {
         async function initData() {
-            const [err, playlistData] = await to(getPlaylistData(state));
-            console.log(err, '?')
+            const [err, init] = await to(getPlaylistData(state));
             if (err) { handleError(err) };
 
-            const { data, audioFeatures, allGenres, genres, init } = playlistData;
-            const getSlidersValues = computeSlidersValues(init);
-
-            setPlaylistTracks(current => ({
-                ...current,
-                info: data.info,
-                items: data.items,
-                audioFeatures,
-                genres,
-                allGenres
-            }));
-            setSortedTracks(current => ({ ...current, actual: init, initial: init }));
-            setSliderValue(current => ({ ...current, ...getSlidersValues }));
-            setLengthArr(init.length);
+            initSortState(init);
         }
 
         initData();
     }, []);
-
-    // Compute coeff and sort tracks
-    useEffect(() => {
-        if (sortedTracks.actual.length > 0) {
-            let sorted = newSortList(slidersValues, sortedTracks.actual, sortedTracks.initial);
-
-            //Sorting based on direction
-            if (onlySaved) {
-                sorted = sorted.filter(track => track.isSaved);
-            }
-
-            sorted = sortOnDirection(sorted, featureSorting);
-
-            setLengthArr(sorted.length);
-            setSortedTracks(current => ({ ...current, actual: sorted }));
-        }
-    }, [slidersValues]);
-
-    useEffect(() => {
-        if (sortedTracks.actual.length > 0) {
-            const sorted = onlySaved ? sortedTracks.current.filter(track => track.isSaved) : sortList(slidersValues, sortedTracks.initial);
-            length = sorted.length;
-            setSortedTracks(current => ({ ...current, actual: sorted }));
-            setLengthArr(length);
-        }
-    }, [onlySaved]);
 
     return (
         <HeaderFooter backButton={true}>
@@ -174,7 +107,7 @@ export default function Playlits() {
                 autoHideDuration={200}
                 universal={true}
             >
-                {sortedTracks.actual.length === 0 ?
+                {sortedTracks.length === 0 ?
                     <LoadingRings />
                     :
                     <motion.div
@@ -196,14 +129,14 @@ export default function Playlits() {
                         >
                             <Paper elevation={15} className={classes.playlitsPanel}>
                                 <PlaylitsPanel
-                                    genres={playlistTracks.allGenres}
+                                    // genres={playlistTracks.allGenres}
                                     handleDirection={null}
-                                    handleGenresSelect={handleGenresSelect}
+                                    // handleGenresSelect={handleGenresSelect}
                                     handleOnlySaved={handleOnlySaved}
                                     sortedTracks={sortedTracks.actual}
                                     // direction={direction}
                                     onlySaved={onlySaved}
-                                    length={lengthArr}
+                                    length={sortedTracks.length}
                                     onClick={handleFeatureSortingClick}
                                     sorting={featureSorting}
                                 />

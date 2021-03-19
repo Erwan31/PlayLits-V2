@@ -4,7 +4,6 @@ import hash, { cleanHash } from '../../api/hash'
 import { getUserPlaylists, getUserInfo } from '../../api/spotifyAPICall';
 import { Grid, makeStyles, Box, Typography } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
-import { mainState } from '../../utils/States/states'
 import { useRecoilState } from 'recoil';
 import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
@@ -12,6 +11,7 @@ import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
 import to from 'await-to-js';
 import useError from '../../hooks/useError';
+import { mainState } from '../../hooks/useMainState';
 
 const useStyles = makeStyles((theme) => ({
     root: {

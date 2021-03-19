@@ -4,6 +4,8 @@ import {
 } from "../api/spotifyAPICall";
 import { getArrayOfGenres } from "../utils/getters";
 import { dataStructureTracks } from "../utils/playlits/utils";
+// Can't be used within async function
+// import useMainState from "./useMainState";
 
 export async function getPlaylistData(state) {
 
@@ -15,22 +17,23 @@ export async function getPlaylistData(state) {
     const artistsData = await getArtistsGenres(data);
     const allGenres = getArrayOfGenres(artistsData.artists);
     const genres = artistsData.artists.map(artist => artist.genres);
-    // Initial Structure
+    
+    // Initial Structure with pairing in between different arrays of dat into Objects
     const init = dataStructureTracks(data, audioFeatures, genres, areSaved);
 
-    return {
-        data,
-        audioFeatures,
-        areSaved,
-        artistsData,
-        allGenres,
-        genres,
-        init
-    };
+    return init;
+
 }
 
-
-
+// return {
+//     // data,
+//     // audioFeatures,
+//     // areSaved,
+//     // artistsData,
+//     // allGenres,
+//     // genres,
+//     init
+// };
 // import { useReducer } from "react";
 // import { useRecoilState } from "recoil";
 // import { mainState, selectedPlaylist, errorState } from "../utils/States/states";

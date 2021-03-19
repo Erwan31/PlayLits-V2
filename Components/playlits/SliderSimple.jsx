@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
-import { slidersState } from '../../utils/States/states';
+import { slidersState } from '../../hooks/useSortState';
 
 const useStyles = makeStyles((theme) => ({
     text: {

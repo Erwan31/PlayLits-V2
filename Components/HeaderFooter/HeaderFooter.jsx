@@ -10,8 +10,6 @@ export default function HeaderFooter({ children, backButton }) {
     const { getError } = useError();
     const router = useRouter();
 
-    console.log(router.pathname);
-
     return (
         <main className={styles.container}>
             <Header backButton={backButton} />
