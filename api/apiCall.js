@@ -46,29 +46,38 @@ export async function asyncLoopGetWithIds({ endPoint = null, params = null, offs
     let iteration = 0;
     let result = [];
  
-    do {
-        let query = data.slice(iteration * limit, (iteration + 1) * limit);
-        if (Array.isArray(query)) query = query.join(',');
-        iteration++;
+    try {
+        do {
+            let response;
+            let query = data.slice(iteration * limit, (iteration + 1) * limit);
+            if (Array.isArray(query)) query = query.join(',');
+            iteration++;
 
-        try {
-            const response = await asyncGetCall({
+            try {
+                response = await asyncGetCall({
                 endPoint,
                 params: { [key]: query },
                 offset,
                 limit
-            });
+                });
+            }
+            catch (e) {
+                console.error('Loop GET Error Inside', e);
+                throw e;
+            }
 
             if (Array.isArray(response)) {
                 result.push(...response);
             }
             else result.push(response);
-        }
-        catch (e) {
-            console.error('Loop GET Error', e);
-            throw new Error(e.response);
-        }
-    } while (maxIteration > iteration);
+
+        } while (maxIteration > iteration);           
+    }
+    catch (e) {
+        console.error('Loop GET Error Outside', e);
+        throw e;
+    }
+
     return result;
 }
 
@@ -118,27 +127,33 @@ export async function asyncLoopPostWithIds({ endPoint = null, params = null, off
     let iteration = 0;
     let result = [];
  
-    do {
-        let query = data.slice(iteration * limit, (iteration + 1) * limit);
-        if (Array.isArray(query)) query = query.join(',');
-        iteration++;
-        const uglyEndPoint = endPoint + '?uris=' + query;
-        // console.log('question', uglyEndPoint, key, query, endPoint, offset, limit);
-        try {
-            const response = await asyncPostCall({
-                endPoint: uglyEndPoint,
-                // params: { [key]: query, offset, limit },
-                // offset,
-                // limit
-            });
+    try {
+        do {
+            let query = data.slice(iteration * limit, (iteration + 1) * limit);
+            if (Array.isArray(query)) query = query.join(',');
+            iteration++;
+            const uglyEndPoint = endPoint + '?uris=' + query;
+            // console.log('question', uglyEndPoint, key, query, endPoint, offset, limit);
+            try {
+                const response = await asyncPostCall({
+                    endPoint: uglyEndPoint,
+                    // params: { [key]: query, offset, limit },
+                    // offset,
+                    // limit
+                });
 
-            // console.log('response', response, params, endPoint, offset, limit);
-        }
-        catch (e) {
-            console.error('Loop POST Error', e);
-            throw e.response;
-        }
-    } while (maxIteration > iteration);
+                // console.log('response', response, params, endPoint, offset, limit);
+            }
+            catch (e) {
+                console.error('Loop POST Error Inside', e);
+                throw e;
+            }
+        } while (maxIteration > iteration);
+    }
+    catch (e) {
+        console.error('Loop POST Error Outside', e);
+        throw e;
+    }
 
     return result;
 }

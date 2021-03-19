@@ -20,17 +20,25 @@ export async function getUserPlaylistTracks(playlist) {
   };
 
   do {
-      const respObj = await asyncGetCall({ endPoint: result.info.next});
+    let respObj;
 
-      result.info = {
-        href: respObj.href,
-        next: respObj.next,
-        previous: respObj.previous,
-        total: respObj.total,
-      };
+    try {
+      respObj = await asyncGetCall({ endPoint: result.info.next});
+    }
+    catch (e) {
+      console.log('gupt?', e)
+      throw e;
+    }
+      
+    result.info = {
+      href: respObj.href,
+      next: respObj.next,
+      previous: respObj.previous,
+      total: respObj.total,
+    };
     result.items.push(...respObj.items);
     
-  }while(result.info.next !== null);
+  }while(result.info.next !== null);    
 
   return result; 
 }

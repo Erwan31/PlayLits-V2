@@ -10,6 +10,8 @@ import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
 import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
+import to from 'await-to-js';
+import useError from '../../hooks/useError';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,11 +63,7 @@ export default function UserPlaylists() {
 
     const classes = useStyles();
     const [state, setState] = useRecoilState(mainState);
-    const [hasError, setHasError] = useState(false);
-
-    const handleError = () => {
-        setHasError(true);
-    }
+    const { error, handleError, ThrowError } = useError();
 
     // Load more playlists
     const handleLoadMore = async () => {
@@ -82,7 +80,6 @@ export default function UserPlaylists() {
             }));
         }
     }
-
 
     // Get Access Token first
     useEffect(async () => {
@@ -104,10 +101,14 @@ export default function UserPlaylists() {
             // let userInfo = window.localStorage.getItem("pl_user_id");
             cleanHash();
 
-            const userInfo = await getUserInfo(handleError);
+            const [err0, userInfo] = await to(getUserInfo());
+            if (err0) { handleError(err0) };
+
             window.localStorage.setItem("pl_user_id", userInfo.id);
 
-            const userPlaylists = await getUserPlaylists(null, handleError);
+            const [err1, userPlaylists] = await to(getUserPlaylists(null));
+            if (err1) { handleError(err1) };
+
             setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
         }
     }, [state.token]);
@@ -121,6 +122,7 @@ export default function UserPlaylists() {
             autoHideDuration={200}
             universal={true}
         >
+            {error.hasError && <ThrowError />}
             {state.infoLoaded &&
                 <motion.div
                     className="container"
@@ -173,7 +175,6 @@ export default function UserPlaylists() {
                         </Box>
                     }
                 </motion.div>}
-            {hasError && <ThrowError />}
         </ScrollBarsCustom>
     );
 }

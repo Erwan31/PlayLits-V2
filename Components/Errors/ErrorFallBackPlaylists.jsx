@@ -32,9 +32,12 @@ export default function ErrorFallbackPlaylists({ error }) {
                 timeout: 500,
             }}
         >
-            <Box display="flex" flexDirection="column" className={classes.noFocus}>
+            <Box display="flex" flexDirection="column" alignItems="center" className={classes.noFocus}>
                 <Typography gutterBottom>
                     Oops...something went wrong, sorry about that <span role="img" aria-label="anger">❗</span>
+                </Typography>
+                <Typography gutterBottom>
+                    It seems that you don't have authorization for this playlist... <span role="img" aria-label="thinking">🤔</span>
                 </Typography>
                 <Link href="/playlists">
                     <CustomButton color='green'>

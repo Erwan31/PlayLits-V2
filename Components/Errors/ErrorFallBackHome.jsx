@@ -32,7 +32,7 @@ export default function ErrorFallbackHome({ error }) {
                 timeout: 500,
             }}
         >
-            <Box display="flex" flexDirection="column" className={classes.noFocus}>
+            <Box display="flex" flexDirection="column" alignItems="center" className={classes.noFocus}>
                 <Typography gutterBottom>
                     Oops...something went wrong, sorry about that <span role="img" aria-label="anger">❗</span>
                 </Typography>

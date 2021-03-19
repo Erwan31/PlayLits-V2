@@ -115,6 +115,7 @@ export default function Playlits() {
     useEffect(() => {
         async function initData() {
             const [err, playlistData] = await to(getPlaylistData(state));
+            console.log(err, '?')
             if (err) { handleError(err) };
 
             const { data, audioFeatures, allGenres, genres, init } = playlistData;

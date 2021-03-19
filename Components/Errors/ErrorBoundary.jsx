@@ -12,9 +12,6 @@ class ErrorBoundary extends React.Component {
     };
   }
 
-  // static getDerivedStateFromError(error) {    // Update state so the next render will show the fallback UI.    
-  // }
-
   componentDidCatch(error, errorInfo) {    // You can also log the error to an error reporting service  
     console.log(errorVar);
     this.setState({
@@ -26,17 +23,21 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.error) {  // You can render any custom fallback UI
-      switch (errorVar.error.status) {
-        case 400:
-        case 401:
-          return <ErrorFallbackPlaylists />;
 
-        // case 401:
-        case 404:
-        case 500:
-        default:
-          return <ErrorFallbackHome />
+      // Check also local storage?
+      if (this.props.route === "/playlits/[...slug]") {
+        switch (errorVar.error.status) {
+          case 400:
+            return <ErrorFallbackPlaylists />;
+
+          case 404:
+          case 500:
+          default:
+            return <ErrorFallbackHome />
+        }
       }
+
+      return <ErrorFallbackHome />
     }
     return this.props.children;
   }
