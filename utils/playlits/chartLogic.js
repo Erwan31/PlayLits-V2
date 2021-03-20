@@ -35,7 +35,7 @@ export const data = (arr, label) => {
                           ]
                       */
                 }
-            ]
+        ],
         }
 };
 
@@ -68,7 +68,9 @@ export const options = function(yLabel){
                         display:false
                     },
                     ticks: {
-                        display: false //this will remove only the label
+                        display: false, //this will remove only the label
+                        min: 0,
+                        max: 1,
                     }
                 }]
             }

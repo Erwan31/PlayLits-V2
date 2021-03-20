@@ -37,13 +37,6 @@ export function computeSlidersValues(list){
     return minAndMax;
 }
 
-export function sortList(slidersValues, list) {
-    const sortedIDs = sortedIdsList(slidersValues, list);
-    const sorted = sortedIDs.map(item => list.filter(track => getTrackID(track.item) === item.id)[0]);
-
-    return sorted
-}
-
 export function sortByAscFeature(list, feature) {
     // console.log(list, feature);
     let arr = [...list];
@@ -129,6 +122,29 @@ export function newSortList(slidersValues, previousList, list) {
     return sorted;
 }
 
+
+export const sortByAscCoef = (arr) => {
+    const sorted = arr.sort( (a, b) =>{
+        return a.coeff- b.coeff
+    });
+    return sorted;
+}
+
+export const reverseOrder = (arr) => {
+    // Used with reverse state condition
+    let toSort = [...arr];
+    const sorted = toSort .reverse();
+    return sorted;
+}
+
+
+export function sortList(slidersValues, list) {
+    const sortedIDs = sortedIdsList(slidersValues, list);
+    const sorted = sortedIDs.map(item => list.filter(track => getTrackID(track.item) === item.id)[0]);
+
+    return sorted
+}
+
 export function sortedIdsList(slidersValues, list) {
     
     const computedList = [];
@@ -156,18 +172,4 @@ export function sortedIdsList(slidersValues, list) {
     //return sorted idsList
     return sortedList;
 
-}
-
-export const sortByAscCoef = (arr) => {
-    const sorted = arr.sort( (a, b) =>{
-        return a.coeff- b.coeff
-    });
-    return sorted;
-}
-
-export const reverseOrder = (arr) => {
-    // Used with reverse state condition
-    let toSort = [...arr];
-    const sorted = toSort .reverse();
-    return sorted;
 }
