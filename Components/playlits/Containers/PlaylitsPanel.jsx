@@ -1,19 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
-import { Box, makeStyles, Tooltip, Typography, IconButton, Modal, Backdrop } from '@material-ui/core'
+import { Box, makeStyles, Typography, IconButton, Modal, Backdrop } from '@material-ui/core'
 import ChartsIcon from '../../IconsJSX/ChartsIcon'
-import GenresIcon from '../../IconsJSX/GenresIcon'
 import InfoIcon from '../../IconsJSX/InfoIcon'
 import SlidersIcon from '../../IconsJSX/SlidersIcon'
 import OnlySavedButton from '../OnlySavedButton'
-import GenresPanel from './GenresPanel'
 import SliderPanel from './SliderPanel'
 import Charts from '../Charts'
 import WelcomeCarousel from '../../index/WelcomeCarousel'
-import DirectionButton from '../DirectionButton'
 import PanelCollapse from '../PanelCollapse'
-import { slidersSimple, slidersDouble } from '../../../utils/playlits/slidersData'
+import { slidersSimple } from '../../../utils/playlits/slidersData'
 import TracksNumber from '../TracksNumber'
+import useSortState from '../../../hooks/useSortState'
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -59,12 +57,25 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PlaylitsPanel({ genres, sortedTracks, onlySaved, handleGenresSelect, handleDirection, handleOnlySaved, length, onClick, sorting }) {
+export default function PlaylitsPanel() {
 
     const classes = useStyles();
-    const lovedArray = sortedTracks.filter(track => track.isSaved === true);
+    const {
+        handleOnlySaved,
+        sortedTracks,
+        onlySaved,
+        resetSortState
+    } = useSortState();
+    const lovedArray = sortedTracks.actual.filter(track => track.isSaved === true);
     const hasLovedSong = lovedArray.length > 0;
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        return () => {
+            resetSortState()
+        }
+    }, [])
+
 
     const handleOpen = () => {
         setOpen(true);
@@ -73,7 +84,6 @@ export default function PlaylitsPanel({ genres, sortedTracks, onlySaved, handleG
     const handleClose = () => {
         setOpen(false);
     };
-
 
     return (
         <div className={classes.relative}>
@@ -90,23 +100,19 @@ export default function PlaylitsPanel({ genres, sortedTracks, onlySaved, handleG
                 flexWrap="wrap"
                 className={classes.marginBottom}
             >
-                <TracksNumber number={length} />
+                <TracksNumber number={sortedTracks.length} />
                 <div className={classes.centerContentButton}>
                     <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} disabled={!hasLovedSong} />
                 </div>
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                 {sortedTracks.length > 0 &&
-                    <SliderPanel list={sortedTracks} length={length} onClick={onClick} sorting={sorting} />}
+                    <SliderPanel />}
             </PanelCollapse>
             <PanelCollapse name={"Charts"} icon={<ChartsIcon />}>
                 {sortedTracks.length > 0 &&
-                    <Charts sliders={slidersSimple} list={sortedTracks} />}
+                    <Charts sliders={slidersSimple} list={sortedTracks.actual} />}
             </PanelCollapse>
-            {/* <PanelCollapse name={"Genres"} icon={<GenresIcon />}>
-                {sortedTracks.length > 0 &&
-                    <GenresPanel genres={genres} onSelect={handleGenresSelect} />}
-            </PanelCollapse> */}
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

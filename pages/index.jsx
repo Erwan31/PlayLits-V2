@@ -7,19 +7,10 @@ export default function Home() {
 
   return (
     <HeaderFooter>
-      {/* <Scrollbars
-        autoHeight
-        autoHeightMin={450}
-        autoHeightMax={"100vh"}
-        autoHide
-        autoHideTimeout={500}
-        autoHideDuration={200}
-      > */}
       <div style={{ marginTop: 80, marginLeft: '1.5rem', marginRight: '1.5rem' }}>
         <WelcomeCarousel />
       </div>
       <LoginPages />
-      {/* </Scrollbars> */}
     </HeaderFooter>
   )
 }

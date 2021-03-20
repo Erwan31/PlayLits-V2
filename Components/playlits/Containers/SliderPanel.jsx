@@ -1,17 +1,13 @@
-import { Box, makeStyles } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { SliderSimple } from '../SliderSimple'
-import { mainState, selectedPlaylist, slidersState } from '../../../utils/States/states'
-import { useRecoilState } from 'recoil';
+import { Box } from '@material-ui/core'
+import React from 'react'
 import ScrollBarsCustom from '../../ScrollBarsCustom'
 import SliderDouble from '../SliderDouble'
 import { slidersDouble } from '../../../utils/playlits/slidersData';
+import useSortState from '../../../hooks/useSortState';
 
+export default function SliderPanel() {
 
-export default function SliderPanel({ list, length, onClick, sorting }) {
-
-    const [playlistTracks, setPlaylistTracks] = useRecoilState(selectedPlaylist);
-    const [slidersValues, setSliderValue] = useRecoilState(slidersState);
+    const { handleFeatureSortingClick, featureSorting } = useSortState();
 
     return (
         <ScrollBarsCustom
@@ -24,7 +20,7 @@ export default function SliderPanel({ list, length, onClick, sorting }) {
                 m='0 1rem 0 1rem'
             >
                 {/* {playlistTracks.audioFeatures.length > 10 && <SliderDouble info={slidersDouble[0]} max={slidersValues.tracks[1]} length={length} />} */}
-                {slidersDouble.map((item, index) => <SliderDouble key={index} info={item} onClick={onClick} sorting={sorting} />)}
+                {slidersDouble.map((item, index) => <SliderDouble key={index} info={item} onClick={handleFeatureSortingClick} sorting={featureSorting} />)}
             </Box >
         </ScrollBarsCustom>
     )

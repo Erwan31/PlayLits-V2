@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function ErrorFallback({ error }) {
+export default function ErrorFallbackHome({ error }) {
 
     const classes = useStyles();
 
@@ -32,7 +32,7 @@ export default function ErrorFallback({ error }) {
                 timeout: 500,
             }}
         >
-            <Box display="flex" flexDirection="column" className={classes.noFocus}>
+            <Box display="flex" flexDirection="column" alignItems="center" className={classes.noFocus}>
                 <Typography gutterBottom>
                     Oops...something went wrong, sorry about that <span role="img" aria-label="anger">❗</span>
                 </Typography>

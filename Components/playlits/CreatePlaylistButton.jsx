@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import { getSpotifyURL, getTrackID } from '../../utils/getters';
 import { createPlayLits } from '../../api/spotifyAPICall';
-import { mainState } from '../../utils/States/states';
+import { mainState } from '../../hooks/useMainState';
 
 export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 

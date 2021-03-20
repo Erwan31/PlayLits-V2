@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import hash, { cleanHash } from '../../api/hash'
-// import localStorage from "localStorage"
-import { getUserPlaylists, getUserInfo } from '../../api/spotifyAPICall';
+import React, { useEffect } from 'react'
+import hash from '../../api/hash'
+import { getUserPlaylists } from '../../api/spotifyAPICall';
 import { Grid, makeStyles, Box, Typography } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
-import { mainState } from '../../utils/States/states'
-import { useRecoilState } from 'recoil';
 import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
 import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
-import ThrowError from '../Errors/ThrowError';
+import useError from '../../hooks/useError';
+import useMainState from '../../hooks/useMainState';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        // flexGrow: 1,
-        // width: '100vw',
-        // height: '100vh',
-        // padding: '5rem',
-        // overflow: 'scroll',
-    },
     playlistCardSize: {
         minWidth: 170,
         width: '25vw',
-        // height: '10vw',
         height: "100%",
         maxWidth: 200,
         margin: theme.spacing(3),
@@ -61,29 +51,21 @@ const item = {
 export default function UserPlaylists() {
 
     const classes = useStyles();
-    const [state, setState] = useRecoilState(mainState);
-    const [hasError, setHasError] = useState(false);
-
-    const handleError = () => {
-        setHasError(true);
-    }
+    const {
+        state,
+        setToken,
+        addNewPlaylistItems,
+    } = useMainState();
+    const { error, handleError, ThrowError } = useError();
 
     // Load more playlists
     const handleLoadMore = async () => {
         if (state.playlists.next !== null) {
             const { next } = state.playlists;
             const nextPlaylists = await getUserPlaylists(next, handleError);
-
-            setState(current => ({
-                ...current,
-                playlists: {
-                    items: [...current.playlists.items, ...nextPlaylists.items],
-                    next: nextPlaylists.next,
-                },
-            }));
+            addNewPlaylistItems(nextPlaylists);
         }
     }
-
 
     // Get Access Token first
     useEffect(async () => {
@@ -93,25 +75,9 @@ export default function UserPlaylists() {
             // let tokenURL = window.localStorage.getItem("pl_token");
             // Save in local storage for future page refresh/reload...
             window.localStorage.setItem("pl_token", token.access_token);
-            setState(current => ({ ...current, token }));
+            setToken(token);
         }
     }, [])
-
-    // Get playlist data then
-    useEffect(async () => {
-        const { token, infoLoaded } = state;
-
-        if (token.access_token !== null && !infoLoaded) {
-            // let userInfo = window.localStorage.getItem("pl_user_id");
-            cleanHash();
-
-            const userInfo = await getUserInfo(handleError);
-            window.localStorage.setItem("pl_user_id", userInfo.id);
-
-            const userPlaylists = await getUserPlaylists(null, handleError);
-            setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
-        }
-    }, [state.token]);
 
     return (
         <ScrollBarsCustom
@@ -122,6 +88,7 @@ export default function UserPlaylists() {
             autoHideDuration={200}
             universal={true}
         >
+            {error.hasError && <ThrowError />}
             {state.infoLoaded &&
                 <motion.div
                     className="container"
@@ -174,7 +141,6 @@ export default function UserPlaylists() {
                         </Box>
                     }
                 </motion.div>}
-            {hasError && <ThrowError />}
         </ScrollBarsCustom>
     );
 }

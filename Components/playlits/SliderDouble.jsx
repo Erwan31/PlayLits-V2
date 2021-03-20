@@ -2,15 +2,7 @@ import React, { useState, useLayoutEffect } from 'react'
 import { Range, Direction, getTrackBackground } from 'react-range';
 import { Box, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useRecoilState } from 'recoil';
-import { slidersState } from '../../utils/States/states';
-import DecreaseIcon from '../IconsJSX/DecreaseIcon'
-import IncreaseIcon from '../IconsJSX/IncreaseIcon'
-
-const useStyles = makeStyles((theme) => ({
-    text: {
-        color: 'white',
-    }
-}));
+import { slidersState } from '../../hooks/useSortState';
 
 function toFixed(value) {
     const temp = Math.round(value * 10);
@@ -19,8 +11,6 @@ function toFixed(value) {
 }
 
 export default function SliderDouble({ info, onClick, sorting }) {
-
-    const classes = useStyles();
     const [slidersValues, setSliderValue] = useRecoilState(slidersState);
     // let MIN; //toFixed(slidersValues[info.feature].min - 0.05) >= 0 ? toFixed(slidersValues[info.feature].min - 0.05) : 0;
     // let MAX; // toFixed(slidersValues[info.feature].max + 0.05) <= 1 ? toFixed(slidersValues[info.feature].max + 0.05) : 1;
@@ -65,8 +55,9 @@ export default function SliderDouble({ info, onClick, sorting }) {
                 max={state.MAX}
                 onChange={handleChange}
                 onFinalChange={handleFinalChange}
-                renderTrack={({ props, children }) => (
+                renderTrack={({ props, children, index }) => (
                     <div
+                        key={index}
                         onMouseDown={props.onMouseDown}
                         onTouchStart={props.onTouchStart}
                         style={{

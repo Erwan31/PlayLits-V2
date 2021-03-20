@@ -4,10 +4,10 @@ import { getPreviewUrl, getTrackID } from '../../../utils/getters';
 import ScrollBarsCustom from '../../ScrollBarsCustom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useRecoilState } from 'recoil';
-import { mainState } from '../../../utils/States/states';
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import TrackRow from '../TrackRow';
+import { mainState } from '../../../hooks/useMainState';
 
 const useStyles = makeStyles((theme) => ({
     card: {
