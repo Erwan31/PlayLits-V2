@@ -133,7 +133,7 @@ export const reverseOrder = (arr) => {
     return sorted;
 }
         
-export function newSortListIII(slidersValues, initialList) {
+export function newSortListIII(slidersValues, initialList, lowPassFilter) {
     
     let sorted = initialList; // [...list]
     let computedList = [];
@@ -161,14 +161,27 @@ export function newSortListIII(slidersValues, initialList) {
         slidersAverage = slidersAverage + slidersValues[property] / (activeSliders * 100);
     }
 
-    console.log(activeSliders, slidersAverage, Math.floor(100 * (1 - slidersAverage))/100, 'AS, SA, MF%');
-    const perCentageTracksToRetrieve = Math.floor(100 * slidersAverage) / 100;
-    const numberOfTracksToRetrieve = sorted.length * perCentageTracksToRetrieve > (sorted.length - 10) ? (sorted.length - 10) : sorted.length * perCentageTracksToRetrieve;
-
+    // console.log(activeSliders, slidersAverage, Math.floor(100 * (1 - slidersAverage))/100, 'AS, SA, MF%');
+    const perCentageTracksToRetrieve = Math.floor(100 * slidersAverage) / 100 || 0;
+    
     // console.log(sorted.length * perCentageTracksToRetrieve, numberOfTracksToRetrieve, 'numberOfTracksToRetrieve');
-
+    
     computedList = sortByAscCoef(computedList);
-    computedList = computedList.slice(numberOfTracksToRetrieve , sorted.length);
+    
+    const numberOfTracksToRetrieve = sorted.length * perCentageTracksToRetrieve > (sorted.length - 10) ? (sorted.length - 10) : sorted.length * perCentageTracksToRetrieve;
+    
+    if (lowPassFilter) {
+        //default -> keep top, retrieve bottom
+        computedList = computedList.slice(numberOfTracksToRetrieve , sorted.length);
+    }
+    else {
+        // if user clicked, filter top part, keep bottom values
+        const numberOfTracksToKeep = sorted.length - numberOfTracksToRetrieve > 10 ? sorted.length - numberOfTracksToRetrieve : 10;
+        computedList = computedList.slice(0, numberOfTracksToKeep);
+    }
+
+    console.log('CL', computedList, perCentageTracksToRetrieve);
+
 
     sorted = sorted.filter(track => computedList.map(item => item.id).includes(getTrackID(track)));
     // console.log(sorted, 'try', getTrackID(sorted[0]), computedList.map(item => item.id).includes(getTrackID(sorted[20])));

@@ -43,12 +43,18 @@ const onlySavedState = atom({
     default: false
 });
 
+const lowPassFilterState = atom({
+    key: 'lowPassFilterState',
+    default: true
+});
+
 export default function useSortState() {
 
     const [slidersValues, setSlidersValues] = useRecoilState(slidersState);
     const [sortedTracks, setSortedTracks] = useRecoilState(sortedState);
     const [featureSorting, setFeatureSorting] = useRecoilState(featureSortingState);
     const [onlySaved, setOnlySaved] = useRecoilState(onlySavedState);
+    const [lowPassFilter, setLowPassFilter] = useRecoilState(lowPassFilterState);
 
     const initSortState = (init) => {
         setOnlySaved(current => false);
@@ -58,6 +64,10 @@ export default function useSortState() {
 
     const handleOnlySaved = () => {
         setOnlySaved(current => !current);
+    }
+
+    const handleLowPass = () => {
+        setLowPassFilter(current => !current);
     }
 
     const handleFeatureSortingClick = (newFeature) => () => {
@@ -75,7 +85,7 @@ export default function useSortState() {
 
     useEffect(() => {
         if (sortedTracks.length > 0) {
-            let sorted = newSortListIII(slidersValues, sortedTracks.initial);
+            let sorted = newSortListIII(slidersValues, sortedTracks.initial, lowPassFilter);
 
             //Sorting based on direction
             if (onlySaved) {
@@ -90,6 +100,7 @@ export default function useSortState() {
 
     const resetSortState = () => {
         setOnlySaved(false);
+        setLowPassFilter(true);
         setSlidersValues(current => ({
             ...current,
             danceability: 0,
@@ -112,10 +123,12 @@ export default function useSortState() {
     
     return {
         handleOnlySaved,
+        handleLowPass,
         handleFeatureSortingClick,
         initSortState,
         sortedTracks,
         onlySaved,
+        lowPassFilter,
         featureSorting,
         resetSortState,
     }

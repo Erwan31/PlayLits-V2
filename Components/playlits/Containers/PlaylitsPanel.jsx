@@ -12,6 +12,7 @@ import PanelCollapse from '../PanelCollapse'
 import { slidersSimple } from '../../../utils/playlits/slidersData'
 import TracksNumber from '../TracksNumber'
 import useSortState from '../../../hooks/useSortState'
+import FilterButton from '../FilterButton'
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -62,8 +63,10 @@ export default function PlaylitsPanel() {
     const classes = useStyles();
     const {
         handleOnlySaved,
+        handleLowPass,
         sortedTracks,
         onlySaved,
+        lowPassFilter,
         resetSortState
     } = useSortState();
     const lovedArray = sortedTracks.actual.filter(track => track.isSaved === true);
@@ -104,6 +107,7 @@ export default function PlaylitsPanel() {
                 <div className={classes.centerContentButton}>
                     <OnlySavedButton onlySaved={onlySaved} onClick={handleOnlySaved} disabled={!hasLovedSong} />
                 </div>
+                <FilterButton lowPassFilter={lowPassFilter} onClick={handleLowPass} />
             </Box>
             <PanelCollapse name={"Sliders"} icon={<SlidersIcon />}>
                 {sortedTracks.length > 0 &&

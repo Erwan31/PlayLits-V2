@@ -18,7 +18,7 @@ export default function OnlySavedButton({ onlySaved, onClick, disabled }) {
 
     return (
         <CustomButton onClick={onClick} color={onlySaved ? '#7CCC6C' : '#D62598'} disabled={disabled}>
-            <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
+            <Typography align='left' component='h3' variant='subtitle2' style={{ marginRight: '0.5rem' }}>
                 {onlySaved ? 'All Onboard' : 'Only the Loved ones'}
             </Typography>
             {onlySaved ? <span role="img" aria-label="sheep">🌈</span> : <span role="img" aria-label="sparkling-heart">💖</span>}

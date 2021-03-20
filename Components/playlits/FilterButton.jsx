@@ -1,15 +1,13 @@
 import { Typography, Tooltip } from '@material-ui/core'
 import React from 'react'
 import CustomButton from '../CustomButton'
-import DecreaseIcon from '../IconsJSX/DecreaseIcon'
-import IncreaseIcon from '../IconsJSX/IncreaseIcon'
 
-export default function TracksNumber({ number }) {
+export default function FilterButton({ lowPassFilter, onClick }) {
 
     return (
-        <CustomButton onClick={null} color={'#7080F4'} disableElevation>
+        <CustomButton onClick={onClick} color={lowPassFilter ? '#00B054' : '#FF5542'}>
             <Typography align='left' component='h3' variant='subtitle2' style={{ marginRight: '0.5rem' }}>
-                {number} Tracks
+                Keep <span style={{ color: '#2C3049' }}>{lowPassFilter ? 'Lowest' : 'Highest'}</span> values
             </Typography>
         </CustomButton>
     )
