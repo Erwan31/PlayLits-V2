@@ -110,7 +110,6 @@ export default function Playlits() {
                     >
                         <Box
                             m='1rem auto'
-                            // p='80px 2rem 0 2rem'
                             css={{
                                 maxWidth: 650,
                                 minWidth: 350,
@@ -125,8 +124,6 @@ export default function Playlits() {
                             </Paper>
                         </Box>
                         <Box
-                            m='1rem auto'
-                            // p='0 2rem 0 2rem'
                             p='0 0.5rem'
                             css={{
                                 maxWidth: 650,
