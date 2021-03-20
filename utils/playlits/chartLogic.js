@@ -17,23 +17,12 @@ export const data = (arr, label) => {
                     borderDashOffset: 0.0,
                     borderJoinStyle: 'round',
                     borderWidth: 0.5,
-                    //pointBorderColor: color,
-                    //pointBackgroundColor: '#fff',
                     pointBorderWidth: 0.5,
                     pointHoverRadius: 2,
-                    //pointHoverBackgroundColor: color,
-                    //pointHoverBorderColor: color,
                     pointHoverBorderWidth: 3,
                     pointRadius: 1,
                     pointHitRadius: 2,
                     data: arr,
-                    /*      backgroundColor: [
-                              pattern.draw('square', '#ff6384'),
-                              pattern.draw('circle', '#36a2eb'),
-                              pattern.draw('diamond', '#cc65fe'),
-                              pattern.draw('triangle', '#ffce56')
-                          ]
-                      */
                 }
         ],
         }

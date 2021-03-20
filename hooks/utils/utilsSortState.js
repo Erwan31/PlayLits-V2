@@ -122,6 +122,26 @@ export function newSortList(slidersValues, previousList, list) {
     return sorted;
 }
 
+export function newSortListIII(slidersValues, previousList, list) {
+
+    let sorted = list;
+
+    //compute track coeff on each track now that slidersValues moved
+
+    for (const property in slidersValues) {
+        sorted = sorted.filter(track =>
+            track.audioFeature[property] < (slidersValues[property].max + 0.00001)
+        )
+        .filter(track =>
+            track.audioFeature[property] > (slidersValues[property].min - 0.00001)
+        );
+    }
+
+    if (sorted.length < 10) sorted = previousList;
+
+    return sorted;
+}
+
 
 export const sortByAscCoef = (arr) => {
     const sorted = arr.sort( (a, b) =>{
