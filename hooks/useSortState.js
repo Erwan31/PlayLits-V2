@@ -85,6 +85,13 @@ export default function useSortState() {
 
     useEffect(() => {
         if (sortedTracks.length > 0) {
+            const sorted = newSortListIII(slidersValues, sortedTracks.initial, lowPassFilter);
+            setSortedTracks(current => ({ ...current, actual: sorted, length: sorted.length }));
+        }
+    }, [lowPassFilter]);
+
+    useEffect(() => {
+        if (sortedTracks.length > 0) {
             let sorted = newSortListIII(slidersValues, sortedTracks.initial, lowPassFilter);
 
             //Sorting based on direction
