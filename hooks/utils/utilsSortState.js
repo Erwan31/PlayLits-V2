@@ -58,41 +58,41 @@ export const sortByFeature = (newFeature, featureSorting, sortedTracks, slidersV
                 icon = <DecreaseIcon />
                 break;
                 
-                case 'desc':
-                    direction = 'none'
-                    sorted = newSortList(slidersValues, sorted, initStruct);
+            case 'desc':
+                direction = 'none'
+                sorted = newSortListIII(slidersValues, initStruct);
                 //Sorting based on direction
                 if (onlySaved) {
                     sorted = sorted.filter(track => track.isSaved);
                 }
                 icon = <div></div>
                 break;
-            }
+        }
             
-            return {
-                feature: { feature: newFeature, prevFeature: feature, direction, icon},
-                sorted
-            }
+        return {
+            feature: { feature: newFeature, prevFeature: feature, direction, icon},
+            sorted
         }
-    };
-    
-    export const sortOnDirection = (list, featureSorting) => {
-        const { direction } = featureSorting;
-        let sorted = list;
-        
-        switch (direction) {
-            case 'asc':
-                sorted = sortByAscFeature(sorted, featureSorting.feature);
-                break;
-
-        case 'desc':
-            sorted = sortByAscFeature(sorted, featureSorting.feature);
-            sorted = reverseOrder(sorted);
-            break;
-        }
-        
-        return sorted;
     }
+};
+    
+export const sortOnDirection = (list, featureSorting) => {
+    const { direction } = featureSorting;
+    let sorted = list;
+    
+    switch (direction) {
+        case 'asc':
+            sorted = sortByAscFeature(sorted, featureSorting.feature);
+            break;
+
+    case 'desc':
+        sorted = sortByAscFeature(sorted, featureSorting.feature);
+        sorted = reverseOrder(sorted);
+        break;
+    }
+    
+    return sorted;
+}
     
 export function newSortList(slidersValues, previousList, list) {
     
@@ -133,7 +133,7 @@ export const reverseOrder = (arr) => {
     return sorted;
 }
         
-export function newSortListIII(slidersValues, acutalList, initialList) {
+export function newSortListIII(slidersValues, initialList) {
     
     let sorted = initialList; // [...list]
     let computedList = [];
@@ -148,7 +148,7 @@ export function newSortListIII(slidersValues, acutalList, initialList) {
         })
     );
 
-    console.log(computedList);
+    // console.log(computedList);
 
     // filter base on the sliders values > 0 averages and keep tracks with the higher coeff
     for (const property in slidersValues) {
@@ -165,7 +165,7 @@ export function newSortListIII(slidersValues, acutalList, initialList) {
     const perCentageTracksToRetrieve = Math.floor(100 * slidersAverage) / 100;
     const numberOfTracksToRetrieve = sorted.length * perCentageTracksToRetrieve > (sorted.length - 10) ? (sorted.length - 10) : sorted.length * perCentageTracksToRetrieve;
 
-    console.log(sorted.length * perCentageTracksToRetrieve, numberOfTracksToRetrieve, 'numberOfTracksToRetrieve');
+    // console.log(sorted.length * perCentageTracksToRetrieve, numberOfTracksToRetrieve, 'numberOfTracksToRetrieve');
 
     computedList = sortByAscCoef(computedList);
     computedList = computedList.slice(numberOfTracksToRetrieve , sorted.length);

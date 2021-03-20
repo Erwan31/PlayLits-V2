@@ -51,11 +51,9 @@ export default function useSortState() {
     const [onlySaved, setOnlySaved] = useRecoilState(onlySavedState);
 
     const initSortState = (init) => {
-        // const getSlidersValues = computeSlidersValues(init);
         setOnlySaved(current => false);
         setFeatureSorting(current => ({...current, ...featureSortingState}));
         setSortedTracks(current => ({ ...current, actual: init, initial: init, length: init.length }));
-        // setSlidersValues(current => ({ ...current, ...getSlidersValues }));
     }
 
     const handleOnlySaved = () => {
@@ -76,9 +74,8 @@ export default function useSortState() {
     }, [onlySaved]);
 
     useEffect(() => {
-        console.log(slidersValues);
         if (sortedTracks.length > 0) {
-            let sorted = newSortListIII(slidersValues, sortedTracks.actual, sortedTracks.initial);
+            let sorted = newSortListIII(slidersValues, sortedTracks.initial);
 
             //Sorting based on direction
             if (onlySaved) {
@@ -90,7 +87,6 @@ export default function useSortState() {
             setSortedTracks(current => ({ ...current, actual: sorted, length: sorted.length }));
         }
     }, [slidersValues]);
-
 
     const resetSortState = () => {
         setOnlySaved(false);
