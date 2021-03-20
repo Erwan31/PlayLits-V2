@@ -50,6 +50,14 @@ export default function useSortState() {
     const [featureSorting, setFeatureSorting] = useRecoilState(featureSortingState);
     const [onlySaved, setOnlySaved] = useRecoilState(onlySavedState);
 
+    const initSortState = (init) => {
+        const getSlidersValues = computeSlidersValues(init);
+        setOnlySaved(current => false);
+        setFeatureSorting(current => ({...current, ...featureSortingState}));
+        setSortedTracks(current => ({ ...current, actual: init, initial: init, length: init.length }));
+        setSliderValue(current => ({ ...current, ...getSlidersValues }));
+    }
+
     const handleOnlySaved = () => {
         setOnlySaved(current => !current);
     }
@@ -59,7 +67,7 @@ export default function useSortState() {
         setFeatureSorting(current => ({ ...current, ...feature }));
         setSortedTracks(current => ({ ...current, actual: [...sorted] }));
     }
-
+    
     useEffect(() => {
         if (sortedTracks.length > 0) {
             const sorted = onlySaved ? sortedTracks.current.filter(track => track.isSaved) : sortList(slidersValues, sortedTracks.initial);
@@ -82,13 +90,6 @@ export default function useSortState() {
         }
     }, [slidersValues]);
 
-    const initSortState = (init) => {
-        const getSlidersValues = computeSlidersValues(init);
-        setOnlySaved(current => false);
-        setFeatureSorting(current => ({...current, ...featureSortingState}));
-        setSortedTracks(current => ({ ...current, actual: init, initial: init, length: init.length }));
-        setSliderValue(current => ({ ...current, ...getSlidersValues }));
-    }
 
     const resetSortState = () => {
         setOnlySaved(false);

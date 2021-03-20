@@ -60,35 +60,30 @@ export const sortByFeature = (newFeature, featureSorting, sortedTracks, slidersV
         let sorted = sortedTracks.actual;
         let initStruct = sortedTracks.initial;
 
-        if (prevFeature === newFeature) {
-            switch (direction) {
-                case 'none':
-                    direction = 'asc'
-                    sorted = sortByAscFeature(sorted, newFeature);
-                    icon = <IncreaseIcon />
-                    break;
+        if (feature !== newFeature) direction = 'none';
 
-                case 'asc':
-                    direction = 'desc'
-                    sorted = reverseOrder(sorted);
-                    icon = <DecreaseIcon />
-                    break;
+        switch (direction) {
+            case 'none':
+                direction = 'asc'
+                sorted = sortByAscFeature(sorted, newFeature);
+                icon = <IncreaseIcon />
+                break;
 
-                case 'desc':
-                    direction = 'none'
-                    sorted = newSortList(slidersValues, sorted, initStruct);
-                    //Sorting based on direction
-                    if (onlySaved) {
-                        sorted = sorted.filter(track => track.isSaved);
-                    }
-                    icon = <div></div>
-                    break;
-            }
-        }
-        else {
-            direction = 'asc'
-            sorted = sortByAscFeature(sorted, newFeature);
-            icon = <IncreaseIcon />
+            case 'asc':
+                direction = 'desc'
+                sorted = reverseOrder(sorted);
+                icon = <DecreaseIcon />
+                break;
+
+            case 'desc':
+                direction = 'none'
+                sorted = newSortList(slidersValues, sorted, initStruct);
+                //Sorting based on direction
+                if (onlySaved) {
+                    sorted = sorted.filter(track => track.isSaved);
+                }
+                icon = <div></div>
+                break;
         }
 
         return {
