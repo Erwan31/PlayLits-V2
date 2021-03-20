@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export const SliderSimple = React.memo(function ({ info, direction = 'asc' }) {
+export const SliderSimple = React.memo(function ({ info, onClick, sorting }) {
 
     const STEP = 1, MIN = 0, MAX = 100;
     const classes = useStyles();
@@ -30,12 +30,12 @@ export const SliderSimple = React.memo(function ({ info, direction = 'asc' }) {
     // console.log('render');
 
     return (
-        <Box align="center" p={'1rem'} css={{ width: 110, boxSizing: 'border-box', color: 'white' }}>
-            <Tooltip title={info.tooltip} arrow placement="top">
-                <Typography variant="body1" component="h3">{info.name}</Typography>
-            </Tooltip>
-            <Typography variant="caption" component="p" gutterBottom style={{ color: '#737BF4' }}>
-                {direction === 'asc' ? info.labelUp : info.labelDown}
+        <Box align="center" p={'1rem'} css={{ width: 95, boxSizing: 'border-box', color: 'white' }}>
+            <Typography variant="body2" component="h3" onClick={onClick(info.feature)} style={{ position: 'relative', cursor: 'pointer' }}>
+                {info.name}
+                <div style={{ position: 'absolute', transform: 'scale(0.7)', top: -3, right: -18, fill: info.color }}>
+                    {sorting.feature === info.feature && sorting.icon}
+                </div>
             </Typography>
             <Range
                 className='sliderRange'
@@ -56,7 +56,7 @@ export const SliderSimple = React.memo(function ({ info, direction = 'asc' }) {
                             width: '24px',
                             display: 'flex',
                             alignSelf: 'center',
-                            height: '95%',
+                            height: '125%',
                             margin: '1rem auto 1rem auto'
                         }}
                     >
@@ -87,7 +87,7 @@ export const SliderSimple = React.memo(function ({ info, direction = 'asc' }) {
                         {...props}
                         style={{
                             ...props.style,
-                            height: '20px',
+                            height: '16px',
                             width: '24px',
                             borderRadius: '4px',
                             backgroundColor: '#FFF',

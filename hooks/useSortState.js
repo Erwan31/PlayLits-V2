@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { atom, useRecoilState } from 'recoil';
 import {
-    computeSlidersValues, sortOnDirection, newSortList,
+    computeSlidersValues, sortOnDirection, newSortListIII,
     sortByFeature, sortList
 } from './utils/utilsSortState';
 
 export const slidersState = atom({
   key: 'slidersState',
   default: {
-      danceability: [0, 1],
-      energy: [0, 1],
-      valence: [0, 1],
-      instrumentalness: [0, 1],
-      liveness: [0, 1],
-      acousticness: [0, 1],
-      liveness: [0, 1],
-      speechiness: [0, 1],
+      danceability: 0,
+      energy: 0,
+      valence: 0,
+      instrumentalness: 0,
+      liveness: 0,
+      acousticness: 0,
+      liveness: 0,
+      speechiness: 0,
   },
 });
 
@@ -45,17 +45,17 @@ const onlySavedState = atom({
 
 export default function useSortState() {
 
-    const [slidersValues, setSliderValue] = useRecoilState(slidersState);
+    const [slidersValues, setSlidersValues] = useRecoilState(slidersState);
     const [sortedTracks, setSortedTracks] = useRecoilState(sortedState);
     const [featureSorting, setFeatureSorting] = useRecoilState(featureSortingState);
     const [onlySaved, setOnlySaved] = useRecoilState(onlySavedState);
 
     const initSortState = (init) => {
-        const getSlidersValues = computeSlidersValues(init);
+        // const getSlidersValues = computeSlidersValues(init);
         setOnlySaved(current => false);
         setFeatureSorting(current => ({...current, ...featureSortingState}));
         setSortedTracks(current => ({ ...current, actual: init, initial: init, length: init.length }));
-        setSliderValue(current => ({ ...current, ...getSlidersValues }));
+        // setSlidersValues(current => ({ ...current, ...getSlidersValues }));
     }
 
     const handleOnlySaved = () => {
@@ -76,8 +76,9 @@ export default function useSortState() {
     }, [onlySaved]);
 
     useEffect(() => {
+        console.log(slidersValues);
         if (sortedTracks.length > 0) {
-            let sorted = newSortList(slidersValues, sortedTracks.actual, sortedTracks.initial);
+            let sorted = newSortListIII(slidersValues, sortedTracks.actual, sortedTracks.initial);
 
             //Sorting based on direction
             if (onlySaved) {
@@ -93,6 +94,17 @@ export default function useSortState() {
 
     const resetSortState = () => {
         setOnlySaved(false);
+        setSlidersValues(current => ({
+            ...current,
+            danceability: 0,
+            energy: 0,
+            valence: 0,
+            instrumentalness: 0,
+            liveness: 0,
+            acousticness: 0,
+            liveness: 0,
+            speechiness: 0,
+        }));
         setFeatureSorting(current => ({
             ...current,
             feature: null,
