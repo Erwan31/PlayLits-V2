@@ -39,7 +39,7 @@ export function sortByAscFeature(list, feature) {
 export const sortByFeature = (newFeature, featureSorting, sortedTracks, slidersValues, onlySaved) => {
     if (sortedTracks.length > 0) {
         
-        let { feature, prevFeature, direction, icon } = featureSorting;
+        let { feature, direction, icon } = featureSorting;
         let sorted = sortedTracks.actual;
         let initStruct = sortedTracks.initial;
         

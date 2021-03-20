@@ -124,6 +124,7 @@ export default function Playlits() {
                             </Paper>
                         </Box>
                         <Box
+                            m='1rem auto'
                             p='0 0.5rem'
                             css={{
                                 maxWidth: 650,
