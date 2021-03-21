@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import { atom, useRecoilState } from 'recoil';
 
 export const localStorageState = atom({
@@ -67,31 +66,24 @@ export default function useLocalStorage() {
         return localStorageValue.user_id;
     }
 
-    const setPLaylistsLocalState = (playlists) => {
+    const setPlaylistsLocalState = (playlists) => {
         setLocalStorageValue(current => ({
             ...current,
-            selectedPlaylits: [...playlists]
+            selectedPlaylits: [playlists, ...current.selectedPlaylits]
         }));
+        window.localStorage.setItem(keyLocalStorage , JSON.stringify({...localStorageValue, selectedPlaylits: playlists}));
     }
 
     const getLocalPlaylistsState = () => {
-        return localStorageValue.selectedPlaylits;
+        return localStorageValue.selectedPlaylits[0];
     }
-
-    // useEffect(() => {
-    //     // const getLocal = JSON.stringify(window.localStorage.getItem(key));
-    //     // console.log(JSON.stringify(localStorageValue), 'hasReactedAlready?');
-    //     console.log('OVerWrite')
-    //     window.localStorage.setItem(keyLocalStorage , JSON.stringify(localStorageValue));
-    // }
-    // ,[localStorageValue])
 
     return {
         setLocalTokenState,
         getLocalTokenState,
         setLocalUserIdState,
         getLocalUserIdState,
-        setPLaylistsLocalState,
+        setPlaylistsLocalState,
         getLocalPlaylistsState
     }
 }
@@ -102,7 +94,10 @@ export function getLocalToken() {
 }
 
 export function getUserId() {
-    // console.log(JSON.parse(window.localStorage.getItem(keyLocalStorage)), 'UI II')
     return JSON.parse(window.localStorage.getItem(keyLocalStorage)).user.id;
+}
+
+export function getLocalSelectedPlaylists() {
+    return JSON.parse(window.localStorage.getItem(keyLocalStorage)).selectedPlaylits;
 }
 

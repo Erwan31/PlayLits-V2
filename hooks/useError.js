@@ -12,6 +12,7 @@ export default function useError() {
     const [error, setError] = useRecoilState(errorState);
 
     const handleError = (error) => {
+        console.error(error);
         setError(current => ({ ...current, hasError: true, error: error }));
     }
 
