@@ -44,11 +44,16 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(3)
     },
     responsiveMarginLeft: {
-        [theme.breakpoints.up('md')]: {
-            marginLeft: theme.spacing(1),
-            marginRight: theme.spacing(-2),
-            paddingLeft: theme.spacing(2),
-        },
+        // [theme.breakpoints.up('md')]: {
+        //     marginLeft: theme.spacing(1),
+        //     marginRight: theme.spacing(-2),
+        //     paddingLeft: theme.spacing(2),
+        // },
+        // [theme.breakpoints.up('lg')]: {
+        //     // marginLeft: theme.spacing(1),
+        //     // marginRight: theme.spacing(-2),
+        //     // paddingLeft: theme.spacing(2),
+        // },
     }
 }));
 
