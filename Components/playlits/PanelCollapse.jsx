@@ -1,5 +1,5 @@
 import { Box, Collapse, Typography } from '@material-ui/core'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -7,6 +7,10 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 export default function PanelCollapse({ children, name, icon }) {
 
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        if (children) setOpen(true);
+    }, [children])
 
     const handleChange = () => {
         setOpen(prev => !prev);

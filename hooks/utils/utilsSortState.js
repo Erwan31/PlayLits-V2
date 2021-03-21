@@ -197,7 +197,9 @@ export function sortedIdsList(slidersValues, list) {
     const computedList = [];
     let  sortedList = [];
     
+    console.log('errorroorr', list)
     list.forEach(track => {
+        console.log(track);
         computedList.push({
             id: getTrackID(track.item),
             coeff: computeTrackFeatureCoefficient(track, slidersValues)
@@ -215,8 +217,11 @@ export function sortedIdsList(slidersValues, list) {
 export function computeTrackFeatureCoefficient(track, sliderValues){
     let coeff = 0;
 
-    for (const property in sliderValues) {
-        coeff += (track.audioFeature[property] * sliderValues[property]);
+    // Check if audioFeature are there -> super new tracks appear to no have values yet
+    if(track.audioFeature){
+        for (const property in sliderValues) {
+            coeff += (track.audioFeature[property] * sliderValues[property]);
+        }
     }
 
     return coeff;
