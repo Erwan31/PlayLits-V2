@@ -18,7 +18,7 @@ export default function useError() {
     const ThrowError = () => {
         // Unset error to be able to come back without triggering a useless error in the component
         setError(current => ({ ...current, hasError: false}));
-        throw new Error('I am triggering ErrorBoundary catch!');
+        throw new Error('I am triggering ErrorBoundary catch!', error);
     }
 
     const getError = () => {

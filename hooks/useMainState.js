@@ -4,6 +4,7 @@ import { atom, useRecoilState } from "recoil";
 import { cleanHash } from "../api/hash";
 import { getUserInfo, getUserPlaylists } from "../api/spotifyAPICall";
 import useError from "./useError";
+import useLocalStorage from "./useLocalStorage";
 
 export const mainState = atom({
   key: 'mainState',
@@ -47,9 +48,18 @@ export default function useMainState() {
 
   const [state, setState] = useRecoilState(mainState);
   const { error, handleError } = useError();
+  const {
+        setLocalTokenState,
+        getLocalTokenState,
+        setLocalUserIdState,
+        getLocalUserIdState,
+        setPLaylistsLocalState,
+        getLocalPlaylistsState
+    } = useLocalStorage();
 
     const setToken = (token) => {
-        setState(current => ({...current, token}));
+      setState(current => ({ ...current, token }));
+      setLocalTokenState(token);
   }
   
   const addNewPlaylistItems = (nextPlaylists) => {
@@ -71,18 +81,20 @@ export default function useMainState() {
     const { token, infoLoaded } = state;
 
     if (token.access_token !== null && !infoLoaded) {
-        // let userInfo = window.localStorage.getItem("pl_user_id");
-        cleanHash();
+      cleanHash();
 
-        const [err0, userInfo] = await to(getUserInfo());
-        if (err0) { handleError(err0) };
+      
+      const [err0, userInfo] = await to(getUserInfo());
+      if (err0) { handleError(err0) };
 
-        window.localStorage.setItem("pl_user_id", userInfo.id);
+      console.log(userInfo, infoLoaded, 'GUI');
+      setLocalUserIdState(userInfo);  
 
-        const [err1, userPlaylists] = await to(getUserPlaylists(null));
-        if (err1) { handleError(err1) };
 
-        setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
+      const [err1, userPlaylists] = await to(getUserPlaylists(null, userInfo.id));
+      if (err1) { handleError(err1) };
+
+      setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
     }
   }, [state.token]);
 
