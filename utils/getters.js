@@ -22,9 +22,9 @@ export function getArtistsNames(item) {
 }
 
 export function getTrackID(item) {
-    if (item.hasOwnProperty('audioFeature')) return item.audioFeature.id;
     if (item.hasOwnProperty('track')) return item.track.id;
     if (item.hasOwnProperty('item')) return item.item.track.id;
+    if (item.hasOwnProperty('audioFeature')) return item.audioFeature.id;
     return item.id;
 }
 
@@ -56,7 +56,8 @@ export function getPlaylistID(playlist) {
 }
 
 export function getArrayOfAudioFeature(arr, feature) {
-    return arr.map(track => track.audioFeature[feature]);
+    // 0 in case feature null
+    return arr.map(track => track.audioFeature !== null ? track.audioFeature[feature] : 0);
 }
 
 export function getArrayOfArtistsIDs(arr) {

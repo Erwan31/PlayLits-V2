@@ -141,11 +141,12 @@ export function newSortListIII(slidersValues, initialList, lowPassFilter) {
     let activeSliders = 0;
     
     //compute track coeff on each track now that slidersValues moved
-    sorted.forEach(track =>
+    sorted.forEach(track => {
+        if (!getTrackID(track)) console.log(track, getTrackID(track));
         computedList.push({
             id: getTrackID(track),
             coeff: computeTrackFeatureCoefficient(track, slidersValues)
-        })
+        })}
     );
 
     // console.log(computedList);
@@ -195,11 +196,9 @@ export function sortList(slidersValues, list) {
 export function sortedIdsList(slidersValues, list) {
     
     const computedList = [];
-    let  sortedList = [];
+    let sortedList = [];
     
-    console.log('errorroorr', list)
     list.forEach(track => {
-        console.log(track);
         computedList.push({
             id: getTrackID(track.item),
             coeff: computeTrackFeatureCoefficient(track, slidersValues)
