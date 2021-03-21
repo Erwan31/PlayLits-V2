@@ -9,6 +9,7 @@ import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
 import useError from '../../hooks/useError';
 import useMainState from '../../hooks/useMainState';
+import useLocalStorage, { getLocalToken } from '../../hooks/useLocalStorage';
 
 const useStyles = makeStyles((theme) => ({
     playlistCardSize: {
@@ -56,6 +57,14 @@ export default function UserPlaylists() {
         setToken,
         addNewPlaylistItems,
     } = useMainState();
+    const {
+        setLocalTokenState,
+        getLocalTokenState,
+        setLocalUserIdState,
+        getLocalUserIdState,
+        setPLaylistsLocalState,
+        getLocalPlaylistsState
+    } = useLocalStorage();
     const { error, handleError, ThrowError } = useError();
 
     // Load more playlists
@@ -72,9 +81,9 @@ export default function UserPlaylists() {
         let { token } = state;
         if (token.access_token === null) {
             token = await hash();
-            // let tokenURL = window.localStorage.getItem("pl_token");
-            // Save in local storage for future page refresh/reload...
-            window.localStorage.setItem("pl_token", token.access_token);
+            if (!token.access_token) {
+                token = getLocalToken();
+            }
             setToken(token);
         }
     }, [])

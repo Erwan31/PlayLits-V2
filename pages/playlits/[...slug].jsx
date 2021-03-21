@@ -42,6 +42,18 @@ const useStyles = makeStyles(theme => ({
     },
     marginBottom: {
         marginBottom: theme.spacing(3)
+    },
+    responsiveMarginLeft: {
+        // [theme.breakpoints.up('md')]: {
+        //     marginLeft: theme.spacing(1),
+        //     marginRight: theme.spacing(-2),
+        //     paddingLeft: theme.spacing(2),
+        // },
+        // [theme.breakpoints.up('lg')]: {
+        //     // marginLeft: theme.spacing(1),
+        //     // marginRight: theme.spacing(-2),
+        //     // paddingLeft: theme.spacing(2),
+        // },
     }
 }));
 
@@ -131,6 +143,7 @@ export default function Playlits() {
                                 minWidth: 350,
                                 width: '100%'
                             }}
+                            className={classes.responsiveMarginLeft}
                         >
                             <TrackList list={sortedTracks.actual} />
                         </Box>

@@ -1,14 +1,14 @@
 import axios from "axios";
+import { getLocalToken } from "../hooks/useLocalStorage";
 
 export async function asyncGetCall({ endPoint = null, params = null, offset = 0, limit = 25} ) {
     
     if (endPoint === null) {
         throw new Error('Endpoint expected');
     }
-    
-    const token = window.localStorage.getItem("pl_token");
+
     const myHeaders = {
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + getLocalToken().access_token,
         'content-type': 'application/json',
     };
     const myParams = {
@@ -86,10 +86,9 @@ export async function asyncPostCall({ endPoint = null, data = {}, offset = 0, li
     if (endPoint === null) {
         throw new Error('Endpoint expected');
     }
-    
-    const token = window.localStorage.getItem("pl_token");
+
     const myHeaders = {
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + getLocalToken().access_token,
         'content-type': 'application/json',
     };
     const myParams = {

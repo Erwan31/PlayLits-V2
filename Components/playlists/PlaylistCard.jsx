@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 // import DefaultThumbnail from '/static/images/default_thumbnail.svg'
 import { motion } from "framer-motion";
 import { getSmallestImage } from '../../utils/getters';
-import { mainState } from '../../hooks/useMainState';
+import useMainState from '../../hooks/useMainState';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -57,15 +57,11 @@ const item = {
 export default function PlaylistCard({ playlist }) {
 
     const classes = useStyles();
-    const [state, setState] = useRecoilState(mainState);
-
-    const handleSelect = () => {
-        setState(current => ({ ...current, selectedPlaylist: { info: playlist } }));
-    }
+    const { handlePlaylistSelect } = useMainState();
 
     return (
         <Link href={`/playlits/${encodeURIComponent(playlist.name)}`}>
-            <Card className={classes.root} elevation={10} onClick={handleSelect}>
+            <Card className={classes.root} elevation={10} onClick={handlePlaylistSelect(playlist)}>
                 <CardActionArea>
                     <motion.div
                         whileHover={{

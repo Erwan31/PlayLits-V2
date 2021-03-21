@@ -1,4 +1,5 @@
 // import {  } from '../Components/HeaderFooter/HeaderFooter';
+import { getUserId } from '../hooks/useLocalStorage';
 import { getArrayOfArtistsIDs, getTrackID} from '../utils/getters';
 import { asyncGetCall, asyncLoopGetWithIds, asyncPostCall, asyncLoopPostWithIds } from './apiCall';
 
@@ -47,9 +48,8 @@ export async function getUserInfo() {
   return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
 }
 
-export async function getUserPlaylists(next = null) {
+export async function getUserPlaylists(next = null, id) {
 
-  const id = window.localStorage.getItem("pl_user_id");
   let url = `https://api.spotify.com/v1/users/${id}/playlists`;
 
   if (next !== null) url = next;
@@ -109,7 +109,6 @@ export async function getArtistsGenres(data) {
 
 export async function createPlayLits({name, tracks}) {
   
-  const id = window.localStorage.getItem("pl_user_id");
   const data = {
     name: name, //"PlayLits: " +
     public: false
@@ -121,7 +120,7 @@ export async function createPlayLits({name, tracks}) {
 
   // Create an empty playlist
   allResponses.playlistCreated = await asyncPostCall({
-    endPoint: `https://api.spotify.com/v1/users/${id}/playlists`, data
+    endPoint: `https://api.spotify.com/v1/users/${getUserId()}/playlists`, data
   }
     );
 

@@ -78,7 +78,7 @@ export default function useSortState() {
     
     useEffect(() => {
         if (sortedTracks.length > 0) {
-            const sorted = onlySaved ? sortedTracks.current.filter(track => track.isSaved) : sortList(slidersValues, sortedTracks.initial);
+            const sorted = onlySaved ? sortedTracks.actual.filter(track => track.isSaved) : sortList(slidersValues, sortedTracks.initial);
             setSortedTracks(current => ({ ...current, actual: sorted, length: sorted.length }));
         }
     }, [onlySaved]);

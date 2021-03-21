@@ -79,7 +79,6 @@ export default function TrackList({ list }) {
     //https://codesandbox.io/s/00nw2w1jv?file=/src/CustomList.js
     const handleScroll = ({ target }) => {
         const { scrollTop } = target;
-
         listRef.current.scrollTo(scrollTop);
     };
 
@@ -90,7 +89,7 @@ export default function TrackList({ list }) {
                     Tracks from
                 </Typography>
                 <Typography color='primary' component='h4' variant='body1' gutterBottom>
-                    {state.selectedPlaylist.info.name}
+                    {state.selectedPlaylist.name}
                 </Typography>
             </div>
             <ScrollBarsCustom

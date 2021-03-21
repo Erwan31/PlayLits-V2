@@ -141,11 +141,12 @@ export function newSortListIII(slidersValues, initialList, lowPassFilter) {
     let activeSliders = 0;
     
     //compute track coeff on each track now that slidersValues moved
-    sorted.forEach(track =>
+    sorted.forEach(track => {
+        if (!getTrackID(track)) console.log(track, getTrackID(track));
         computedList.push({
             id: getTrackID(track),
             coeff: computeTrackFeatureCoefficient(track, slidersValues)
-        })
+        })}
     );
 
     // console.log(computedList);
@@ -180,11 +181,7 @@ export function newSortListIII(slidersValues, initialList, lowPassFilter) {
         computedList = computedList.slice(0, numberOfTracksToKeep);
     }
 
-    console.log('CL', computedList, perCentageTracksToRetrieve);
-
-
     sorted = sorted.filter(track => computedList.map(item => item.id).includes(getTrackID(track)));
-    // console.log(sorted, 'try', getTrackID(sorted[0]), computedList.map(item => item.id).includes(getTrackID(sorted[20])));
 
     return sorted;
 }
@@ -199,18 +196,9 @@ export function sortList(slidersValues, list) {
 export function sortedIdsList(slidersValues, list) {
     
     const computedList = [];
-    let  sortedList = [];
+    let sortedList = [];
     
-    // //Compute average on the list of each feature and store them
-    // const averages = { acousticness: null, danceability: null, energy: null, instrumentalness: null, liveness: null, valence: null, speechiness: null };
-    
-    // for (const property in averages) {
-        //     averages[property] = getArrayOfAudioFeature(list, property).reduce((a, b) => a + b) / list.length;
-        // }
-
-        //Compute coeff for each track -> SumOf(sliderValue[feature]*trackFeature.value)/averageList[feature]
-        //Return list of track ids+coeff
-        list.forEach(track => {
+    list.forEach(track => {
         computedList.push({
             id: getTrackID(track.item),
             coeff: computeTrackFeatureCoefficient(track, slidersValues)
@@ -228,8 +216,11 @@ export function sortedIdsList(slidersValues, list) {
 export function computeTrackFeatureCoefficient(track, sliderValues){
     let coeff = 0;
 
-    for (const property in sliderValues) {
-        coeff += (track.audioFeature[property] * sliderValues[property]);
+    // Check if audioFeature are there -> super new tracks appear to no have values yet
+    if(track.audioFeature){
+        for (const property in sliderValues) {
+            coeff += (track.audioFeature[property] * sliderValues[property]);
+        }
     }
 
     return coeff;

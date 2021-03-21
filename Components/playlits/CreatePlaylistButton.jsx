@@ -1,20 +1,17 @@
-import { Box, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link';
+import { Box, Typography } from '@material-ui/core'
 import CustomButton from '../../Components/CustomButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SpotifyIcon from '../IconsJSX/SpotifyIcon';
-import { useRecoilState } from 'recoil';
-import Link from 'next/link';
-import { getSpotifyURL, getTrackID } from '../../utils/getters';
+import { getSpotifyURL } from '../../utils/getters';
 import { createPlayLits } from '../../api/spotifyAPICall';
-import { mainState } from '../../hooks/useMainState';
 
 export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 
-    const [state, setState] = useRecoilState(mainState);
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState(
-        <Typography align='left' component='h3' variant='subtitle1'>
+        <Typography align='left' component='h3' variant='subtitle2'>
             Create your PlayLits
         </Typography>
     );
@@ -32,13 +29,12 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
     const handleClick = () => {
         setLoading(true);
         setContent(
-            <CircularProgress size={20} thickness={10} color="secondary" />
+            <CircularProgress size={18} thickness={10} color="secondary" />
         )
     }
 
     useEffect(async () => {
         if (loading) {
-            console.log('ola', loading)
             const response = await createPlayLits({ name, tracks: sortedTracks });
             setColor('#A054FD');
             setContent(
@@ -47,7 +43,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
                         <Typography
                             align='left'
                             component='h3'
-                            variant='subtitle1'
+                            variant='subtitle2'
                             style={{ marginRight: '0.5rem' }}
                         >
                             Take a listen
@@ -68,7 +64,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 
     return (
         <CustomButton onClick={handleClick} color={color} disabled={disabled}>
-            <Box css={{ minHeight: 28 }}>
+            <Box css={{ minHeight: 20 }}>
                 {content}
             </Box>
         </CustomButton>
