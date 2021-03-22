@@ -81,6 +81,12 @@ export default function UserPlaylists() {
         }
     }
 
+    // Pass that to tht eguys
+    const handlePlaylistClick = (playlist) => () => {
+        addOrRetrievePlaylist(playlist);
+
+    }
+
     // Get Access Token first
     useEffect(async () => {
         let { token } = state;

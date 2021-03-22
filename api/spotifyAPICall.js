@@ -3,7 +3,25 @@ import { getUserId } from '../hooks/useLocalStorage';
 import { getArrayOfArtistsIDs, getTrackID} from '../utils/getters';
 import { asyncGetCall, asyncLoopGetWithIds, asyncPostCall, asyncLoopPostWithIds } from './apiCall';
 
+export async function loopPlaylistSelectionToGetTracks(playlistSelection) {
+  let data = [];
+  let index = playlistSelection.length-1;
+
+  console.log(playlistSelection);
+
+  do {
+    const temp = await getUserPlaylistTracks(playlistSelection[index]);
+    console.log(temp, data, 'T')
+    if (temp && temp.items.length) data = [...data, ...temp.items];
+    index--;
+  } while (index > 0);
+
+  return data;
+}
+
 export async function getUserPlaylistTracks(playlist) {
+
+  console.log(playlist, 'GUP');
 
   if (playlist === undefined) {
     // ('No tracks href')
@@ -58,9 +76,9 @@ export async function getUserPlaylists(next = null, id) {
 }
 
 // Looped 50
-export async function areTracksSavedByUser(playlist) {
+export async function areTracksSavedByUser(items) {
 
-  const ids = playlist.items.map(track => getTrackID(track));
+  const ids = items.map(track => getTrackID(track));
   const params = {
     ids
   };
@@ -72,10 +90,10 @@ export async function areTracksSavedByUser(playlist) {
 }
 
 
-export async function getTracksAudioFeatures(playlist) {
+export async function getTracksAudioFeatures(items) {
   
   let result = [];
-  const ids = playlist.items.map(track => getTrackID(track));
+  const ids = items.map(track => getTrackID(track));
   const params = {
     ids
   };
@@ -94,9 +112,9 @@ export async function getTracksAudioFeatures(playlist) {
 }
 
 // Looped 50
-export async function getArtistsGenres(data) {
+export async function getArtistsGenres(items) {
   
-  const ids = getArrayOfArtistsIDs(data.items);
+  const ids = getArrayOfArtistsIDs(items);
   let genres = { artists: [] };
   const artists = [];
   let respArray = await asyncLoopGetWithIds({ endPoint: `https://api.spotify.com/v1/artists`, params: ids});

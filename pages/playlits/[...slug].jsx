@@ -12,8 +12,8 @@ import LoadingRings from '../../Components/LoadingRings'
 import { getPlaylistData } from '../../hooks/getPlaylistData';
 import useError from '../../hooks/useError';
 import to from 'await-to-js';
-import useMainState from '../../hooks/useMainState';
 import useSortState from '../../hooks/useSortState';
+import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 
 // Basically what await-to-js is doing
 // https://dev.to/sobiodarlington/better-error-handling-with-async-await-2e5m
@@ -84,12 +84,12 @@ const container = {
 export default function Playlits() {
     const classes = useStyles();
     const { error, handleError, ThrowError } = useError();
-    const { state } = useMainState();
+    const { playlistsSelection } = usePlaylistsSelection();
     const { initSortState, sortedTracks } = useSortState();
 
     useEffect(() => {
         async function initData() {
-            const [err, init] = await to(getPlaylistData(state));
+            const [err, init] = await to(getPlaylistData(playlistsSelection));
             if (err) { handleError(err) };
 
             initSortState(init);

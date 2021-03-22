@@ -45,13 +45,13 @@ export default function PlaylistsSelection() {
 
     return (
         <Box display='flex' direction="row" alignItems="center">
-            {/* <Link> */}
-            <CustomButton>
-                <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
-                    Let's Go!
+            <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
+                <CustomButton>
+                    <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
+                        Let's Go!
                     </Typography>
-            </CustomButton>
-            {/* </Link> */}
+                </CustomButton>
+            </Link>
             <ul className={classes.root}>
                 {playlistsSelection.selection.map((playlist, index) => {
                     console.log(playlist.id);

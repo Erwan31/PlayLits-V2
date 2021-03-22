@@ -59,10 +59,10 @@ export const reverseOrder = (arr) => {
     return sorted;
 }
 
-export function dataStructureTracks(playlist, audioFeatures, genres, areSaved) {
-    const struct = playlist.items.map((el, index) =>
+export function dataStructureTracks(items, audioFeatures, genres, areSaved) {
+    const struct = items.map((el, index) =>
     ({
-        item: playlist.items[index],
+        item: items[index],
         audioFeature: audioFeatures[index],
         genres: genres[index],
         isSaved: areSaved[index]
