@@ -4,7 +4,7 @@ import UserPlaylists from '../Components/playlists/UserPlaylists'
 export default function Playlists() {
 
   return (
-    <HeaderFooter>
+    <HeaderFooter selection={true}>
       <UserPlaylists />
     </HeaderFooter>
   )

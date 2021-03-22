@@ -54,40 +54,47 @@ const item = {
     }
 };
 
-export default function PlaylistCard({ playlist }) {
+export default function PlaylistCard({ playlist, addOrRetrievePlaylist }) {
 
     const classes = useStyles();
     const { handlePlaylistSelect } = useMainState();
 
     return (
-        <Link href={`/playlits/${encodeURIComponent(playlist.name)}`}>
-            <Card className={classes.root} elevation={10} onClick={handlePlaylistSelect(playlist)}>
-                <CardActionArea>
-                    <motion.div
-                        whileHover={{
-                            scale: 1.1,
-                            transition: {
-                                delay: 0.4,
-                                ease: "easeOut",
-                                duration: 0.4,
-                            }
+        // <Link href={`/playlits/${encodeURIComponent(playlist.name)}`}>
+        <Card
+            className={classes.root} elevation={10}
+            onClick={() => {
+                handlePlaylistSelect(playlist)
+                addOrRetrievePlaylist(playlist);
+            }
+            }
+        >
+            <CardActionArea>
+                <motion.div
+                    whileHover={{
+                        scale: 1.1,
+                        transition: {
+                            delay: 0.4,
+                            ease: "easeOut",
+                            duration: 0.4,
+                        }
+                    }}
+                >
+                    <CardMedia
+                        classes={{
+                            root: classes.media
                         }}
-                    >
-                        <CardMedia
-                            classes={{
-                                root: classes.media
-                            }}
-                            image={getSmallestImage(playlist.images) !== undefined ? getSmallestImage(playlist.images).url : '/static/images/default_thumbnail.svg'}
-                            title={playlist.name}
-                        />
-                    </motion.div>
-                    <CardContent>
-                        <Typography className={classes.typo} gutterBottom noWrap={true} variant="body2" component="h2">
-                            {playlist.name}
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-        </Link>
+                        image={getSmallestImage(playlist.images) !== undefined ? getSmallestImage(playlist.images).url : '/static/images/default_thumbnail.svg'}
+                        title={playlist.name}
+                    />
+                </motion.div>
+                <CardContent>
+                    <Typography className={classes.typo} gutterBottom noWrap={true} variant="body2" component="h2">
+                        {playlist.name}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+        </Card>
+        // </Link>
     )
 }

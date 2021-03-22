@@ -63,7 +63,7 @@ export default function useLocalStorage() {
     }
 
     const getLocalUserIdState = () => {
-        return localStorageValue.user_id;
+        return localStorageValue.user.id;
     }
 
     const setPlaylistsLocalState = (playlists) => {

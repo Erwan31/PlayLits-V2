@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, IconButton, Typography, Tooltip, Box } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Link from 'next/link'
+import PlaylistsSelection from '../playlists/PlaylistsSelection';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,38 +35,57 @@ const useStyles = makeStyles((theme) => ({
         height: 40,
     },
     title: {
-        flexGrow: 1,
+        // flexGrow: 1,
     },
     textSize: {
         width: 100,
     },
+    centerSelectionPosition: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        padding: 'auto 123px'
+    }
 }));
 
-export default function Header({ backButton = false }) {
+export default function Header({ backButton = false, selection = false }) {
 
     const classes = useStyles();
 
     return (
         <AppBar static="true" className={classes.root}>
-            <Link href="/">
-                <Tooltip title="Back to Connection Page" arrow>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <img src={"/static/images/logoCustom.svg"} className={classes.logo} alt="logo" />
-                    </IconButton>
-                </Tooltip>
-            </Link>
-            <Typography variant="h6" className={classes.title}>
-                PlayLits
-            </Typography>
-            {   backButton &&
-                <Link href="/playlists">
-                    <Box display='flex' direction="row" alignItems="center" m="0 1rem 0 0" css={{ cursor: 'pointer' }}>
-                        <ArrowBackIcon />
-                        <Typography align="center" variant="body2" className={classes.textSize}>
-                            Back to your Playlists
+            <Box display='flex' direction="row" alignItems="center" css={{ position: 'relative', width: '100%' }}>
+                <Box display='flex' direction="row" alignItems="center">
+                    <Link href="/">
+                        <Tooltip title="Back to Connection Page" arrow>
+                            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                                <img src={"/static/images/logoCustom.svg"} className={classes.logo} alt="logo" />
+                            </IconButton>
+                        </Tooltip>
+                    </Link>
+                    <Typography variant="h6" className={classes.title}>
+                        PlayLits
+                </Typography>
+                </Box>
+                {backButton &&
+                    <Link href="/playlists">
+                        <Box display='flex' direction="row" alignItems="center" m="0 1rem 0 0" css={{ cursor: 'pointer' }}>
+                            <ArrowBackIcon />
+                            <Typography align="center" variant="body2" className={classes.textSize}>
+                                Back to your Playlists
                     </Typography>
-                    </Box>
-                </Link>}
+                        </Box>
+                    </Link>
+                }
+
+                {
+                    selection &&
+                    <div className={classes.centerSelectionPosition}>
+                        <PlaylistsSelection />
+                    </div>
+                }
+            </Box>
         </AppBar>
     )
 }

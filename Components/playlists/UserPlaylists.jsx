@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import useError from '../../hooks/useError';
 import useMainState from '../../hooks/useMainState';
 import useLocalStorage, { getLocalToken } from '../../hooks/useLocalStorage';
+import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 
 const useStyles = makeStyles((theme) => ({
     playlistCardSize: {
@@ -66,6 +67,10 @@ export default function UserPlaylists() {
         getLocalPlaylistsState
     } = useLocalStorage();
     const { error, handleError, ThrowError } = useError();
+    const {
+        playlistsSelection,
+        addOrRetrievePlaylist
+    } = usePlaylistsSelection()
 
     // Load more playlists
     const handleLoadMore = async () => {
@@ -127,7 +132,12 @@ export default function UserPlaylists() {
                                                     variants={item}
                                                     className={classes.playlistCardSize}
                                                 >
-                                                    <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
+                                                    <PlaylistCard
+                                                        addOrRetrievePlaylist={addOrRetrievePlaylist}
+                                                        key={getPlaylistID(list)}
+                                                        playlist={list}
+                                                        className={classes.paper}
+                                                    />
                                                 </motion.div>
                                             ))
                                     }
