@@ -117,9 +117,9 @@ export default function PlaylistCard({ selection, playlist, addOrRetrievePlaylis
                         whileHover={{
                             scale: 1.1,
                             transition: {
-                                delay: 0.4,
+                                delay: 0.5,
                                 ease: "easeOut",
-                                duration: 0.4,
+                                duration: 3,
                             }
                         }}
                     >
