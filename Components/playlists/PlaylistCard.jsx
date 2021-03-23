@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, makeStyles, Box } from '@material-ui/core';
 import Link from 'next/link'
 import { useRecoilState } from 'recoil';
@@ -6,6 +6,12 @@ import { useRecoilState } from 'recoil';
 import { motion } from "framer-motion";
 import { getSmallestImage } from '../../utils/getters';
 import useMainState from '../../hooks/useMainState';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import AddIcon from '../IconsJSX/AddIcon';
+import RemoveIcon from '../IconsJSX/RemoveIcon';
+import CheckedIcon from '../IconsJSX/CheckedIcon';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,47 +60,83 @@ const item = {
     }
 };
 
-export default function PlaylistCard({ playlist, addOrRetrievePlaylist }) {
+export default function PlaylistCard({ selection, playlist, addOrRetrievePlaylist }) {
 
     const classes = useStyles();
     const { handlePlaylistSelect } = useMainState();
+    const selected = selection.includes(playlist);
+    const initIcon = useMemo(() => selection.includes(playlist) ? <CheckedIcon /> : <div></div>, [selection]);
+    const [icon, setIcon] = useState(initIcon);
+
+    const handleHover = (action) => () => {
+        if (!selected && action === 'enter') {
+            setIcon(<AddIcon />)
+        }
+        if (!selected && action === 'leave') {
+            setIcon(<div></div>)
+        }
+
+        if (selected && action === 'enter') {
+            setIcon(<RemoveIcon />)
+        }
+        if (selected && action === 'leave') {
+            setIcon(<CheckedIcon />)
+        }
+    }
+
+    const handleClick = () => {
+        if (!selected) {
+            setIcon(<CheckedIcon />)
+        }
+        if (selected) {
+            setIcon(<AddIcon />)
+        }
+    }
 
     return (
         // <Link href={`/playlits/${encodeURIComponent(playlist.name)}`}>
-        <Card
-            className={classes.root} elevation={10}
-            onClick={() => {
-                handlePlaylistSelect(playlist)
-                addOrRetrievePlaylist(playlist);
-            }
-            }
-        >
-            <CardActionArea>
-                <motion.div
-                    whileHover={{
-                        scale: 1.1,
-                        transition: {
-                            delay: 0.4,
-                            ease: "easeOut",
-                            duration: 0.4,
-                        }
-                    }}
-                >
-                    <CardMedia
-                        classes={{
-                            root: classes.media
+        <div style={{ position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 5, right: 5, zIndex: 1 }}>
+                {icon}
+            </div>
+            <Card
+                className={classes.root} elevation={10}
+                onClick={() => {
+                    handlePlaylistSelect(playlist)
+                    addOrRetrievePlaylist(playlist);
+                    handleClick();
+                }
+                }
+                onMouseEnter={handleHover('enter')}
+                onMouseLeave={handleHover('leave')}
+            >
+                <CardActionArea>
+                    <motion.div
+                        whileHover={{
+                            scale: 1.1,
+                            transition: {
+                                delay: 0.4,
+                                ease: "easeOut",
+                                duration: 0.4,
+                            }
                         }}
-                        image={getSmallestImage(playlist.images) !== undefined ? getSmallestImage(playlist.images).url : '/static/images/default_thumbnail.svg'}
-                        title={playlist.name}
-                    />
-                </motion.div>
-                <CardContent>
-                    <Typography className={classes.typo} gutterBottom noWrap={true} variant="body2" component="h2">
-                        {playlist.name}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-        </Card>
+                    >
+                        <CardMedia
+                            classes={{
+                                root: classes.media
+                            }}
+                            image={getSmallestImage(playlist.images) !== undefined ? getSmallestImage(playlist.images).url : '/static/images/default_thumbnail.svg'}
+                            title={playlist.name}
+                        />
+                    </motion.div>
+                    <CardContent>
+                        <Typography className={classes.typo} gutterBottom noWrap={true} variant="body2" component="h2">
+                            {playlist.name}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        </div>
         // </Link>
     )
 }

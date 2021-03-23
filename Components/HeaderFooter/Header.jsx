@@ -89,9 +89,7 @@ export default function Header({ backButton = false, selection = false }) {
                 }
                 {
                     selection &&
-                    // <div className={classes.centerSelectionPosition}>
                     <PlaylistsSelection />
-                    // </div>
                 }
             </Box>
         </AppBar>

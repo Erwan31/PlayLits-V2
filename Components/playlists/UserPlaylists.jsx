@@ -139,8 +139,9 @@ export default function UserPlaylists() {
                                                     className={classes.playlistCardSize}
                                                 >
                                                     <PlaylistCard
-                                                        addOrRetrievePlaylist={addOrRetrievePlaylist}
                                                         key={getPlaylistID(list)}
+                                                        selection={playlistsSelection.selection}
+                                                        addOrRetrievePlaylist={addOrRetrievePlaylist}
                                                         playlist={list}
                                                         className={classes.paper}
                                                     />
