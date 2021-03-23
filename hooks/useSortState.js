@@ -78,14 +78,26 @@ export default function useSortState() {
     
     useEffect(() => {
         if (sortedTracks.length > 0) {
-            const sorted = onlySaved ? sortedTracks.actual.filter(track => track.isSaved) : sortList(slidersValues, sortedTracks.initial);
+            let sorted = onlySaved ? sortedTracks.actual.filter(track => track.isSaved) : sortList(slidersValues, sortedTracks.initial);
+            sorted = sortOnDirection(sorted, featureSorting);
             setSortedTracks(current => ({ ...current, actual: sorted, length: sorted.length }));
         }
     }, [onlySaved]);
 
     useEffect(() => {
         if (sortedTracks.length > 0) {
-            const sorted = newSortListIII(slidersValues, sortedTracks.initial, lowPassFilter);
+            // Initial tracks need to be sorted base on onlySaved Parameter first
+            let toSort = [];
+            if (onlySaved) {
+                toSort = sortedTracks.initial.filter(track => track.isSaved);
+            }
+            else {
+                toSort = sortedTracks.initial;
+            }
+
+            let sorted = newSortListIII(slidersValues, toSort, lowPassFilter);
+            sorted = sortOnDirection(sorted, featureSorting);
+
             setSortedTracks(current => ({ ...current, actual: sorted, length: sorted.length }));
         }
     }, [lowPassFilter]);

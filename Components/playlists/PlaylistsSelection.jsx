@@ -9,11 +9,14 @@ import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 import Link from 'next/link';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
+    list: {
+        position: 'absolute',
+        top: theme.spacing(5),
+        right: theme.spacing(1),
+        // display: 'flex',
+        // flexDirection: 'row',
+        // justifyContent: 'center',
+        // flexWrap: 'wrap',
         listStyle: 'none',
         padding: theme.spacing(0.5),
         margin: 0,
@@ -29,14 +32,6 @@ const useStyles = makeStyles((theme) => ({
 export default function PlaylistsSelection() {
 
     const classes = useStyles();
-    // const [chipData, setChipData] = React.useState([
-    //     { key: 0, label: 'Angular' },
-    //     { key: 1, label: 'jQuery' },
-    //     { key: 2, label: 'Polymer' },
-    //     { key: 3, label: 'React' },
-    //     { key: 4, label: 'Vue.js' },
-    //     { key: 0, label: 'Angular' },
-    // ]);
     const { playlistsSelection, retrievePlaylist } = usePlaylistsSelection();
 
     const handleDelete = (playlist) => () => {
@@ -44,32 +39,38 @@ export default function PlaylistsSelection() {
     }
 
     return (
-        <Box display='flex' direction="row" alignItems="center">
-            <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
-                <CustomButton>
-                    <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
-                        Let's Go!
-                    </Typography>
-                </CustomButton>
-            </Link>
-            <ul className={classes.root}>
-                {playlistsSelection.selection.map((playlist, index) => {
-                    console.log(playlist.id);
-                    return (
+        <Box
+            display='flex' direction="column" alignItems="center"
+            css={{ position: 'relative' }}
+        >
+            <div style={{ width: 100 }}>
+                {playlistsSelection.selection.length > 0 &&
+                    <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
+                        <CustomButton>
+                            <Typography align='left' component='h3' variant='subtitle2'>
+                                Let's Go!
+                        </Typography>
+                        </CustomButton>
+                    </Link>
+                }
+            </div>
+            <ul className={classes.list}>
+                {
+                    playlistsSelection.selection.map((playlist, index) =>
                         <li key={playlist.id}>
-                            <Tooltip title={playlist.name} arrow>
+                            <Tooltip title={playlist.name} arrow placement="left">
                                 <Chip
-                                    avatar={<Avatar>{playlist.name[0].toUpperCase()}</Avatar>}
+                                    // avatar={<div>{playlist.name[0].toUpperCase()}</div>}
                                     variant="outlined"
                                     size="small"
-                                    // label={''}
+                                    label={playlist.name[0].toUpperCase()}
                                     onDelete={handleDelete(playlist)}
                                     className={classes.chip}
                                 />
                             </Tooltip>
                         </li>
-                    );
-                })}
+                    )
+                }
             </ul>
         </Box>
     );

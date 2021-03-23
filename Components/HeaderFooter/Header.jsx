@@ -55,7 +55,10 @@ export default function Header({ backButton = false, selection = false }) {
 
     return (
         <AppBar static="true" className={classes.root}>
-            <Box display='flex' direction="row" alignItems="center" css={{ position: 'relative', width: '100%' }}>
+            <Box
+                display='flex' direction="row" alignItems="center"
+                justifyContent={'space-between'}
+                css={{ position: 'relative', width: '100%' }}>
                 <Box display='flex' direction="row" alignItems="center">
                     <Link href="/">
                         <Tooltip title="Back to Connection Page" arrow>
@@ -74,16 +77,21 @@ export default function Header({ backButton = false, selection = false }) {
                             <ArrowBackIcon />
                             <Typography align="center" variant="body2" className={classes.textSize}>
                                 Back to your Playlists
-                    </Typography>
+                            </Typography>
                         </Box>
                     </Link>
                 }
-
                 {
                     selection &&
-                    <div className={classes.centerSelectionPosition}>
-                        <PlaylistsSelection />
-                    </div>
+                    <Typography align="center" component='h2' variant='subtitle1' style={{ margin: '0 1rem' }}>
+                        Select up to 5 playlists
+                    </Typography>
+                }
+                {
+                    selection &&
+                    // <div className={classes.centerSelectionPosition}>
+                    <PlaylistsSelection />
+                    // </div>
                 }
             </Box>
         </AppBar>

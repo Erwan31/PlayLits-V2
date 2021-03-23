@@ -118,7 +118,7 @@ export default function UserPlaylists() {
                 >
                     <Box
                         m='0 auto 5rem auto'
-                        p='90px 0 0 0'
+                        p='90px 3rem 0 3rem'
                         // m='0 1rem 0 1rem'
                         css={{
                             maxWidth: 1100,

@@ -84,7 +84,7 @@ const container = {
 export default function Playlits() {
     const classes = useStyles();
     const { error, handleError, ThrowError } = useError();
-    const { playlistsSelection } = usePlaylistsSelection();
+    const { playlistsSelection, clearPlaylistSelection } = usePlaylistsSelection();
     const { initSortState, sortedTracks } = useSortState();
 
     useEffect(() => {
@@ -92,6 +92,7 @@ export default function Playlits() {
             const [err, init] = await to(getPlaylistData(playlistsSelection));
             if (err) { handleError(err) };
 
+            clearPlaylistSelection();
             initSortState(init);
         }
 
