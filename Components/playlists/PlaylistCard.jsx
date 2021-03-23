@@ -12,6 +12,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import AddIcon from '../IconsJSX/AddIcon';
 import RemoveIcon from '../IconsJSX/RemoveIcon';
 import CheckedIcon from '../IconsJSX/CheckedIcon';
+import { MAXSELECTION } from '../../hooks/usePlaylistsSelection';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -69,13 +70,12 @@ export default function PlaylistCard({ selection, playlist, addOrRetrievePlaylis
     const [icon, setIcon] = useState(initIcon);
 
     const handleHover = (action) => () => {
-        if (!selected && action === 'enter') {
+        if (!selected && action === 'enter' && selection.length < MAXSELECTION) {
             setIcon(<AddIcon />)
         }
         if (!selected && action === 'leave') {
             setIcon(<div></div>)
         }
-
         if (selected && action === 'enter') {
             setIcon(<RemoveIcon />)
         }
@@ -85,11 +85,13 @@ export default function PlaylistCard({ selection, playlist, addOrRetrievePlaylis
     }
 
     const handleClick = () => {
-        if (!selected) {
-            setIcon(<CheckedIcon />)
-        }
-        if (selected) {
-            setIcon(<AddIcon />)
+        if (selection.length < MAXSELECTION) {
+            if (!selected) {
+                setIcon(<CheckedIcon />)
+            }
+            if (selected) {
+                setIcon(<AddIcon />)
+            }
         }
     }
 

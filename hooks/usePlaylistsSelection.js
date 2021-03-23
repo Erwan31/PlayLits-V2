@@ -6,9 +6,12 @@ export const playlistsSelectionState = atom({
   key: 'playlistsSelection',
     default: {
         route: null,
-        selection: []
+        selection: [],
+        max: 5
     },
 });
+
+export const MAXSELECTION = 5;
 
 export default function usePlaylistsSelection() {
 
@@ -20,9 +23,11 @@ export default function usePlaylistsSelection() {
     } = useLocalStorage();
 
     const addPlaylist = (playlist) => {
-        const newSelection = [playlist, ...playlistsSelection.selection];
-        const route = assembleRouteString(newSelection );
-        setPlaylistsSelection(current => ({ ...current, route, selection: newSelection }));
+        if (playlistsSelection.selection.length < MAXSELECTION) {
+            const newSelection = [playlist, ...playlistsSelection.selection];
+            const route = assembleRouteString(newSelection);
+            setPlaylistsSelection(current => ({ ...current, route, selection: newSelection }));
+        }
     }
 
     const retrievePlaylist = (playlist) => {
@@ -34,7 +39,6 @@ export default function usePlaylistsSelection() {
     }
 
     const addOrRetrievePlaylist = (playlist) => {
-        console.log('alo')
         if (playlistsSelection.selection.find(el => el === playlist)) {
             retrievePlaylist(playlist);
         }

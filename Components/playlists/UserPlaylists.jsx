@@ -143,6 +143,7 @@ export default function UserPlaylists() {
                                                         selection={playlistsSelection.selection}
                                                         addOrRetrievePlaylist={addOrRetrievePlaylist}
                                                         playlist={list}
+                                                        max={playlistsSelection.max}
                                                         className={classes.paper}
                                                     />
                                                 </motion.div>
