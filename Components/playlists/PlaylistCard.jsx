@@ -61,7 +61,7 @@ const item = {
     }
 };
 
-export default function PlaylistCard({ selection, playlist, addOrRetrievePlaylist }) {
+export default function PlaylistCard({ selection, playlist, onClick }) {
 
     const classes = useStyles();
     const { handlePlaylistSelect } = useMainState();
@@ -85,6 +85,10 @@ export default function PlaylistCard({ selection, playlist, addOrRetrievePlaylis
     }
 
     const handleClick = () => {
+        console.log('clcik')
+        handlePlaylistSelect(playlist);
+        onClick(playlist);
+
         if (selection.length < MAXSELECTION) {
             if (!selected) {
                 setIcon(<CheckedIcon />)
@@ -103,12 +107,7 @@ export default function PlaylistCard({ selection, playlist, addOrRetrievePlaylis
             </div>
             <Card
                 className={classes.root} elevation={10}
-                onClick={() => {
-                    handlePlaylistSelect(playlist)
-                    addOrRetrievePlaylist(playlist);
-                    handleClick();
-                }
-                }
+                onClick={handleClick}
                 onMouseEnter={handleHover('enter')}
                 onMouseLeave={handleHover('leave')}
             >

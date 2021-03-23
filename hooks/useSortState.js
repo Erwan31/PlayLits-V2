@@ -138,6 +138,12 @@ export default function useSortState() {
             direction: 'none',
             icon: <div></div>
         }));
+        setSortedTracks(current => ({
+            ...current,
+            actual: [],
+            initial: [],
+            length: 0
+        }))
     }
     
     return {

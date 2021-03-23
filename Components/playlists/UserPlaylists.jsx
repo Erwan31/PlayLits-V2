@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import hash from '../../api/hash'
 import { getUserPlaylists } from '../../api/spotifyAPICall';
-import { Grid, makeStyles, Box, Typography } from '@material-ui/core';
+import { Grid, makeStyles, Box, Typography, Snackbar } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
 import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
@@ -10,7 +10,8 @@ import { motion } from "framer-motion";
 import useError from '../../hooks/useError';
 import useMainState from '../../hooks/useMainState';
 import useLocalStorage, { getLocalToken } from '../../hooks/useLocalStorage';
-import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
+import usePlaylistsSelection, { MAXSELECTION } from '../../hooks/usePlaylistsSelection';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     playlistCardSize: {
@@ -53,24 +54,17 @@ const item = {
 export default function UserPlaylists() {
 
     const classes = useStyles();
+    const { error, handleError, ThrowError } = useError();
     const {
         state,
         setToken,
         addNewPlaylistItems,
     } = useMainState();
     const {
-        setLocalTokenState,
-        getLocalTokenState,
-        setLocalUserIdState,
-        getLocalUserIdState,
-        setPLaylistsLocalState,
-        getLocalPlaylistsState
-    } = useLocalStorage();
-    const { error, handleError, ThrowError } = useError();
-    const {
         playlistsSelection,
         addOrRetrievePlaylist
-    } = usePlaylistsSelection()
+    } = usePlaylistsSelection();
+    const [openSnack, setOpenSnack] = useState(false);
 
     // Load more playlists
     const handleLoadMore = async () => {
@@ -82,10 +76,20 @@ export default function UserPlaylists() {
     }
 
     // Pass that to tht eguys
-    const handlePlaylistClick = (playlist) => () => {
+    const handlePlaylistClick = (playlist) => {
         addOrRetrievePlaylist(playlist);
-
+        if (playlistsSelection.selection.length + 1 === MAXSELECTION) {
+            setOpenSnack(true);
+        }
     }
+
+    const handleCloseSnack = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnack(false);
+    };
 
     // Get Access Token first
     useEffect(async () => {
@@ -141,7 +145,7 @@ export default function UserPlaylists() {
                                                     <PlaylistCard
                                                         key={getPlaylistID(list)}
                                                         selection={playlistsSelection.selection}
-                                                        addOrRetrievePlaylist={addOrRetrievePlaylist}
+                                                        onClick={handlePlaylistClick}
                                                         playlist={list}
                                                         max={playlistsSelection.max}
                                                         className={classes.paper}
@@ -163,11 +167,16 @@ export default function UserPlaylists() {
                             <CustomButton onClick={handleLoadMore}>
                                 <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
                                     Load More Playlists
-                    </Typography>
+                                </Typography>
                             </CustomButton>
                         </Box>
                     }
                 </motion.div>}
+            <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+                <Alert severity="info" onClose={handleCloseSnack}>
+                    Congrats! 5 playlists selected, just click on "Let's Go!" now...
+                 </Alert>
+            </Snackbar>
         </ScrollBarsCustom>
     );
 }

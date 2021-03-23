@@ -51,9 +51,9 @@ export default function usePlaylistsSelection() {
         setPlaylistsSelection(current => ({ ...current, route: null, selection: [] }));
     }
 
-    useEffect(() =>
-        console.log(playlistsSelection.selection)
-    ,[playlistsSelection.selection])
+    // useEffect(() =>
+    //     console.log(playlistsSelection.selection)
+    // ,[playlistsSelection.selection])
 
     return {
         playlistsSelection,
