@@ -52,13 +52,10 @@ export default function useLocalStorage() {
     }
 
     const setLocalUserIdState = (user) => {
-        console.log(localStorageValue, 'avant');
         setLocalStorageValue(current => ({
             ...current,
             user
         }));
-        console.log({...localStorageValue, user}, 'apres');
-        // console.log(JSON.stringify(object, 'OOO');
         window.localStorage.setItem(keyLocalStorage , JSON.stringify({...localStorageValue, user}));
     }
 
