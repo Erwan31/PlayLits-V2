@@ -91,6 +91,8 @@ export default function Playlits() {
     const name = playlistsSelection.name;
 
     useEffect(() => {
+        document.body.classList.add("playlits");
+        document.body.classList.remove("playlists");
         async function initData() {
             const [err, init] = await to(getPlaylistData(playlistsSelection));
             if (err) { handleError(err) };

@@ -18,7 +18,7 @@ export default class MyDocument extends Document {
           /> */}
           <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet"/> 
         </Head>
-        <body>
+        <body className="global">
           <Main />
           <NextScript />
         </body>

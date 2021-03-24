@@ -68,6 +68,10 @@ export default function UserPlaylists() {
     const [openSnack, setOpenSnack] = useState(false);
 
     useEffect(() => {
+        document.body.classList.add("playlists");
+        document.body.classList.remove("playlits");
+    }, []);
+    useEffect(() => {
         if (playlistsSelection.selection.length === MAXSELECTION) {
             setOpenSnack(true);
         }

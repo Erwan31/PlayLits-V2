@@ -4,13 +4,13 @@ body {
   margin: 0;
   font-family: "Nunito", sans-serif;
   /* font-family: Nunito, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
-  background: linear-gradient(
+  Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+  /* background: linear-gradient(
     135deg,
     rgba(30, 35, 52, 1) 0%,
     rgba(85, 107, 242, 1) 50%,
     rgba(169, 80, 254, 1) 100%
-  );
+  ); */
   background-repeat: no-repeat;
   background-attachment: fixed;
 
@@ -45,4 +45,91 @@ a {
 code {
   font-family: "Nunito", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* Animated background with page transition */
+.initial {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 35, 52, 1) 0%,
+    rgba(85, 107, 242, 1) 50%,
+    rgba(169, 80, 254, 1) 100%
+  );
+}
+
+.global {
+  background: linear-gradient(
+    135deg,
+    rgba(88, 107, 243, 0.75) 33%,
+    rgba(169, 81, 254, 0.75) 67%
+  );
+  background-size: 150% 150%;
+}
+
+.playlists {
+  background-position: 0% 0%;
+  -webkit-animation: GradientInit 3s ease;
+  -moz-animation: GradientInit 3s ease;
+  animation: GradientInit 3s ease;
+}
+
+.playlits {
+  background-position: 100% 100%;
+  -webkit-animation: GradientSecond 3s ease;
+  -moz-animation: GradientSecond 3s ease;
+  animation: GradientSecond 3s ease;
+}
+
+@-webkit-keyframes GradientInit {
+  0% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@-moz-keyframes GradientInit {
+  0% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@keyframes GradientInit {
+  0% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@-webkit-keyframes GradientSecond {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@-moz-keyframes GradientSecond {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes GradientSecond {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
 }
