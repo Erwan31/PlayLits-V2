@@ -90,7 +90,7 @@ export default function TrackList({ list, name }) {
         <div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography align="center" component='h3' variant='h6' gutterBottom style={{ marginRight: '1rem' }}>
-                    Tracks from
+                    {list.length} Tracks from
                     <Typography color='primary' variant='body1' gutterBottom>
                         {name}
                     </Typography>

@@ -16,7 +16,7 @@ import useSortState from '../../hooks/useSortState';
 import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
-// Basically what await-to-js is doing
+// Basically what to from await-to-js is doing
 // https://dev.to/sobiodarlington/better-error-handling-with-async-await-2e5m
 // const handle = (promise) => {
 //     return promise
