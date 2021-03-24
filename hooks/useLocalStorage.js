@@ -52,26 +52,24 @@ export default function useLocalStorage() {
     }
 
     const setLocalUserIdState = (user) => {
-        console.log(localStorageValue, 'avant');
         setLocalStorageValue(current => ({
             ...current,
             user
         }));
-        console.log({...localStorageValue, user}, 'apres');
-        // console.log(JSON.stringify(object, 'OOO');
         window.localStorage.setItem(keyLocalStorage , JSON.stringify({...localStorageValue, user}));
     }
 
     const getLocalUserIdState = () => {
-        return localStorageValue.user_id;
+        return localStorageValue.user.id;
     }
 
+    // Only set once, when going to ...slug
     const setPlaylistsLocalState = (playlists) => {
         setLocalStorageValue(current => ({
             ...current,
-            selectedPlaylits: [playlists, ...current.selectedPlaylits]
+            selectedPlaylits: [...playlists]
         }));
-        window.localStorage.setItem(keyLocalStorage , JSON.stringify({...localStorageValue, selectedPlaylits: playlists}));
+        window.localStorage.setItem(keyLocalStorage , JSON.stringify({...localStorageValue, selectedPlaylits: [...playlists]}));
     }
 
     const getLocalPlaylistsState = () => {

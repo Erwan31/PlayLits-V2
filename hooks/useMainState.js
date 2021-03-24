@@ -53,9 +53,9 @@ export default function useMainState() {
   const [state, setState] = useRecoilState(mainState);
   const { handleError } = useError();
   const {
-        setLocalTokenState,
-        setLocalUserIdState,
-        setPlaylistsLocalState,
+    setLocalTokenState,
+    setLocalUserIdState,
+    getLocalUserIdState
   } = useLocalStorage();
 
   const setToken = (token) => {
@@ -79,8 +79,14 @@ export default function useMainState() {
 
   const handlePlaylistSelect = (playlist) => () => {
     setState(current => ({ ...current, selectedPlaylist: playlist }));
-    setPlaylistsLocalState(playlist);
   }
+
+  // const updatePlaylistsList = async () => {
+  //   const [err1, userPlaylists] = await to(getUserPlaylists(null, getUSer));
+  //     if (err1) { handleError(err1) };
+
+  //     setState(current => ({ ...current, infoLoaded: true, user: userInfo, playlists: userPlaylists }));
+  // }
 
   // Get playlist data then
   useEffect(async () => {
@@ -89,7 +95,6 @@ export default function useMainState() {
     if (token.access_token !== null && !infoLoaded) {
       cleanHash();
 
-      
       const [err0, userInfo] = await to(getUserInfo());
       if (err0) { handleError(err0) };
 
@@ -107,7 +112,8 @@ export default function useMainState() {
     setToken,
     getToken,
     addNewPlaylistItems,
-    handlePlaylistSelect
+    handlePlaylistSelect,
+    // updatePlaylistsList
   }
 }
 

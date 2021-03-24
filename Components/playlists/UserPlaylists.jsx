@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import hash from '../../api/hash'
 import { getUserPlaylists } from '../../api/spotifyAPICall';
-import { Grid, makeStyles, Box, Typography } from '@material-ui/core';
+import { Grid, makeStyles, Box, Typography, Snackbar } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
 import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
@@ -9,7 +9,9 @@ import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
 import useError from '../../hooks/useError';
 import useMainState from '../../hooks/useMainState';
-import useLocalStorage, { getLocalToken } from '../../hooks/useLocalStorage';
+import { getLocalToken } from '../../hooks/useLocalStorage';
+import usePlaylistsSelection, { MAXSELECTION } from '../../hooks/usePlaylistsSelection';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     playlistCardSize: {
@@ -52,20 +54,24 @@ const item = {
 export default function UserPlaylists() {
 
     const classes = useStyles();
+    const { error, handleError, ThrowError } = useError();
     const {
         state,
         setToken,
         addNewPlaylistItems,
     } = useMainState();
     const {
-        setLocalTokenState,
-        getLocalTokenState,
-        setLocalUserIdState,
-        getLocalUserIdState,
-        setPLaylistsLocalState,
-        getLocalPlaylistsState
-    } = useLocalStorage();
-    const { error, handleError, ThrowError } = useError();
+        playlistsSelection,
+        addOrRetrievePlaylist,
+        initPlaylistSelection
+    } = usePlaylistsSelection();
+    const [openSnack, setOpenSnack] = useState(false);
+
+    useEffect(() => {
+        if (playlistsSelection.selection.length === MAXSELECTION) {
+            setOpenSnack(true);
+        }
+    }, [playlistsSelection])
 
     // Load more playlists
     const handleLoadMore = async () => {
@@ -75,6 +81,19 @@ export default function UserPlaylists() {
             addNewPlaylistItems(nextPlaylists);
         }
     }
+
+    // Pass that to tht eguys
+    const handlePlaylistClick = (playlist) => {
+        addOrRetrievePlaylist(playlist);
+    }
+
+    const handleCloseSnack = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnack(false);
+    };
 
     // Get Access Token first
     useEffect(async () => {
@@ -86,6 +105,9 @@ export default function UserPlaylists() {
             }
             setToken(token);
         }
+
+        //initialize selection
+        initPlaylistSelection()
     }, [])
 
     return (
@@ -107,7 +129,7 @@ export default function UserPlaylists() {
                 >
                     <Box
                         m='0 auto 5rem auto'
-                        p='90px 0 0 0'
+                        p='90px 3rem 0 3rem'
                         // m='0 1rem 0 1rem'
                         css={{
                             maxWidth: 1100,
@@ -127,7 +149,14 @@ export default function UserPlaylists() {
                                                     variants={item}
                                                     className={classes.playlistCardSize}
                                                 >
-                                                    <PlaylistCard key={getPlaylistID(list)} className={classes.paper} playlist={list} />
+                                                    <PlaylistCard
+                                                        key={getPlaylistID(list)}
+                                                        selection={playlistsSelection.selection}
+                                                        onClick={handlePlaylistClick}
+                                                        playlist={list}
+                                                        max={playlistsSelection.max}
+                                                        className={classes.paper}
+                                                    />
                                                 </motion.div>
                                             ))
                                     }
@@ -145,11 +174,16 @@ export default function UserPlaylists() {
                             <CustomButton onClick={handleLoadMore}>
                                 <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
                                     Load More Playlists
-                    </Typography>
+                                </Typography>
                             </CustomButton>
                         </Box>
                     }
                 </motion.div>}
+            <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+                <Alert severity="info" onClose={handleCloseSnack}>
+                    Congrats! 5 playlists selected, just click on "Let's Go!" now...
+                 </Alert>
+            </Snackbar>
         </ScrollBarsCustom>
     );
 }

@@ -3,6 +3,23 @@ import { getUserId } from '../hooks/useLocalStorage';
 import { getArrayOfArtistsIDs, getTrackID} from '../utils/getters';
 import { asyncGetCall, asyncLoopGetWithIds, asyncPostCall, asyncLoopPostWithIds } from './apiCall';
 
+export async function loopPlaylistSelectionToGetTracks(playlistSelection) {
+  let data = [];
+  let index = playlistSelection.length - 1;
+  
+  if (playlistSelection.length === 0) {
+    throw new Error('No playlist selection');
+  }
+
+  do {
+    const temp = await getUserPlaylistTracks(playlistSelection[index]);
+    if (temp && temp.items.length) data = [...data, ...temp.items];
+    index--;
+  } while (index > 0);
+
+  return data;
+}
+
 export async function getUserPlaylistTracks(playlist) {
 
   if (playlist === undefined) {
@@ -48,6 +65,13 @@ export async function getUserInfo() {
   return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
 }
 
+// export async function getLastUserPlaylist(id) {
+
+//   let url = `https://api.spotify.com/v1/users/${id}/playlists`;
+
+//   return await asyncGetCall({ endPoint: url, limit: 1 });  
+// }
+
 export async function getUserPlaylists(next = null, id) {
 
   let url = `https://api.spotify.com/v1/users/${id}/playlists`;
@@ -58,9 +82,9 @@ export async function getUserPlaylists(next = null, id) {
 }
 
 // Looped 50
-export async function areTracksSavedByUser(playlist) {
+export async function areTracksSavedByUser(items) {
 
-  const ids = playlist.items.map(track => getTrackID(track));
+  const ids = items.map(track => getTrackID(track));
   const params = {
     ids
   };
@@ -72,10 +96,10 @@ export async function areTracksSavedByUser(playlist) {
 }
 
 
-export async function getTracksAudioFeatures(playlist) {
+export async function getTracksAudioFeatures(items) {
   
   let result = [];
-  const ids = playlist.items.map(track => getTrackID(track));
+  const ids = items.map(track => getTrackID(track));
   const params = {
     ids
   };
@@ -94,9 +118,9 @@ export async function getTracksAudioFeatures(playlist) {
 }
 
 // Looped 50
-export async function getArtistsGenres(data) {
+export async function getArtistsGenres(items) {
   
-  const ids = getArrayOfArtistsIDs(data.items);
+  const ids = getArrayOfArtistsIDs(items);
   let genres = { artists: [] };
   const artists = [];
   let respArray = await asyncLoopGetWithIds({ endPoint: `https://api.spotify.com/v1/artists`, params: ids});

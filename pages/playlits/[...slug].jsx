@@ -12,8 +12,9 @@ import LoadingRings from '../../Components/LoadingRings'
 import { getPlaylistData } from '../../hooks/getPlaylistData';
 import useError from '../../hooks/useError';
 import to from 'await-to-js';
-import useMainState from '../../hooks/useMainState';
 import useSortState from '../../hooks/useSortState';
+import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 // Basically what await-to-js is doing
 // https://dev.to/sobiodarlington/better-error-handling-with-async-await-2e5m
@@ -84,14 +85,17 @@ const container = {
 export default function Playlits() {
     const classes = useStyles();
     const { error, handleError, ThrowError } = useError();
-    const { state } = useMainState();
+    const { playlistsSelection, clearPlaylistSelection } = usePlaylistsSelection();
+    const { setPlaylistsLocalState } = useLocalStorage();
     const { initSortState, sortedTracks } = useSortState();
+    const name = playlistsSelection.name;
 
     useEffect(() => {
         async function initData() {
-            const [err, init] = await to(getPlaylistData(state));
+            const [err, init] = await to(getPlaylistData(playlistsSelection));
             if (err) { handleError(err) };
 
+            setPlaylistsLocalState(playlistsSelection.selection);
             initSortState(init);
         }
 
@@ -145,7 +149,7 @@ export default function Playlits() {
                             }}
                             className={classes.responsiveMarginLeft}
                         >
-                            <TrackList list={sortedTracks.actual} />
+                            <TrackList list={sortedTracks.actual} name={name} />
                         </Box>
                     </motion.div>}
             </ScrollBarsCustom>
