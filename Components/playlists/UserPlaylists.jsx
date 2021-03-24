@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         width: '25vw',
         height: "100%",
         maxWidth: 200,
-        margin: theme.spacing(3),
+        margin: theme.spacing(2),
     },
     paper: {
         height: 140,
@@ -139,7 +139,7 @@ export default function UserPlaylists() {
                     >
                         <Grid container className={classes.root} spacing={2}>
                             <Grid item xs={12}>
-                                <Grid container justify="center" spacing={8}>
+                                <Grid container justify="center" spacing={4}>
                                     {
                                         state.playlists.items
                                             .filter(list => list.tracks.total > 0)

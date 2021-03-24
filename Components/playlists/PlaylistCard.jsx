@@ -110,7 +110,7 @@ export default function PlaylistCard({ selection, playlist, onClick }) {
                 {icon}
             </div>
             <Card
-                className={classes.root} elevation={10}
+                className={classes.root} elevation={4}
                 onClick={handleClick}
                 onMouseEnter={handleHover('enter')}
                 onMouseLeave={handleHover('leave')}
