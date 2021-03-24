@@ -20,8 +20,6 @@ export default function SliderPanel() {
                 m='0 1rem 0 1rem'
             >
                 {slidersSimple.map((item, index) => <SliderSimple key={index} info={item} onClick={handleFeatureSortingClick} sorting={featureSorting} />)}
-                {/* {playlistTracks.audioFeatures.length > 10 && <SliderDouble info={slidersDouble[0]} max={slidersValues.tracks[1]} length={length} />} */}
-                {/* {slidersDouble.map((item, index) => <SliderDouble key={index} info={item} onClick={handleFeatureSortingClick} sorting={featureSorting} />)} */}
             </Box >
         </ScrollBarsCustom>
     )

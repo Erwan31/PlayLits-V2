@@ -1,12 +1,11 @@
-import { Box, Card, makeStyles, Typography } from '@material-ui/core'
 import React, { useState, useEffect, useMemo, createRef } from 'react'
-import { getPreviewUrl, getTrackID } from '../../../utils/getters';
 import ScrollBarsCustom from '../../ScrollBarsCustom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { Box, Card, makeStyles, Typography } from '@material-ui/core'
+import { getPreviewUrl, getTrackID } from '../../../utils/getters';
 import TrackRow from '../TrackRow';
-import usePlaylistsSelection from '../../../hooks/usePlaylistsSelection';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -78,12 +77,21 @@ export default function TrackList({ list, name }) {
         listRef.current.scrollTo(scrollTop);
     };
 
+    useEffect(() => {
+        // Stop player as soon as track list changes
+        let audio = play.audio;
+        if (audio !== null) {
+            audio.pause();
+            setPlay(current => ({ ...current, isPlaying: false, audio: null }));
+        }
+    }, [list]);
+
     return (
         <div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography align="center" component='h3' variant='h6' gutterBottom style={{ marginRight: '1rem' }}>
                     Tracks from
-                    <Typography color='primary' component='h4' variant='body1' gutterBottom>
+                    <Typography color='primary' variant='body1' gutterBottom>
                         {name}
                     </Typography>
                 </Typography>

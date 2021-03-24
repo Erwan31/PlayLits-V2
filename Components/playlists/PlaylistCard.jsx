@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, makeStyles, Box } from '@material-ui/core';
 import Link from 'next/link'
 import { useRecoilState } from 'recoil';
@@ -66,8 +66,13 @@ export default function PlaylistCard({ selection, playlist, onClick }) {
     const classes = useStyles();
     const { handlePlaylistSelect } = useMainState();
     const selected = selection.includes(playlist);
-    // const initIcon = useMemo(() => selection.includes(playlist) ? <CheckedIcon /> : <div></div>, [selection]);
-    const [icon, setIcon] = useState(<div></div>);
+    const initIcon = useMemo(() => selection.includes(playlist) ? <CheckedIcon /> : <div></div>, [selection]);
+    const [icon, setIcon] = useState(initIcon);
+
+    useEffect(() => {
+        let updatedIcon = selection.includes(playlist) ? <CheckedIcon /> : <div></div>;
+        setIcon(updatedIcon);
+    }, [selection]);
 
     const handleHover = (action) => () => {
         if (!selected && action === 'enter' && selection.length < MAXSELECTION) {
@@ -85,7 +90,6 @@ export default function PlaylistCard({ selection, playlist, onClick }) {
     }
 
     const handleClick = () => {
-        console.log('clcik')
         handlePlaylistSelect(playlist);
         onClick(playlist);
 
