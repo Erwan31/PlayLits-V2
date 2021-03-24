@@ -132,10 +132,10 @@ export default function Playlits() {
                                 width: '100%'
                             }}
                         >
-                            <Paper elevation={15} className={classes.playlitsPanel}>
+                            <Paper elevation={7} className={classes.playlitsPanel}>
                                 <PlaylitsPanel />
                             </Paper>
-                            <Paper elevation={15} className={classNames(classes.marginBottom, classes.playlitsPanel)}>
+                            <Paper elevation={7} className={classNames(classes.marginBottom, classes.playlitsPanel)}>
                                 <CreatePlaylistPanel sortedTracks={sortedTracks.actual} />
                             </Paper>
                         </Box>
