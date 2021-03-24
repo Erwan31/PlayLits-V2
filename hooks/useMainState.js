@@ -55,7 +55,6 @@ export default function useMainState() {
   const {
         setLocalTokenState,
         setLocalUserIdState,
-        setPlaylistsLocalState,
   } = useLocalStorage();
 
   const setToken = (token) => {
@@ -79,7 +78,6 @@ export default function useMainState() {
 
   const handlePlaylistSelect = (playlist) => () => {
     setState(current => ({ ...current, selectedPlaylist: playlist }));
-    setPlaylistsLocalState(playlist);
   }
 
   // Get playlist data then

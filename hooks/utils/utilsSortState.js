@@ -36,7 +36,7 @@ export function sortByAscFeature(list, feature) {
     return sorted;
 }
 
-export const sortByFeature = (newFeature, featureSorting, sortedTracks, slidersValues, onlySaved) => {
+export const sortByFeature = (newFeature, featureSorting, sortedTracks, slidersValues, onlySaved, lowPassFilter) => {
     if (sortedTracks.length > 0) {
         
         let { feature, direction, icon } = featureSorting;
@@ -60,7 +60,7 @@ export const sortByFeature = (newFeature, featureSorting, sortedTracks, slidersV
                 
             case 'desc':
                 direction = 'none'
-                sorted = newSortListIII(slidersValues, initStruct);
+                sorted = newSortListIII(slidersValues, initStruct, lowPassFilter);
                 //Sorting based on direction
                 if (onlySaved) {
                     sorted = sorted.filter(track => track.isSaved);
@@ -133,7 +133,7 @@ export const reverseOrder = (arr) => {
     return sorted;
 }
         
-export function newSortListIII(slidersValues, initialList, lowPassFilter) {
+export function newSortListIII(slidersValues, initialList, lowPassFilter = true) {
     
     let sorted = initialList; // [...list]
     let computedList = [];

@@ -66,8 +66,8 @@ export default function PlaylistCard({ selection, playlist, onClick }) {
     const classes = useStyles();
     const { handlePlaylistSelect } = useMainState();
     const selected = selection.includes(playlist);
-    const initIcon = useMemo(() => selection.includes(playlist) ? <CheckedIcon /> : <div></div>, [selection]);
-    const [icon, setIcon] = useState(initIcon);
+    // const initIcon = useMemo(() => selection.includes(playlist) ? <CheckedIcon /> : <div></div>, [selection]);
+    const [icon, setIcon] = useState(<div></div>);
 
     const handleHover = (action) => () => {
         if (!selected && action === 'enter' && selection.length < MAXSELECTION) {

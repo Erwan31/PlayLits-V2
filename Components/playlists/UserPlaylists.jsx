@@ -62,7 +62,8 @@ export default function UserPlaylists() {
     } = useMainState();
     const {
         playlistsSelection,
-        addOrRetrievePlaylist
+        addOrRetrievePlaylist,
+        initPlaylistSelection
     } = usePlaylistsSelection();
     const [openSnack, setOpenSnack] = useState(false);
 
@@ -101,6 +102,9 @@ export default function UserPlaylists() {
             }
             setToken(token);
         }
+
+        //initialize selection
+        initPlaylistSelection()
     }, [])
 
     return (

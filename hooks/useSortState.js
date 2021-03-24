@@ -71,7 +71,7 @@ export default function useSortState() {
     }
 
     const handleFeatureSortingClick = (newFeature) => () => {
-        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks, slidersValues, onlySaved);
+        const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks, slidersValues, onlySaved, lowPassFilter);
         setFeatureSorting(current => ({ ...current, ...feature }));
         setSortedTracks(current => ({ ...current, actual: [...sorted] }));
     }

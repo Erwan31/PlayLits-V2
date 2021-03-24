@@ -5,13 +5,14 @@ import { asyncGetCall, asyncLoopGetWithIds, asyncPostCall, asyncLoopPostWithIds 
 
 export async function loopPlaylistSelectionToGetTracks(playlistSelection) {
   let data = [];
-  let index = playlistSelection.length-1;
-
-  console.log(playlistSelection);
+  let index = playlistSelection.length - 1;
+  
+  if (playlistSelection.length === 0) {
+    throw new Error('No playlist selection');
+  }
 
   do {
     const temp = await getUserPlaylistTracks(playlistSelection[index]);
-    console.log(temp, data, 'T')
     if (temp && temp.items.length) data = [...data, ...temp.items];
     index--;
   } while (index > 0);
@@ -20,8 +21,6 @@ export async function loopPlaylistSelectionToGetTracks(playlistSelection) {
 }
 
 export async function getUserPlaylistTracks(playlist) {
-
-  console.log(playlist, 'GUP');
 
   if (playlist === undefined) {
     // ('No tracks href')

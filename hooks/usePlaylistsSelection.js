@@ -6,6 +6,7 @@ export const playlistsSelectionState = atom({
   key: 'playlistsSelection',
     default: {
         route: null,
+        name: null,
         selection: [],
         max: 5
     },
@@ -26,7 +27,8 @@ export default function usePlaylistsSelection() {
         if (playlistsSelection.selection.length < MAXSELECTION) {
             const newSelection = [playlist, ...playlistsSelection.selection];
             const route = assembleRouteString(newSelection);
-            setPlaylistsSelection(current => ({ ...current, route, selection: newSelection }));
+            const name = assembleNameString(newSelection);
+            setPlaylistsSelection(current => ({ ...current, route: route, name: name, selection: newSelection }));
         }
     }
 
@@ -35,7 +37,8 @@ export default function usePlaylistsSelection() {
         let temp = [...playlistsSelection.selection];
         let newSelection = temp.filter(item => item !== playlist);
         const route = assembleRouteString(newSelection);
-        setPlaylistsSelection(current => ({ ...current, route, selection: newSelection }));
+        const name = assembleNameString(newSelection);
+        setPlaylistsSelection(current => ({ ...current, route:  route, name: name, selection: newSelection }));
     }
 
     const addOrRetrievePlaylist = (playlist) => {
@@ -47,17 +50,13 @@ export default function usePlaylistsSelection() {
         }
     }
 
-    const clearPlaylistSelection = () => {
-        setPlaylistsSelection(current => ({ ...current, route: null, selection: [] }));
+    const initPlaylistSelection = () => {
+        setPlaylistsSelection(current => ({ ...current, name: null, route: null, selection: [] }));
     }
-
-    // useEffect(() =>
-    //     console.log(playlistsSelection.selection)
-    // ,[playlistsSelection.selection])
 
     return {
         playlistsSelection,
-        clearPlaylistSelection,
+        initPlaylistSelection,
         addOrRetrievePlaylist,
         retrievePlaylist
     }
@@ -65,5 +64,9 @@ export default function usePlaylistsSelection() {
 
 //utils
 function assembleRouteString(selection) {
-    return selection.map(item => item.name).join('&');
+    return selection.map(item => item.name).join('+');
+}
+
+function assembleNameString(selection) {
+    return selection.map(item => item.name).join(', ');
 }

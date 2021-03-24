@@ -3,11 +3,10 @@ import React, { useState, useEffect, useMemo, createRef } from 'react'
 import { getPreviewUrl, getTrackID } from '../../../utils/getters';
 import ScrollBarsCustom from '../../ScrollBarsCustom';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useRecoilState } from 'recoil';
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import TrackRow from '../TrackRow';
-import { mainState } from '../../../hooks/useMainState';
+import usePlaylistsSelection from '../../../hooks/usePlaylistsSelection';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -48,11 +47,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function TrackList({ list }) {
+export default function TrackList({ list, name }) {
 
     const classes = useStyles();
-    // const { height, width } = useWindowDimensions();
-    const [state, setState] = useRecoilState(mainState);
     const [play, setPlay] = useState({ isPlaying: false, id: null, audio: null });
     const listRef = createRef();
 
@@ -60,7 +57,6 @@ export default function TrackList({ list }) {
         let audio = play.audio;
 
         if (audio !== null) {
-            // setPlay(current => ({ ...current, isPlaying: false }));
             audio.pause();
         }
 
@@ -85,11 +81,11 @@ export default function TrackList({ list }) {
     return (
         <div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography component='h3' variant='h6' gutterBottom style={{ marginRight: '1rem' }}>
+                <Typography align="center" component='h3' variant='h6' gutterBottom style={{ marginRight: '1rem' }}>
                     Tracks from
-                </Typography>
-                <Typography color='primary' component='h4' variant='body1' gutterBottom>
-                    {state.selectedPlaylist.name}
+                    <Typography color='primary' component='h4' variant='body1' gutterBottom>
+                        {name}
+                    </Typography>
                 </Typography>
             </div>
             <ScrollBarsCustom

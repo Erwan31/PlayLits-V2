@@ -66,12 +66,13 @@ export default function useLocalStorage() {
         return localStorageValue.user.id;
     }
 
+    // Only set once, when going to ...slug
     const setPlaylistsLocalState = (playlists) => {
         setLocalStorageValue(current => ({
             ...current,
-            selectedPlaylits: [playlists, ...current.selectedPlaylits]
+            selectedPlaylits: [...playlists]
         }));
-        window.localStorage.setItem(keyLocalStorage , JSON.stringify({...localStorageValue, selectedPlaylits: playlists}));
+        window.localStorage.setItem(keyLocalStorage , JSON.stringify({...localStorageValue, selectedPlaylits: [...playlists]}));
     }
 
     const getLocalPlaylistsState = () => {
