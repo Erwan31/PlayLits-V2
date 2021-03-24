@@ -2,11 +2,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import TagFacesIcon from '@material-ui/icons/TagFaces';
-import { Box, Typography, Avatar, Tooltip } from '@material-ui/core';
+import { Box, Typography, Tooltip } from '@material-ui/core';
 import CustomButton from '../CustomButton';
 import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 import Link from 'next/link';
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -29,6 +29,31 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+/* Framer Motion Variants */
+const button = {
+    hidden: { opacity: 0, scale: 1 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            delay: 0.1,
+        }
+    }
+};
+
+const li = {
+    hidden: { opacity: 0, scale: 1, x: 10, y: 0 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        y: 0,
+        transition: {
+            delay: 0.3,
+        }
+    }
+};
+
 export default function PlaylistsSelection() {
 
     const classes = useStyles();
@@ -45,19 +70,32 @@ export default function PlaylistsSelection() {
         >
             <div style={{ width: 100 }}>
                 {playlistsSelection.selection.length > 0 &&
-                    <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
-                        <CustomButton>
-                            <Typography align='left' component='h3' variant='subtitle2'>
-                                Let's Go!
+                    <motion.div
+                        className="motion.button"
+                        variants={button}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
+                            <CustomButton>
+                                <Typography align='left' component='h3' variant='subtitle2'>
+                                    Let's Go!
                         </Typography>
-                        </CustomButton>
-                    </Link>
+                            </CustomButton>
+                        </Link>
+                    </motion.div>
                 }
             </div>
             <ul className={classes.list}>
                 {
-                    playlistsSelection.selection.map((playlist, index) =>
-                        <li key={playlist.id}>
+                    playlistsSelection.selection.map((playlist) =>
+                        <motion.li
+                            key={playlist.id}
+                            className="motion.li"
+                            variants={li}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             <Tooltip title={playlist.name} arrow placement="left">
                                 <Chip
                                     // avatar={<div>{playlist.name[0].toUpperCase()}</div>}
@@ -68,7 +106,7 @@ export default function PlaylistsSelection() {
                                     className={classes.chip}
                                 />
                             </Tooltip>
-                        </li>
+                        </motion.li>
                     )
                 }
             </ul>

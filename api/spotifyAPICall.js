@@ -65,6 +65,13 @@ export async function getUserInfo() {
   return await asyncGetCall({ endPoint: 'https://api.spotify.com/v1/me' });  
 }
 
+// export async function getLastUserPlaylist(id) {
+
+//   let url = `https://api.spotify.com/v1/users/${id}/playlists`;
+
+//   return await asyncGetCall({ endPoint: url, limit: 1 });  
+// }
+
 export async function getUserPlaylists(next = null, id) {
 
   let url = `https://api.spotify.com/v1/users/${id}/playlists`;

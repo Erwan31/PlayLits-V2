@@ -6,9 +6,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SpotifyIcon from '../IconsJSX/SpotifyIcon';
 import { getSpotifyURL } from '../../utils/getters';
 import { createPlayLits } from '../../api/spotifyAPICall';
+import useMainState from '../../hooks/useMainState';
 
 export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
 
+    // const { updatePlaylistsList } = useMainState();
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState(
         <Typography align='left' component='h3' variant='subtitle2'>
@@ -26,7 +28,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
     }
         , [disabled])
 
-    const handleClick = () => {
+    const handleClick = async () => {
         setLoading(true);
         setContent(
             <CircularProgress size={18} thickness={10} color="secondary" />
@@ -50,7 +52,7 @@ export default function CreatePlaylistButton({ sortedTracks, name, disabled }) {
                     </Typography>
                         <SpotifyIcon style={{ height: 16 }} />
                     </Box>
-                </Link>
+                </Link >
             )
             // setLoading(false);
         }

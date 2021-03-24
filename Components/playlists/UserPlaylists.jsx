@@ -9,7 +9,7 @@ import CustomButton from '../CustomButton';
 import { motion } from "framer-motion";
 import useError from '../../hooks/useError';
 import useMainState from '../../hooks/useMainState';
-import useLocalStorage, { getLocalToken } from '../../hooks/useLocalStorage';
+import { getLocalToken } from '../../hooks/useLocalStorage';
 import usePlaylistsSelection, { MAXSELECTION } from '../../hooks/usePlaylistsSelection';
 import { Alert } from '@material-ui/lab';
 
@@ -67,6 +67,12 @@ export default function UserPlaylists() {
     } = usePlaylistsSelection();
     const [openSnack, setOpenSnack] = useState(false);
 
+    useEffect(() => {
+        if (playlistsSelection.selection.length === MAXSELECTION) {
+            setOpenSnack(true);
+        }
+    }, [playlistsSelection])
+
     // Load more playlists
     const handleLoadMore = async () => {
         if (state.playlists.next !== null) {
@@ -79,9 +85,6 @@ export default function UserPlaylists() {
     // Pass that to tht eguys
     const handlePlaylistClick = (playlist) => {
         addOrRetrievePlaylist(playlist);
-        if (playlistsSelection.selection.length + 1 === MAXSELECTION) {
-            setOpenSnack(true);
-        }
     }
 
     const handleCloseSnack = (event, reason) => {
