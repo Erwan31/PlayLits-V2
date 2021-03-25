@@ -2,7 +2,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import { Box, Typography, Tooltip } from '@material-ui/core';
+import { Box, Typography, Tooltip, Fab } from '@material-ui/core';
 import CustomButton from '../CustomButton';
 import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 import Link from 'next/link';
@@ -10,22 +10,34 @@ import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     list: {
-        position: 'absolute',
-        top: theme.spacing(5),
-        right: theme.spacing(1),
-        // display: 'flex',
-        // flexDirection: 'row',
-        // justifyContent: 'center',
-        // flexWrap: 'wrap',
+        // position: 'absolute',
+        // top: theme.spacing(5),
+        // right: theme.spacing(1),
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap-reverse',
         listStyle: 'none',
-        padding: theme.spacing(0.5),
-        margin: 0,
+        // padding: theme.spacing(0.5),
+        // margin: 'auto',
         // width: 400,
-        height: 50,
+        height: '100%',
+        width: '100%',
+        margin: 0,
     },
     chip: {
         margin: theme.spacing(0.5),
         color: 'white'
+    },
+    fabButton: {
+        position: 'absolute',
+        zIndex: 1,
+        top: -45,
+        left: 0,
+        right: 0,
+        margin: '0 auto',
+        backgroundColor: 'purple'
     },
 }));
 
@@ -65,27 +77,28 @@ export default function PlaylistsSelection() {
 
     return (
         <Box
-            display='flex' direction="column" alignItems="center"
-            css={{ position: 'relative' }}
+            display='flex' direction="row" alignItems="center" justifyContent="center"
+            flexWrap="wrap"
+            css={{ position: 'relative', height: '100%', width: '100%' }}
         >
-            <div style={{ width: 100 }}>
-                {playlistsSelection.selection.length > 0 &&
-                    <motion.div
-                        className="motion.button"
-                        variants={button}
-                        initial="hidden"
-                        animate="visible"
-                    >
+            {playlistsSelection.selection.length > 0 &&
+                <motion.div
+                    className="motion.button"
+                    variants={button}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <Fab color="purple" size="medium" classes={{ root: classes.fabButton }}>
                         <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
-                            <CustomButton>
+                            <div>
                                 <Typography align='left' component='h3' variant='subtitle2'>
-                                    Let's Go!
-                        </Typography>
-                            </CustomButton>
+                                    Go!
+                            </Typography>
+                            </div>
                         </Link>
-                    </motion.div>
-                }
-            </div>
+                    </Fab>
+                </motion.div>
+            }
             <ul className={classes.list}>
                 {
                     playlistsSelection.selection.map((playlist) =>
@@ -101,7 +114,7 @@ export default function PlaylistsSelection() {
                                     // avatar={<div>{playlist.name[0].toUpperCase()}</div>}
                                     variant="outlined"
                                     size="small"
-                                    label={playlist.name[0].toUpperCase()}
+                                    label={<span>{playlist.name}</span>}
                                     onDelete={handleDelete(playlist)}
                                     className={classes.chip}
                                 />

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import hash from '../../api/hash'
 import { getUserPlaylists } from '../../api/spotifyAPICall';
-import { Grid, makeStyles, Box, Typography, Snackbar } from '@material-ui/core';
+import { Grid, makeStyles, Box, Typography, AppBar } from '@material-ui/core';
 import PlaylistCard from './PlaylistCard';
 import { getPlaylistID } from '../../utils/getters';
 import ScrollBarsCustom from '../ScrollBarsCustom';
@@ -10,10 +10,28 @@ import { motion } from "framer-motion";
 import useError from '../../hooks/useError';
 import useMainState from '../../hooks/useMainState';
 import { getLocalToken } from '../../hooks/useLocalStorage';
-import usePlaylistsSelection, { MAXSELECTION } from '../../hooks/usePlaylistsSelection';
-import { Alert } from '@material-ui/lab';
+import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
+import PlaylistsSelection from '../playlists/PlaylistsSelection';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        top: 'auto',
+        bottom: 0,
+        left: '50%',
+        transform: 'translate(-50%, 0%)',
+        maxWidth: 1100,
+        width: '90vw',
+        minWidth: 350,
+        minHeight: 60,
+        paddingTop: 20,
+        //Appbar same as header
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
+        backdropFilter: 'blur(0.5rem)',
+        '-webkit-backdrop-filter': 'blur(0.5rem)',
+    },
     playlistCardSize: {
         minWidth: 170,
         width: '25vw',
@@ -65,17 +83,7 @@ export default function UserPlaylists() {
         addOrRetrievePlaylist,
         initPlaylistSelection
     } = usePlaylistsSelection();
-    const [openSnack, setOpenSnack] = useState(false);
 
-    useEffect(() => {
-        document.body.classList.add("playlists");
-        document.body.classList.remove("playlits");
-    }, []);
-    useEffect(() => {
-        if (playlistsSelection.selection.length === MAXSELECTION) {
-            setOpenSnack(true);
-        }
-    }, [playlistsSelection])
 
     // Load more playlists
     const handleLoadMore = async () => {
@@ -90,14 +98,6 @@ export default function UserPlaylists() {
     const handlePlaylistClick = (playlist) => {
         addOrRetrievePlaylist(playlist);
     }
-
-    const handleCloseSnack = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpenSnack(false);
-    };
 
     // Get Access Token first
     useEffect(async () => {
@@ -141,7 +141,7 @@ export default function UserPlaylists() {
                             minWidth: 350,
                         }}
                     >
-                        <Grid container className={classes.root} spacing={2}>
+                        <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Grid container justify="center" spacing={4}>
                                     {
@@ -167,6 +167,9 @@ export default function UserPlaylists() {
                                 </Grid>
                             </Grid>
                         </Grid >
+                        <AppBar static="true" className={classes.root}>
+                            <PlaylistsSelection />
+                        </AppBar>
                     </Box>
                     {
                         state.playlists.next !== null &&
@@ -183,11 +186,6 @@ export default function UserPlaylists() {
                         </Box>
                     }
                 </motion.div>}
-            <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
-                <Alert severity="info" onClose={handleCloseSnack}>
-                    Congrats! 5 playlists selected, just click on "Let's Go!" now...
-                 </Alert>
-            </Snackbar>
         </ScrollBarsCustom>
     );
 }

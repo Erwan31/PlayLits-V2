@@ -89,7 +89,7 @@ export default function Header({ backButton = false, selection = false }) {
                 }
                 {
                     selection &&
-                    <PlaylistsSelection />
+                    <div style={{ width: 120 }} />
                 }
             </Box>
         </AppBar>
