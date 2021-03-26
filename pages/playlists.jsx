@@ -11,11 +11,17 @@ export default function Playlists() {
   const [openSnack, setOpenSnack] = useState(false);
 
   useEffect(() => {
+    // setOpenSnack(false);
+
     document.body.classList.add("playlists");
     document.body.classList.remove("playlits");
+
+    // Not working...
+    // return (() => {
+    //   setOpenSnack(false);
+    // })
   }, []);
 
-  //Not exactly reusable for now
 
   useEffect(() => {
     if (playlistsSelection.selection.length === MAXSELECTION) {
@@ -25,20 +31,18 @@ export default function Playlists() {
 
   const handleCloseSnack = (event, reason) => {
     if (reason === 'clickaway') {
-      return;
+      // return;
     }
     setOpenSnack(false);
   };
 
+  //Not exactly reusable for now
   return (
     <HeaderFooter selection={true}>
       <UserPlaylists />
-      {
-        playlistsSelection.selection.length > 0 &&
-        <SnackBarCustom severity="info" open={openSnack} handleClose={handleCloseSnack}>
-          Congrats! All 5 playlists selected, just click on "Go!" bellow...
-        </SnackBarCustom>
-      }
+      <SnackBarCustom severity="info" open={openSnack} handleClose={handleCloseSnack}>
+        Congrats! Max 5 playlists selected, just click on "Go!" now...
+      </SnackBarCustom>
     </HeaderFooter>
   )
 }

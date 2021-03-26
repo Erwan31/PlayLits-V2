@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
         height: "100%",
         maxWidth: 200,
         margin: theme.spacing(2),
+        // "&:after": {
+        //     backgroundImage: "linear-gradient(135deg, rgba(88, 107, 243, 0.75) 33%, rgba(169, 81, 254, 0.75) 67%)",
+        // }
     },
     paper: {
         height: 140,

@@ -68,6 +68,7 @@ export default function PlaylistCard({ selection, playlist, onClick }) {
     const selected = selection.includes(playlist);
     const initIcon = useMemo(() => selection.includes(playlist) ? <CheckedIcon /> : <div></div>, [selection]);
     const [icon, setIcon] = useState(initIcon);
+    const image = getSmallestImage(playlist.images) !== undefined ? getSmallestImage(playlist.images).url : '/static/images/default_thumbnail.svg';
 
     useEffect(() => {
         let updatedIcon = selection.includes(playlist) ? <CheckedIcon /> : <div></div>;
@@ -126,13 +127,21 @@ export default function PlaylistCard({ selection, playlist, onClick }) {
                             }
                         }}
                     >
-                        <CardMedia
-                            classes={{
-                                root: classes.media
-                            }}
-                            image={getSmallestImage(playlist.images) !== undefined ? getSmallestImage(playlist.images).url : '/static/images/default_thumbnail.svg'}
-                            title={playlist.name}
-                        />
+                        <div
+                            style={{ backgroundImage: "linear-gradient(135deg, rgba(88, 107, 243, 1) 33%, rgba(169, 81, 254, 1) 67%)" }}
+                        >
+                            <CardMedia
+                                classes={{
+                                    root: classes.media
+                                }}
+                                style={{
+                                    opacity: `${selected ? 0.3 : 1}`,
+                                    filter: `${selected ? 'grayScale(1)' : 'none'}`
+                                }}
+                                image={image}
+                                title={playlist.name}
+                            />
+                        </div>
                     </motion.div>
                     <CardContent>
                         <Typography className={classes.typo} gutterBottom noWrap={true} variant="body2" component="h2">
