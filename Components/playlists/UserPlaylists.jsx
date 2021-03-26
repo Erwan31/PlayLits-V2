@@ -14,24 +14,24 @@ import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 import PlaylistsSelection from '../playlists/PlaylistsSelection';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        top: 'auto',
-        bottom: 0,
-        left: '50%',
-        transform: 'translate(-50%, 0%)',
-        maxWidth: 1100,
-        width: '90vw',
-        minWidth: 350,
-        minHeight: 60,
-        paddingTop: 20,
-        //Appbar same as header
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
-        backdropFilter: 'blur(0.5rem)',
-        '-webkit-backdrop-filter': 'blur(0.5rem)',
-    },
+    // root: {
+    //     top: 'auto',
+    //     bottom: 0,
+    //     left: '50%',
+    //     transform: 'translate(-50%, 0%)',
+    //     maxWidth: 900,
+    //     width: '90vw',
+    //     minWidth: 350,
+    //     minHeight: 60,
+    //     paddingTop: 20,
+    //     //Appbar same as header
+    //     display: 'flex',
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
+    //     backdropFilter: 'blur(0.5rem)',
+    //     '-webkit-backdrop-filter': 'blur(0.5rem)',
+    // },
     playlistCardSize: {
         minWidth: 170,
         width: '25vw',
@@ -167,9 +167,9 @@ export default function UserPlaylists() {
                                 </Grid>
                             </Grid>
                         </Grid >
-                        <AppBar static="true" className={classes.root}>
-                            <PlaylistsSelection />
-                        </AppBar>
+                        {/* <AppBar static="true" className={classes.root}> */}
+                        <PlaylistsSelection />
+                        {/* </AppBar> */}
                     </Box>
                     {
                         state.playlists.next !== null &&

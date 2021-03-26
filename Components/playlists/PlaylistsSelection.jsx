@@ -2,13 +2,31 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import { Box, Typography, Tooltip, Fab } from '@material-ui/core';
+import { Box, Typography, Tooltip, Fab, AppBar } from '@material-ui/core';
 import CustomButton from '../CustomButton';
 import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
 import Link from 'next/link';
 import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        top: 'auto',
+        bottom: 0,
+        left: '50%',
+        transform: 'translate(-50%, 0%)',
+        maxWidth: 900,
+        width: '90vw',
+        minWidth: 350,
+        minHeight: 60,
+        paddingTop: 20,
+        //Appbar same as header
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
+        backdropFilter: 'blur(0.5rem)',
+        '-webkit-backdrop-filter': 'blur(0.5rem)',
+    },
     list: {
         // position: 'absolute',
         // top: theme.spacing(5),
@@ -66,6 +84,20 @@ const li = {
     }
 };
 
+const transition = {
+    duration: 2,
+    ease: [0.43, 0.13, 0.23, 0.96]
+};
+
+const imageVariants = {
+    exit: { y: "100%", opacity: 0, transition },
+    enter: {
+        y: "0%",
+        opacity: 1,
+        transition
+    }
+};
+
 export default function PlaylistsSelection() {
 
     const classes = useStyles();
@@ -76,53 +108,65 @@ export default function PlaylistsSelection() {
     }
 
     return (
-        <Box
-            display='flex' direction="row" alignItems="center" justifyContent="center"
-            flexWrap="wrap"
-            css={{ position: 'relative', height: '100%', width: '100%' }}
-        >
-            {playlistsSelection.selection.length > 0 &&
+        <>
+            {
+                playlistsSelection.selection.length > 0 &&
                 <motion.div
-                    className="motion.button"
-                    variants={button}
-                    initial="hidden"
-                    animate="visible"
+                    className="motion.selectionBar"
+                    variants={imageVariants}
+                    exitBeforeEnter
+                // initial="hidden"
+                // animate="visible"
                 >
-                    <Fab color="purple" size="medium" classes={{ root: classes.fabButton }}>
-                        <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
-                            <div>
-                                <Typography align='left' component='h3' variant='subtitle2'>
-                                    Go!
-                            </Typography>
-                            </div>
-                        </Link>
-                    </Fab>
-                </motion.div>
-            }
-            <ul className={classes.list}>
-                {
-                    playlistsSelection.selection.map((playlist) =>
-                        <motion.li
-                            key={playlist.id}
-                            className="motion.li"
-                            variants={li}
-                            initial="hidden"
-                            animate="visible"
+                    <AppBar static="true" className={classes.root}>
+                        <Box
+                            display='flex' direction="row" alignItems="center" justifyContent="center"
+                            flexWrap="wrap"
+                            css={{ position: 'relative', height: '100%', width: '100%' }}
                         >
-                            <Tooltip title={playlist.name} arrow placement="left">
-                                <Chip
-                                    // avatar={<div>{playlist.name[0].toUpperCase()}</div>}
-                                    variant="outlined"
-                                    size="small"
-                                    label={<span>{playlist.name}</span>}
-                                    onDelete={handleDelete(playlist)}
-                                    className={classes.chip}
-                                />
-                            </Tooltip>
-                        </motion.li>
-                    )
-                }
-            </ul>
-        </Box>
+                            <motion.div
+                                className="motion.button"
+                                variants={button}
+                                initial="hidden"
+                                animate="visible"
+                            >
+                                <Fab color="purple" size="medium" classes={{ root: classes.fabButton }}>
+                                    <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
+                                        <div>
+                                            <Typography align='left' component='h3' variant='subtitle2'>
+                                                Go!
+                            </Typography>
+                                        </div>
+                                    </Link>
+                                </Fab>
+                            </motion.div>
+                            <div className={classes.list}>
+                                {
+                                    playlistsSelection.selection.map((playlist) =>
+                                        <motion.div
+                                            key={playlist.id}
+                                            className="motion.li"
+                                            variants={li}
+                                            initial="hidden"
+                                            animate="visible"
+                                        >
+                                            {/* <Tooltip title={playlist.name} arrow placement="left"> */}
+                                            <Chip
+                                                // avatar={<div>{playlist.name[0].toUpperCase()}</div>}
+                                                variant="outlined"
+                                                size="small"
+                                                label={<span>{playlist.name}</span>}
+                                                onDelete={handleDelete(playlist)}
+                                                className={classes.chip}
+                                            />
+                                            {/* </Tooltip> */}
+                                        </motion.div>
+                                    )
+                                }
+                            </div>
+                        </Box>
+                    </AppBar>
+                </motion.div>}
+        </>
     );
 }
