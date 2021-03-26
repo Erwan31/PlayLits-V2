@@ -33,9 +33,12 @@ export default function Playlists() {
   return (
     <HeaderFooter selection={true}>
       <UserPlaylists />
-      <SnackBarCustom severity="info" open={openSnack} handleClose={handleCloseSnack}>
-        Congrats! 5 playlists selected, just click on "Let's Go!" now...
-      </SnackBarCustom>
+      {
+        playlistsSelection.selection.length > 0 &&
+        <SnackBarCustom severity="info" open={openSnack} handleClose={handleCloseSnack}>
+          Congrats! All 5 playlists selected, just click on "Go!" bellow...
+        </SnackBarCustom>
+      }
     </HeaderFooter>
   )
 }

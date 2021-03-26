@@ -87,7 +87,9 @@ export default function TrackList({ list, name }) {
     }, [list]);
 
     return (
-        <div>
+        <Box
+            m="0 1rem"
+        >
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography align="center" component='h3' variant='h6' gutterBottom style={{ marginRight: '1rem' }}>
                     {list.length} Tracks from
@@ -107,7 +109,7 @@ export default function TrackList({ list, name }) {
             >
                 <Box
                     m='2rem 0 2rem 0'
-                    p='0 1rem 0 0'
+                    // p='0 1rem 0 1rem'
                     css={{
                         // maxHeight: '70vh',
                         width: '100%',
@@ -143,7 +145,7 @@ export default function TrackList({ list, name }) {
                     }
                 </Box>
             </ScrollBarsCustom>
-        </div >
+        </Box>
     )
 }
 

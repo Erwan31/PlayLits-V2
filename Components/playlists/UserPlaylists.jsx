@@ -132,7 +132,7 @@ export default function UserPlaylists() {
                     animate="visible"
                 >
                     <Box
-                        m='0 auto 5rem auto'
+                        m='0 auto 3rem auto'
                         p='90px 3rem 0 3rem'
                         // m='0 1rem 0 1rem'
                         css={{
@@ -177,6 +177,7 @@ export default function UserPlaylists() {
                             display="flex"
                             justifyContent='center'
                             m='0 0 2rem 0'
+                        // p='0 0 2rem 0'
                         >
                             <CustomButton onClick={handleLoadMore}>
                                 <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>

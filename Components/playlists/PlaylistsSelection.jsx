@@ -85,18 +85,31 @@ const li = {
 };
 
 const transition = {
-    duration: 2,
+    duration: 3,
     ease: [0.43, 0.13, 0.23, 0.96]
 };
 
 const imageVariants = {
     exit: { y: "100%", opacity: 0, transition },
     enter: {
-        y: "0%",
+        y: ["100%", "0%"],
         opacity: 1,
         transition
     }
 };
+
+const barAppear = {
+    hidden: { opacity: 0, y: 100 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            // ease: [0.43, 0.13, 0.23, 0.96]
+        }
+    }
+}
+
 
 export default function PlaylistsSelection() {
 
@@ -113,10 +126,9 @@ export default function PlaylistsSelection() {
                 playlistsSelection.selection.length > 0 &&
                 <motion.div
                     className="motion.selectionBar"
-                    variants={imageVariants}
-                    exitBeforeEnter
-                // initial="hidden"
-                // animate="visible"
+                    variants={barAppear}
+                    initial="hidden"
+                    animate="visible"
                 >
                     <AppBar static="true" className={classes.root}>
                         <Box
@@ -130,7 +142,7 @@ export default function PlaylistsSelection() {
                                 initial="hidden"
                                 animate="visible"
                             >
-                                <Fab color="purple" size="medium" classes={{ root: classes.fabButton }}>
+                                <Fab color="purple" size="small" classes={{ root: classes.fabButton }}>
                                     <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
                                         <div>
                                             <Typography align='left' component='h3' variant='subtitle2'>
@@ -166,7 +178,8 @@ export default function PlaylistsSelection() {
                             </div>
                         </Box>
                     </AppBar>
-                </motion.div>}
+                </motion.div>
+            }
         </>
     );
 }

@@ -11,6 +11,7 @@ import classNames from 'classnames'
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        padding: '0 0.5rem',
         paddingBottom: theme.spacing(2),
     },
     card: {
@@ -79,15 +80,15 @@ export default function TrackRow({ data, index, style }) {
     const classes = useStyles();
     const { list, handlePlay, play } = data;
     const track = list[index];
-    const [hovering, setHovering] = useState({ bool: false, elevation: 4 });
+    const [hovering, setHovering] = useState({ bool: false, elevation: 3 });
     // console.log(list[index]);
 
     return (
         <motion.div
             key={getTrackID(track.item)}
             variants={item}
-            onHoverStart={() => setHovering({ bool: true, elevation: 7 })}
-            onHoverEnd={() => setHovering({ bool: false, elevation: 4 })}
+            onHoverStart={() => setHovering({ bool: true, elevation: 5 })}
+            onHoverEnd={() => setHovering({ bool: false, elevation: 3 })}
             style={style}
             className={classes.root}
         >

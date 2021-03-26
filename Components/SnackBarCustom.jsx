@@ -5,7 +5,11 @@ import usePlaylistsSelection, { MAXSELECTION } from '../hooks/usePlaylistsSelect
 
 export default function SnackBarCustom({ children, severity = "info", open, handleClose }) {
     return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={open} autoHideDuration={6000} onClose={handleClose}
+            style={{ marginTop: 50 }}
+        >
             <Alert severity={severity} onClose={handleClose}>
                 {children}
             </Alert>
