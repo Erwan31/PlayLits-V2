@@ -55,7 +55,10 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         margin: '0 auto',
-        backgroundColor: 'purple'
+        backgroundColor: 'purple',
+        "&:hover": {
+            backgroundColor: '#2c3049'
+        }
     },
 }));
 
@@ -99,12 +102,12 @@ const imageVariants = {
 };
 
 const barAppear = {
-    hidden: { opacity: 0, y: 100 },
+    hidden: { opacity: 0, y: 60 },
     visible: {
         opacity: 1,
         y: 0,
         transition: {
-            duration: 0.5,
+            duration: 0.3,
             // ease: [0.43, 0.13, 0.23, 0.96]
         }
     }
@@ -142,7 +145,7 @@ export default function PlaylistsSelection() {
                                 initial="hidden"
                                 animate="visible"
                             >
-                                <Fab color="purple" size="small" classes={{ root: classes.fabButton }}>
+                                <Fab size="small" classes={{ root: classes.fabButton }}>
                                     <Link href={`/playlits/${encodeURIComponent(playlistsSelection.route)}`}>
                                         <div>
                                             <Typography align='left' component='h3' variant='subtitle2'>

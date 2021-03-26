@@ -167,25 +167,25 @@ export default function UserPlaylists() {
                                 </Grid>
                             </Grid>
                         </Grid >
+                        {
+                            state.playlists.next !== null &&
+                            <Box
+                                display="flex"
+                                justifyContent='center'
+                                m='2.5rem 0 8rem 0'
+                            // p='0 0 2rem 0'
+                            >
+                                <CustomButton onClick={handleLoadMore}>
+                                    <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
+                                        Load More Playlists
+                                </Typography>
+                                </CustomButton>
+                            </Box>
+                        }
                         {/* <AppBar static="true" className={classes.root}> */}
                         <PlaylistsSelection />
                         {/* </AppBar> */}
                     </Box>
-                    {
-                        state.playlists.next !== null &&
-                        <Box
-                            display="flex"
-                            justifyContent='center'
-                            m='0 0 2rem 0'
-                        // p='0 0 2rem 0'
-                        >
-                            <CustomButton onClick={handleLoadMore}>
-                                <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
-                                    Load More Playlists
-                                </Typography>
-                            </CustomButton>
-                        </Box>
-                    }
                 </motion.div>}
         </ScrollBarsCustom>
     );
