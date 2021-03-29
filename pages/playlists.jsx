@@ -11,21 +11,17 @@ export default function Playlists() {
   const [openSnack, setOpenSnack] = useState(false);
 
   useEffect(() => {
-    // setOpenSnack(false);
-
     document.body.classList.add("playlists");
     document.body.classList.remove("playlits");
-
-    // Not working...
-    // return (() => {
-    //   setOpenSnack(false);
-    // })
   }, []);
 
 
   useEffect(() => {
     if (playlistsSelection.selection.length === MAXSELECTION) {
       setOpenSnack(true);
+    }
+    else {
+      setOpenSnack(false);
     }
   }, [playlistsSelection]);
 
