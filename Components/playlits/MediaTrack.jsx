@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import SpotifyIcon from '../IconsJSX/SpotifyIcon';
-import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName, linkToSpotify } from '../../utils/getters';
-import { CardMedia, makeStyles, Tooltip } from '@material-ui/core';
-import { motion } from 'framer-motion';
+import React, {useMemo, useState} from "react";
+import SpotifyIcon from "../IconsJSX/SpotifyIcon";
+import {getArtistsNames, getTrackAlbumImage, linkToSpotify} from "../../utils/getters";
+import {CardMedia, makeStyles, Tooltip} from "@material-ui/core";
+import {motion} from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     mediaCard: {
-        position: 'relative',
+        position: "relative",
         marginRight: theme.spacing(3),
-        cursor: 'pointer',
+        cursor: "pointer",
     },
     cover: {
         width: 80,
@@ -28,7 +28,7 @@ export default function MediaTrack({ track, hovering }) {
 
     const handleClick = (data) => () => {
         linkToSpotify(data);
-    }
+    };
 
     return (
         <Tooltip title="PLAY ON SPOTIFY" arrow placement="left">
@@ -38,7 +38,7 @@ export default function MediaTrack({ track, hovering }) {
                     scale: hovered ? 1.1 : 1,
                     transition: {
                         duration: 0.15,
-                        ease: 'easeIn'
+                        ease: "easeIn"
                     }
                 }}
                 className={classes.mediaCard}
@@ -52,9 +52,9 @@ export default function MediaTrack({ track, hovering }) {
                 />
                 <motion.div
                     style={{
-                        position: 'absolute',
-                        top: 'calc(50% - 10px)',
-                        left: 'calc(50% - 10px)',
+                        position: "absolute",
+                        top: "calc(50% - 10px)",
+                        left: "calc(50% - 10px)",
                     }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hovered ? 1 : 0 }}

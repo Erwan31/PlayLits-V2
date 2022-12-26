@@ -109,8 +109,6 @@ export async function getTracksAudioFeatures(items) {
     
     });
 
-    console.log("TRACKS", afArray);
-
     afArray.forEach(el =>
         result = [...result, ...el.audio_features]
     );

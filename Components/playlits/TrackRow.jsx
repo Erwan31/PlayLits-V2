@@ -1,46 +1,47 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion';
-import { Card, CardContent, Typography, IconButton, makeStyles, CardActions, Tooltip } from '@material-ui/core';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import { getArtistsNames, getPreviewUrl, getTrackAlbumImage, getTrackID, getTrackName, linkToSpotify } from '../../utils/getters';
-import MediaTrack from './MediaTrack';
-import classNames from 'classnames'
+import React, {useState} from "react";
+import {motion} from "framer-motion";
+import {Card, CardActions, CardContent, IconButton, makeStyles, Typography} from "@material-ui/core";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
+import {getArtistsNames, getPreviewUrl, getTrackID, getTrackName} from "../../utils/getters";
+import MediaTrack from "./MediaTrack";
+import classNames from "classnames";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: '0 0.5rem',
+        padding: "0 0.5rem",
         paddingBottom: theme.spacing(2),
     },
     card: {
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'rgba( 255, 255, 255, 0.1)',
-        width: '100%',
+        display: "flex",
+        
+        flexDirection: "column",
+        background: "rgba( 255, 255, 255, 0.1)",
+        width: "100%",
     },
     details: {
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
     },
     content: {
-        display: 'flex',
-        flexDirection: 'row',
-        flex: '1 0 auto',
+        display: "flex",
+        flexDirection: "row",
+        flex: "1 0 auto",
         "&:last-child": {
             paddingBottom: theme.spacing(1.5),
         }
     },
     detailsAndControl: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
         flexGrow: 1,
     },
     controls: {
-        display: 'flex',
-        alignItems: 'center',
+        display: "flex",
+        alignItems: "center",
         paddingLeft: theme.spacing(1),
         paddingBottom: theme.spacing(1),
     },
@@ -49,19 +50,19 @@ const useStyles = makeStyles((theme) => ({
         width: 38,
     },
     typo: {
-        color: '#EEEEEE',
+        color: "#EEEEEE",
     },
     /* Ellipsis */
     ellipsis: {
-        overflow: 'hidden',
-        display: '-webkit-box',
-        '-webkit-box-orient': 'vertical',
+        overflow: "hidden",
+        display: "-webkit-box",
+        "-webkit-box-orient": "vertical",
     },
     clamp2lines: {
-        '-webkit-line-clamp': 2,
+        "-webkit-line-clamp": 2,
     },
     clamp1lines: {
-        '-webkit-line-clamp': 1,
+        "-webkit-line-clamp": 1,
     },
 }));
 
@@ -75,13 +76,27 @@ const item = {
     }
 };
 
-export default function TrackRow({ data, index, style }) {
+const keyToNoteSymbolMapper = {
+    "0": "C",
+    "1": "C#",
+    "2": "D",
+    "3": "D#",
+    "4": "E",
+    "5": "F",
+    "6": "F#",
+    "7": "G",
+    "8": "G#",
+    "9": "A",
+    "10": "A#",
+    "11": "B",
+};
 
+export default function TrackRow({ data, index, style }) {
     const classes = useStyles();
     const { list, handlePlay, play } = data;
     const track = list[index];
+    const audioFeature = track.audioFeature;
     const [hovering, setHovering] = useState({ bool: false, elevation: 3 });
-    // console.log(list[index]);
 
     return (
         <motion.div
@@ -99,7 +114,7 @@ export default function TrackRow({ data, index, style }) {
                         <div className={classes.details}>
                             <Typography
                                 component="h3" variant="h6"
-                                className={classNames(classes.typo, classes.ellipsis, classes.clamp2lines)}
+                                className={classNames(classes.typo, classes.ellipsis, classes.clamp1lines)}
                             >
                                 {getTrackName(track.item)}
                             </Typography>
@@ -108,6 +123,12 @@ export default function TrackRow({ data, index, style }) {
                                 className={classNames(classes.ellipsis, classes.clamp1lines)}
                             >
                                 {getArtistsNames(track.item)}
+                            </Typography>
+                            <Typography
+                                variant="subtitle2" color="textSecondary"
+                                className={classNames(classes.ellipsis, classes.clamp1lines)}
+                            >
+                                {keyToNoteSymbolMapper[audioFeature.key]}{"  -  "}{Math.trunc(audioFeature.tempo)}
                             </Typography>
                         </div>
                         <CardActions className={classes.controls}>
@@ -130,5 +151,5 @@ export default function TrackRow({ data, index, style }) {
                 </CardContent>
             </Card>
         </motion.div>
-    )
+    );
 }

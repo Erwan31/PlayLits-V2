@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import hash from "../../api/hash";
-import { getUserPlaylists } from "../../api/spotifyAPICall";
-import { Grid, makeStyles, Box, Typography, AppBar } from "@material-ui/core";
+import {getUserPlaylists} from "../../api/spotifyAPICall";
+import {Box, Grid, makeStyles, Typography} from "@material-ui/core";
 import PlaylistCard from "./PlaylistCard";
-import { getPlaylistID } from "../../utils/getters";
+import {getPlaylistID} from "../../utils/getters";
 import ScrollBarsCustom from "../ScrollBarsCustom";
 import CustomButton from "../CustomButton";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import useError from "../../hooks/useError";
 import useMainState from "../../hooks/useMainState";
-import { getLocalToken } from "../../hooks/useLocalStorage";
+import {getLocalToken} from "../../hooks/useLocalStorage";
 import usePlaylistsSelection from "../../hooks/usePlaylistsSelection";
 import PlaylistsSelection from "../playlists/PlaylistsSelection";
 
@@ -109,7 +109,6 @@ export default function UserPlaylists() {
             if (!token.access_token) {
                 token = getLocalToken();
             }
-            console.log(token);
             setToken(token);
         }
 
