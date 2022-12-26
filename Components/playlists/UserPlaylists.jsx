@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react'
-import hash from '../../api/hash'
-import { getUserPlaylists } from '../../api/spotifyAPICall';
-import { Grid, makeStyles, Box, Typography, AppBar } from '@material-ui/core';
-import PlaylistCard from './PlaylistCard';
-import { getPlaylistID } from '../../utils/getters';
-import ScrollBarsCustom from '../ScrollBarsCustom';
-import CustomButton from '../CustomButton';
+import React, { useEffect } from "react";
+import hash from "../../api/hash";
+import { getUserPlaylists } from "../../api/spotifyAPICall";
+import { Grid, makeStyles, Box, Typography, AppBar } from "@material-ui/core";
+import PlaylistCard from "./PlaylistCard";
+import { getPlaylistID } from "../../utils/getters";
+import ScrollBarsCustom from "../ScrollBarsCustom";
+import CustomButton from "../CustomButton";
 import { motion } from "framer-motion";
-import useError from '../../hooks/useError';
-import useMainState from '../../hooks/useMainState';
-import { getLocalToken } from '../../hooks/useLocalStorage';
-import usePlaylistsSelection from '../../hooks/usePlaylistsSelection';
-import PlaylistsSelection from '../playlists/PlaylistsSelection';
+import useError from "../../hooks/useError";
+import useMainState from "../../hooks/useMainState";
+import { getLocalToken } from "../../hooks/useLocalStorage";
+import usePlaylistsSelection from "../../hooks/usePlaylistsSelection";
+import PlaylistsSelection from "../playlists/PlaylistsSelection";
 
 const useStyles = makeStyles((theme) => ({
     // root: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     // },
     playlistCardSize: {
         minWidth: 170,
-        width: '25vw',
+        width: "25vw",
         height: "100%",
         maxWidth: 200,
         margin: theme.spacing(2),
@@ -87,7 +87,6 @@ export default function UserPlaylists() {
         initPlaylistSelection
     } = usePlaylistsSelection();
 
-
     // Load more playlists
     const handleLoadMore = async () => {
         if (state.playlists.next !== null) {
@@ -95,12 +94,12 @@ export default function UserPlaylists() {
             const nextPlaylists = await getUserPlaylists(next, handleError);
             addNewPlaylistItems(nextPlaylists);
         }
-    }
+    };
 
     // Pass that to tht eguys
     const handlePlaylistClick = (playlist) => {
         addOrRetrievePlaylist(playlist);
-    }
+    };
 
     // Get Access Token first
     useEffect(async () => {
@@ -110,17 +109,18 @@ export default function UserPlaylists() {
             if (!token.access_token) {
                 token = getLocalToken();
             }
+            console.log(token);
             setToken(token);
         }
 
         //initialize selection
-        initPlaylistSelection()
-    }, [])
+        initPlaylistSelection();
+    }, []);
 
     return (
         <ScrollBarsCustom
-            height={'100vh'}
-            width={'100%'}
+            height={"100vh"}
+            width={"100%"}
             autoHide
             autoHideTimeout={500}
             autoHideDuration={200}
@@ -140,7 +140,7 @@ export default function UserPlaylists() {
                         // m='0 1rem 0 1rem'
                         css={{
                             maxWidth: 1100,
-                            width: '90%',
+                            width: "90%",
                             minWidth: 350,
                         }}
                     >
@@ -179,9 +179,9 @@ export default function UserPlaylists() {
                             // p='0 0 2rem 0'
                             >
                                 <CustomButton onClick={handleLoadMore}>
-                                    <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: '0.5rem' }}>
+                                    <Typography align='left' component='h3' variant='subtitle1' style={{ marginRight: "0.5rem" }}>
                                         Load More Playlists
-                                </Typography>
+                                    </Typography>
                                 </CustomButton>
                             </Box>
                         }

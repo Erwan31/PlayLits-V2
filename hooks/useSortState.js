@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import { atom, useRecoilState } from 'recoil';
-import {
-    computeSlidersValues, sortOnDirection, newSortListIII,
-    sortByFeature, sortList
-} from './utils/utilsSortState';
+import React, {useEffect} from "react";
+import {atom, useRecoilState} from "recoil";
+import {newSortListIII, sortByFeature, sortList, sortOnDirection} from "./utils/utilsSortState";
 
 export const slidersState = atom({
-  key: 'slidersState',
-  default: {
-      danceability: 0,
-      energy: 0,
-      valence: 0,
-      instrumentalness: 0,
-      liveness: 0,
-      acousticness: 0,
-      liveness: 0,
-      speechiness: 0,
-  },
+    key: "slidersState",
+    default: {
+        key: 0,
+        tempo: 0,
+        danceability: 0,
+        energy: 0,
+        valence: 0,
+        instrumentalness: 0,
+        liveness: 0,
+        acousticness: 0,
+        speechiness: 0,
+    },
 });
 
 const sortedState = atom({
-    key: 'sortedState',
+    key: "sortedState",
     default: {
         actual: [],
         initial: [],
@@ -29,22 +27,22 @@ const sortedState = atom({
 });
 
 const featureSortingState = atom({
-    key: 'featureSortingState',
+    key: "featureSortingState",
     default: {
         feature: null,
         prevFeature: null,
-        direction: 'none',
+        direction: "none",
         icon: <div></div>
     }
 });
 
 const onlySavedState = atom({
-    key: 'onlySavedState',
+    key: "onlySavedState",
     default: false
 });
 
 const lowPassFilterState = atom({
-    key: 'lowPassFilterState',
+    key: "lowPassFilterState",
     default: true
 });
 
@@ -60,21 +58,21 @@ export default function useSortState() {
         setOnlySaved(current => false);
         setFeatureSorting(current => ({...current, ...featureSortingState}));
         setSortedTracks(current => ({ ...current, actual: init, initial: init, length: init.length }));
-    }
+    };
 
     const handleOnlySaved = () => {
         setOnlySaved(current => !current);
-    }
+    };
 
     const handleLowPass = () => {
         setLowPassFilter(current => !current);
-    }
+    };
 
     const handleFeatureSortingClick = (newFeature) => () => {
         const { feature, sorted } = sortByFeature(newFeature, featureSorting, sortedTracks, slidersValues, onlySaved, lowPassFilter);
         setFeatureSorting(current => ({ ...current, ...feature }));
         setSortedTracks(current => ({ ...current, actual: [...sorted] }));
-    }
+    };
     
     useEffect(() => {
         if (sortedTracks.length > 0) {
@@ -126,7 +124,6 @@ export default function useSortState() {
             energy: 0,
             valence: 0,
             instrumentalness: 0,
-            liveness: 0,
             acousticness: 0,
             liveness: 0,
             speechiness: 0,
@@ -135,7 +132,7 @@ export default function useSortState() {
             ...current,
             feature: null,
             prevFeature: null,
-            direction: 'none',
+            direction: "none",
             icon: <div></div>
         }));
         setSortedTracks(current => ({
@@ -143,8 +140,8 @@ export default function useSortState() {
             actual: [],
             initial: [],
             length: 0
-        }))
-    }
+        }));
+    };
     
     return {
         handleOnlySaved,
@@ -156,5 +153,5 @@ export default function useSortState() {
         lowPassFilter,
         featureSorting,
         resetSortState,
-    }
+    };
 }

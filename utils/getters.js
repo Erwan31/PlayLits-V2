@@ -7,14 +7,14 @@ export function getTrackName(item) {
 }
 
 export function getArtistsNames(item) {
-    let artists = '';
+    let artists = "";
 
     item.track.album.artists.map((artist, index) => {
         if (index === 0) {
             artists = artist.name.toString();
         }
         else {
-            artists += ', ' + artist.name.toString();
+            artists += ", " + artist.name.toString();
         }
     });
     
@@ -22,20 +22,20 @@ export function getArtistsNames(item) {
 }
 
 export function getTrackID(item) {
-    if (item.hasOwnProperty('track')) return item.track.id;
-    if (item.hasOwnProperty('item')) return item.item.track.id;
-    if (item.hasOwnProperty('audioFeature')) return item.audioFeature.id;
+    if (item.hasOwnProperty("track")) return item.track.id;
+    if (item.hasOwnProperty("item")) return item.item.track.id;
+    if (item.hasOwnProperty("audioFeature")) return item.audioFeature.id;
     return item.id;
 }
 
 export function getTrackURI(item) {
-    if (item.hasOwnProperty('item')) return item.item.track.uri;
+    if (item.hasOwnProperty("item")) return item.item.track.uri;
     return item.id;
 }
 
 export function getPreviewUrl(item) {
-    if (item.hasOwnProperty('track')) return item.track.preview_url;
-    if (item.hasOwnProperty('item')) return item.item.track.preview_url;
+    if (item.hasOwnProperty("track")) return item.track.preview_url;
+    if (item.hasOwnProperty("item")) return item.item.track.preview_url;
     return null;
 }
 
@@ -45,10 +45,10 @@ export function getLength(list) {
 }
 
 export function getSpotifyURL(data) {
-    if (data.hasOwnProperty('playlistCreated')) return data.playlistCreated.external_urls.spotify;
-    if (data.hasOwnProperty('data')) return data.data.external_urls.spotify;
-    if (data.hasOwnProperty('external_urls')) return data.external_urls.spotify;
-    if(data.hasOwnProperty('item')) return data.item.track.external_urls.spotify;
+    if (data.hasOwnProperty("playlistCreated")) return data.playlistCreated.external_urls.spotify;
+    if (data.hasOwnProperty("data")) return data.data.external_urls.spotify;
+    if (data.hasOwnProperty("external_urls")) return data.external_urls.spotify;
+    if(data.hasOwnProperty("item")) return data.item.track.external_urls.spotify;
 }
 
 export function getPlaylistID(playlist) {
@@ -78,18 +78,18 @@ export function getArrayOfGenres(arr) {
                 const index = join.indexOf(joinEl);
                 join[index] = { genre: el, ids: [...joinEl.ids, id] };
             }
-        })
+        });
     });
 
     return join;
 }
 
 export function getSmallestImage(images){
-        // images[0] width's is 640, after its 300 -> what we want if we can
-        if (images.length > 1) {
-            return images[1];
-        }
-        return images[0];
+    // images[0] width's is 640, after its 300 -> what we want if we can
+    if (images.length > 1) {
+        return images[1];
+    }
+    return images[0];
 }
 
 export function filterGenres(arr) {
@@ -99,7 +99,6 @@ export function filterGenres(arr) {
 }
 
 export function getLinearColor(color) {
-
     const init = hexToRgb(color);
     const rgbArr = [init];
 
@@ -121,6 +120,5 @@ function hexToRgb(hex) {
 }
 
 export function linkToSpotify(data) {
-    window.open(getSpotifyURL(data), '_blank');
+    window.open(getSpotifyURL(data), "_blank");
 }
-
